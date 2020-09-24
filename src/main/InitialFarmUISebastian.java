@@ -34,7 +34,7 @@ public class InitialFarmUISebastian extends Application {
         for (int i = 0; i < plots.length; i++) {
             vbox.getChildren().add(plots[i]);
         }
-        Scene scene = new Scene(vBox 800, 700);
+        Scene scene = new Scene(vbox, 800, 700);
         primaryStage.setTitle("FARM GAME");
         primaryStage.setScene(scene);
         primaryStage.show();
