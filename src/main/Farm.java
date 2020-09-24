@@ -18,4 +18,8 @@ public class Farm {
             plots[i] = new Plot(0, null, i + 1);
         }
     }
+
+    public Plot[] getPlots() {
+        return plots;
+    }
 }
