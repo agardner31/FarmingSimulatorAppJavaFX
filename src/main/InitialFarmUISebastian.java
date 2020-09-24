@@ -1,4 +1,4 @@
-package BestTeam89_Farming.src.main;
+package main;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
