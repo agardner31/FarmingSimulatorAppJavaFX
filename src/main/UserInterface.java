@@ -1,5 +1,4 @@
 package main;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,10 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class InitialFarmUISebastian extends Application {
-
-    Scene configurations;
-    Scene farm;
+public class UserInterface extends Application {
 
     @Override
     public void start(Stage primaryStage) {
@@ -30,7 +26,6 @@ public class InitialFarmUISebastian extends Application {
         Label difficulty = new Label("Difficulty: ");
         ObservableList<String> options =
                 FXCollections.observableArrayList(
-                        "",
                         "Apprentice",
                         "Ordinary Joe",
                         "Master Farmer"
@@ -41,7 +36,6 @@ public class InitialFarmUISebastian extends Application {
         Label seasons = new Label("Season: ");
         ObservableList<String> seasonsOptions =
                 FXCollections.observableArrayList(
-                        "",
                         "Fall",
                         "Winter",
                         "Spring",
@@ -53,7 +47,6 @@ public class InitialFarmUISebastian extends Application {
         Label seed = new Label("Seed: ");
         ObservableList<String> seedOptions =
                 FXCollections.observableArrayList(
-                        "",
                         "Tomato",
                         "Pumpkin",
                         "Corn"
@@ -64,11 +57,30 @@ public class InitialFarmUISebastian extends Application {
         Label warning = new Label("");
         configVBox.getChildren().addAll(nameBox, difficultyBox, seasonsBox, seedBox, startGame, warning);
         Scene configurations = new Scene(configVBox, 800, 700);
-        System.out.print(levels.getValue());
 
+        // start game button
+        startGame.setOnAction((event) -> {    // lambda expression
+            if ((enterName.getText() == null) || (enterName.getText().equals(""))) {
+                warning.setText("Enter a valid name.");
+            } else if (levels.getValue() == null) {
+                warning.setText("Choose a difficulty.");
+            } else if (seasonsList.getValue() == null) {
+                warning.setText("Choose a season.");
+            } else if (seedList.getValue() == null) {
+                warning.setText("Choose a seed.");
+            } else {
+                primaryStage.setScene(enterFarm(levels.getValue().toString()));
+            }
+        });
+
+        primaryStage.setTitle("FARM GAME");
+        primaryStage.setScene(configurations);
+        primaryStage.show();
+    }
+
+    public static Scene enterFarm(String difficulty) {
         // farm scene
-        // int difficulty = 0; //THIS VARIABLE WILL EVENTUALLY BE SET BY THE USER FROM THE INITIAL CONFIG SCREEN.
-        Player player = new Player("Apprentice");
+        Player player = new Player(difficulty);
         double startingMoney = player.getMoney();
         VBox vbox = new VBox();
         vbox.setMaxSize(800, 800);
@@ -81,32 +93,12 @@ public class InitialFarmUISebastian extends Application {
         for (int i = 0; i < plots.length; i++) {
             plotNumber = i + 1;
             vbox.getChildren().add(new Label("Plot " + plotNumber));
-            vbox.getChildren().add(new Label("Title: " + plots[i].getTitle() + " Type: " + plots[i].getType() + " Number of Crops " + plots[i].getNumCrops()));
+            vbox.getChildren().add(new Label("Title: " + plots[i].getTitle() + " Type: " + plots[i].getType()
+                    + " Number of Crops " + plots[i].getNumCrops()));
         }
         Scene farm = new Scene(vbox, 800, 700);
-
-        // start game button
-        startGame.setOnAction((event) -> {    // lambda expression
-            if ((enterName.getText() == null) || (enterName.getText().equals(""))) {
-                warning.setText("Enter a valid name.");
-            } else if ((levels.getValue() == null) || (levels.getValue().equals(""))) {
-                warning.setText("Choose a difficulty.");
-            } else if ((seasonsList.getValue() == null) || (seasonsList.getValue().equals(""))) {
-                warning.setText("Choose a season.");
-            } else if ((seedList.getValue() == null) || (seedList.getValue().equals(""))) {
-                warning.setText("Choose a seed.");
-            } else {
-                primaryStage.setScene(farm);
-            }
-            System.out.print(levels.getValue());
-        });
-
-        primaryStage.setTitle("FARM GAME");
-        primaryStage.setScene(configurations);
-        primaryStage.show();
+        return farm;
     }
-
-
 
     /**
      * Main method.
