@@ -1,35 +1,38 @@
 package main;
 
 public class Player {
-    private int difficulty;
+    private String difficulty;
 
     private Farm farm;
 
     private int money;
 
     public Player() {
-        this(0, new Farm(), 100);
+        this("Apprentice", new Farm());
     }
 
-    public Player(int difficulty) {
-        this(difficulty, new Farm(), 100 + (difficulty * 100));
+    public Player(String difficulty) {
+
+        this(difficulty, new Farm());
     }
 
-    public Player(int difficulty, Farm farm) {
-        this(difficulty, farm, 100 + (difficulty * 100));
-    }
-
-    public Player(int difficulty, Farm farm, int money) {
+    public Player(String difficulty, Farm farm) {
         this.difficulty = difficulty;
         this.farm = farm;
-        this. money = money;
+        if (difficulty.equals("Apprentice")) {
+            this.money = 300;
+        } else if (difficulty.equals("Ordinary Joe")) {
+            this.money = 200;
+        } else {
+            this.money = 100;
+        }
     }
 
-    public void setDifficulty(int difficulty) {
+    public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
 
-    public int getDifficulty() {
+    public String getDifficulty() {
         return difficulty;
     }
 
