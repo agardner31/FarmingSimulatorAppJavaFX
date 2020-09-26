@@ -97,8 +97,18 @@ public class UserInterface extends Application {
             }
         });
 
+
+        // welcome screen
+        Label welcome = new Label("Farming Game");
+        Button startButton = new Button("Enter game");
+
+        VBox vBox = new VBox(20);
+        vBox.getChildren().addAll(welcome, startButton);
+        Scene welcomeScreen = new Scene(vBox, 200, 200);
+
+        startButton.setOnAction(e -> primaryStage.setScene(configurations));
         primaryStage.setTitle("FARM GAME");
-        primaryStage.setScene(configurations);
+        primaryStage.setScene(welcomeScreen);
         primaryStage.show();
     }
 
