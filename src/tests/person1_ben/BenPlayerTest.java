@@ -1,4 +1,4 @@
-package person1_ben;
+package tests.person1_ben;
 
 import main.Farm;
 import main.Player;
