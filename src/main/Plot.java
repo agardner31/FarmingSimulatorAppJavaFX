@@ -1,11 +1,11 @@
 package main;
 
 public class Plot {
-    public int numCrops;
+    private int numCrops;
 
-    public String type;
+    private String type;
 
-    public String title;
+    private String title;
 
     public Plot() {
         numCrops = 0;

@@ -2,14 +2,24 @@ package main;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 
 public class UserInterface extends Application {
 
@@ -18,10 +28,13 @@ public class UserInterface extends Application {
 
         // configuration scene
         VBox configVBox = new VBox();
+        Label configTitle = new Label("Configuration");
+        configTitle.setFont(new Font(20));
         HBox nameBox = new HBox();
         Label name = new Label("Name: ");
         TextField enterName = new TextField();
         nameBox.getChildren().addAll(name, enterName);
+        nameBox.setAlignment(Pos.CENTER);
         HBox difficultyBox = new HBox();
         Label difficulty = new Label("Difficulty: ");
         ObservableList<String> options =
@@ -32,6 +45,7 @@ public class UserInterface extends Application {
                 );
         ComboBox levels = new ComboBox(options);
         difficultyBox.getChildren().addAll(difficulty, levels);
+        difficultyBox.setAlignment(Pos.CENTER);
         HBox seasonsBox = new HBox();
         Label seasons = new Label("Season: ");
         ObservableList<String> seasonsOptions =
@@ -43,6 +57,7 @@ public class UserInterface extends Application {
                 );
         ComboBox seasonsList = new ComboBox(seasonsOptions);
         seasonsBox.getChildren().addAll(seasons, seasonsList);
+        seasonsBox.setAlignment(Pos.CENTER);
         HBox seedBox = new HBox();
         Label seed = new Label("Seed: ");
         ObservableList<String> seedOptions =
@@ -53,9 +68,18 @@ public class UserInterface extends Application {
                 );
         ComboBox seedList = new ComboBox(seedOptions);
         seedBox.getChildren().addAll(seed, seedList);
+        seedBox.setAlignment(Pos.CENTER);
         Button startGame = new Button("Start Game");
         Label warning = new Label("");
-        configVBox.getChildren().addAll(nameBox, difficultyBox, seasonsBox, seedBox, startGame, warning);
+
+        configVBox.getChildren().addAll(configTitle, nameBox, difficultyBox,
+                seasonsBox, seedBox, startGame, warning);
+        configVBox.setAlignment(Pos.BASELINE_CENTER);
+        configVBox.setPadding(new Insets(50));
+        configVBox.setSpacing(10);
+        BackgroundFill configBackground = new BackgroundFill(Color.valueOf("#658E6E"),
+                new CornerRadii(1), null);
+        configVBox.setBackground(new Background(configBackground));
         Scene configurations = new Scene(configVBox, 800, 700);
 
         // start game button
@@ -82,20 +106,55 @@ public class UserInterface extends Application {
         // farm scene
         Player player = new Player(difficulty);
         double startingMoney = player.getMoney();
+
         VBox vbox = new VBox();
+        BackgroundFill farmBackground = new BackgroundFill(Color.valueOf("#658E6E"),
+                new CornerRadii(1), null);
+        vbox.setBackground(new Background(farmBackground));
         vbox.setMaxSize(800, 800);
-        Label startingMoneyLabel = new Label("Starting money: $" + startingMoney);
+        vbox.setAlignment(Pos.BASELINE_CENTER);
+        vbox.setPadding(new Insets(50));
+        vbox.setSpacing(10);
+
+        Label startingMoneyLabel = new Label("Money: $" + startingMoney + "0");
+        startingMoneyLabel.setFont(new Font(16));
         vbox.getChildren().add(startingMoneyLabel);
-        Label displayDateLabel = new Label("Today's date: Day 1");
+
+        Label displayDateLabel = new Label("Day 1");
+        displayDateLabel.setFont(new Font(14));
         vbox.getChildren().add(displayDateLabel);
+
         Plot[] plots = player.getFarm().getPlots();
-        int plotNumber;
+        HBox plotBox = new HBox();
+        plotBox.setSpacing(10);
+        plotBox.setAlignment(Pos.CENTER);
+        plotBox.setPadding(new Insets(20));
         for (int i = 0; i < plots.length; i++) {
-            plotNumber = i + 1;
-            vbox.getChildren().add(new Label("Plot " + plotNumber));
-            vbox.getChildren().add(new Label("Title: " + plots[i].getTitle() + " Type: " + plots[i].getType()
-                    + " Number of Crops " + plots[i].getNumCrops()));
+            Label plotLabel = new Label("Plot #" + (i + 1) + "\n"
+                    + "Crops: " + plots[i].getNumCrops());
+            plotLabel.setAlignment(Pos.CENTER);
+            plotLabel.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent e) {
+                    plotLabel.setScaleX(1.5);
+                    plotLabel.setScaleY(1.5);
+                }
+            });
+            plotLabel.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent e) {
+                    plotLabel.setScaleX(1);
+                    plotLabel.setScaleY(1);
+                }
+            });
+            plotLabel.setStyle("-fx-border-color: black; -fx-border-radius: 2;"
+                    + "-fx-border-width: 2");
+            plotLabel.setWrapText(true);
+            plotLabel.setScaleX(1);
+            plotLabel.setScaleY(1);
+            plotLabel.setPadding(new Insets(5));
+            plotBox.getChildren().add(plotLabel);
         }
+        vbox.getChildren().add(plotBox);
+
         Scene farm = new Scene(vbox, 800, 700);
         return farm;
     }
