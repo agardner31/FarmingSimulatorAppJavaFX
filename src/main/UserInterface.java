@@ -20,6 +20,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.PipedOutputStream;
+
 
 public class UserInterface extends Application {
 
@@ -100,11 +102,17 @@ public class UserInterface extends Application {
 
         // welcome screen
         Label welcome = new Label("Farming Game");
+        welcome.setFont(new Font(20));
         Button startButton = new Button("Enter game");
 
         VBox vBox = new VBox(20);
         vBox.getChildren().addAll(welcome, startButton);
-        Scene welcomeScreen = new Scene(vBox, 200, 200);
+        BackgroundFill welcomeBackground = new BackgroundFill(Color.valueOf("#658E6E"),
+                new CornerRadii(1), null);
+        vBox.setBackground(new Background(welcomeBackground));
+        vBox.setAlignment(Pos.BASELINE_CENTER);
+        vBox.setPadding(new Insets(50));
+        Scene welcomeScreen = new Scene(vBox, 800, 700);
 
         startButton.setOnAction(e -> primaryStage.setScene(configurations));
         primaryStage.setTitle("FARM GAME");
