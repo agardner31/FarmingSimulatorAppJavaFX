@@ -3,7 +3,6 @@ package tests.person2_anna;
 import main.Farm;
 import main.Plot;
 import main.Player;
-import main.Farm
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +29,7 @@ public class AnnaTests {
     @Test
     public void testPlayerSetFarm() {
         player.setFarm(farm);
-        assertEquals(plot.getFarm(), farm);
+        assertEquals(player.getFarm(), farm);
     }
     @Test
     public void testPlotSetTitle() {

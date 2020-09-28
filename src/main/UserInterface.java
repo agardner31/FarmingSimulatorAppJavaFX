@@ -2,7 +2,6 @@ package main;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -43,7 +41,7 @@ public class UserInterface extends Application {
                         "Ordinary Joe",
                         "Master Farmer"
                 );
-        ComboBox levels = new ComboBox(options);
+        ComboBox<String> levels = new ComboBox<>(options);
         difficultyBox.getChildren().addAll(difficulty, levels);
         difficultyBox.setAlignment(Pos.CENTER);
         HBox seasonsBox = new HBox();
@@ -55,7 +53,7 @@ public class UserInterface extends Application {
                         "Spring",
                         "Summer"
                 );
-        ComboBox seasonsList = new ComboBox(seasonsOptions);
+        ComboBox<String> seasonsList = new ComboBox<>(seasonsOptions);
         seasonsBox.getChildren().addAll(seasons, seasonsList);
         seasonsBox.setAlignment(Pos.CENTER);
         HBox seedBox = new HBox();
@@ -66,7 +64,7 @@ public class UserInterface extends Application {
                         "Pumpkin",
                         "Corn"
                 );
-        ComboBox seedList = new ComboBox(seedOptions);
+        ComboBox<String> seedList = new ComboBox<>(seedOptions);
         seedBox.getChildren().addAll(seed, seedList);
         seedBox.setAlignment(Pos.CENTER);
         Button startGame = new Button("Start Game");
@@ -93,7 +91,7 @@ public class UserInterface extends Application {
             } else if (seedList.getValue() == null) {
                 warning.setText("Choose a seed.");
             } else {
-                primaryStage.setScene(enterFarm(levels.getValue().toString()));
+                primaryStage.setScene(enterFarm(levels.getValue()));
             }
         });
 
@@ -149,17 +147,13 @@ public class UserInterface extends Application {
             Label plotLabel = new Label("Plot #" + (i + 1) + "\n"
                     + "Crops: " + plots[i].getNumCrops());
             plotLabel.setAlignment(Pos.CENTER);
-            plotLabel.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent e) {
-                    plotLabel.setScaleX(1.5);
-                    plotLabel.setScaleY(1.5);
-                }
+            plotLabel.setOnMouseEntered(e -> {
+                plotLabel.setScaleX(1.5);
+                plotLabel.setScaleY(1.5);
             });
-            plotLabel.setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent e) {
-                    plotLabel.setScaleX(1);
-                    plotLabel.setScaleY(1);
-                }
+            plotLabel.setOnMouseExited(e -> {
+                plotLabel.setScaleX(1);
+                plotLabel.setScaleY(1);
             });
             plotLabel.setStyle("-fx-border-color: black; -fx-border-radius: 2;"
                     + "-fx-border-width: 2");
