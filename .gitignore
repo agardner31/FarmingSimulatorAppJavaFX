@@ -4,6 +4,9 @@
 # Intellij Files
 *.idea
 
+#Mac Files
+*.DS_Store
+
 # Log file
 *.log
 
