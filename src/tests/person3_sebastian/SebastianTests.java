@@ -1,7 +1,7 @@
 package tests.person3_sebastian;
 
-import main.Farm;
-import main.Player;
+import model.Farm;
+import model.Player;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

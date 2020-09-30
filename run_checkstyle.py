@@ -137,9 +137,9 @@ def crash_reporter(func=None, fallback=SENTINEL):
 
 
 @crash_reporter
-def main(root=None, verbose=False):
+def model(root=None, verbose=False):
     """
-    Runs the main checkstyle script and parses/redirects output
+    Runs the model checkstyle script and parses/redirects output
     """
 
     # Verify java is installed
@@ -435,7 +435,7 @@ def bootstrap():
 
     # Parse arguments
     parsed_args = parser.parse_args()
-    main(root=parsed_args.root, verbose=parsed_args.verbose)
+    model(root=parsed_args.root, verbose=parsed_args.verbose)
 
 
 # Run script

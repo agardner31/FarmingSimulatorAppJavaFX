@@ -1,8 +1,8 @@
 package tests.person2_anna;
 
-import main.Farm;
-import main.Plot;
-import main.Player;
+import model.Farm;
+import model.Plot;
+import model.Player;
 
 import org.junit.Before;
 import org.junit.Test;

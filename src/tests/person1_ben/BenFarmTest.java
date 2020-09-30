@@ -1,7 +1,7 @@
 package tests.person1_ben;
 
-import main.Farm;
-import main.Plot;
+import model.Farm;
+import model.Plot;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,6 @@
 package tests.person4_emily;
 
-import main.Plot;
+import model.Plot;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
