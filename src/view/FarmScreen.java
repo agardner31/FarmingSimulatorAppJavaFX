@@ -2,15 +2,12 @@ package view;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import model.Player;
 import model.Plot;
 
-public class FarmScreen implements IScreen{
+public class FarmScreen implements IScreen {
     private int width;
     private int height;
     private Player player;
