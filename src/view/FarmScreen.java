@@ -51,6 +51,10 @@ public class FarmScreen implements IScreen {
         return new Scene(vbox, width, height);
     }
 
+    public void harvestCrop() {
+        //harvest a crop
+    }
+
     public int getWidth() {
         return width;
     }
