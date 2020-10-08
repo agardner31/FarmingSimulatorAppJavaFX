@@ -54,7 +54,7 @@ public class Controller extends Application {
             } else if (seedList.getValue() == null) {
                 warning.setText("Choose a seed.");
             } else {
-                enterFarm(levels.getValue());
+                enterFarm(levels.getValue(), seedList.getValue());
             }
         });
         Scene scene = configScreen.getScene();
@@ -63,8 +63,8 @@ public class Controller extends Application {
         mainWindow.show();
     }
 
-    private void enterFarm(String difficulty) {
-        FarmScreen farmScreen = new FarmScreen(width, height, difficulty);
+    private void enterFarm(String difficulty, String seed) {
+        FarmScreen farmScreen = new FarmScreen(width, height, difficulty, seed);
 
         Scene scene = farmScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");

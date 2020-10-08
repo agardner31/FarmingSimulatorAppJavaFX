@@ -17,18 +17,18 @@ public class SebastianTests {
         assertEquals(300, player.getMoney());
         assertEquals(10, player.getFarm().getPlots().length);
 
-        player = new Player("Ordinary Joe");
+        player = new Player("Ordinary Joe", "Corn");
         assertEquals("Ordinary Joe", player.getDifficulty());
         assertEquals(200, player.getMoney());
         assertEquals(10, player.getFarm().getPlots().length);
 
-        player = new Player("Some different difficulty");
+        player = new Player("Some different difficulty", "Corn");
         assertEquals("Some different difficulty", player.getDifficulty());
         assertEquals(100, player.getMoney());
         assertEquals(10, player.getFarm().getPlots().length);
 
         farm = new Farm(20, "Apprentice");
-        player = new Player("Some different difficulty", farm);
+        player = new Player("Some different difficulty", farm, "Corn");
         assertEquals("Some different difficulty", player.getDifficulty());
         assertEquals(100, player.getMoney());
         assertEquals(20, player.getFarm().getPlots().length);

@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.layout.GridPane;
+
 public class Inventory {
     private Crop[] inventoryArray;
 
@@ -7,33 +9,40 @@ public class Inventory {
 
     private static final int CAPACITY = 30;
 
-    public Inventory() {
+    private GridPane inventoryPane;
+
+    public Inventory(String startSeed, String difficulty) {
         size = 0;
         inventoryArray = new Crop[CAPACITY];
+        addStartSeed(startSeed, difficulty);
+        inventoryPane = new GridPane();
+    }
+
+    private void addStartSeed(String startSeed, String difficulty) {
+        for (int i = 0; i < 3; i++) {
+            Crop starterCrop = new Crop(startSeed, difficulty, CropStage.SEED);
+            addItem(starterCrop);
+        }
     }
 
     public boolean addItem(Crop item) {
         if (size == CAPACITY) {
             return false;
         }
+
         inventoryArray[size++] = item;
         return true;
     }
 
-    public void removeItem(int index) {
-        inventoryArray[index] = null;
-        size--;
-    }
+    public void setInventoryPane(GridPane inventoryPane) { this.inventoryPane = inventoryPane; }
 
-    public Crop[] getInventoryArray() {
-        return inventoryArray;
-    }
+    public GridPane getInventoryPane() { return inventoryPane; }
 
-    public int getSize() {
-        return size;
-    }
+    public Crop[] getInventoryArray() { return inventoryArray; }
 
-    public static int getCAPACITY() {
-        return CAPACITY;
-    }
+    public int getSize() { return size; }
+
+    public void setSize(int size) { this.size = size; }
+
+    public static int getCAPACITY() { return CAPACITY; }
 }

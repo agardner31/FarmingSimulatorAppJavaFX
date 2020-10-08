@@ -10,15 +10,16 @@ public class Player {
     private Inventory inventory;
 
     public Player() {
-        this("Apprentice", new Farm("Apprentice"));
+        this("Apprentice", new Farm("Apprentice"), "Corn");
     }
 
-    public Player(String difficulty) {
+    public Player(String difficulty, String startSeed) {
 
-        this(difficulty, new Farm(difficulty));
+        this(difficulty, new Farm(difficulty), startSeed);
+
     }
 
-    public Player(String difficulty, Farm farm) {
+    public Player(String difficulty, Farm farm, String startSeed) {
         this.difficulty = difficulty;
         this.farm = farm;
         if (difficulty.equals("Apprentice")) {
@@ -28,7 +29,7 @@ public class Player {
         } else {
             this.money = 100;
         }
-        this.inventory = new Inventory();
+        this.inventory = new Inventory(startSeed, this.difficulty);
     }
 
     public Inventory getInventory() {

@@ -33,15 +33,12 @@ public class Crop {
         if (type.equals("Pumpkin")) {
             buyPrice = 8 / difficulty;
             sellPrice = 16 * difficulty;
-        } else if (type.equals("Watermelon")) {
+        } else if (type.equals("Corn")) {
             buyPrice = 5 / difficulty;
             sellPrice = 10 * difficulty;
         } else if (type.equals("Tomato")) {
             buyPrice = 3 / difficulty;
             sellPrice = 6 * difficulty;
-        } else if (type.equals("Squash")) {
-            buyPrice = 4 / difficulty;
-            sellPrice = 8 * difficulty;
         }
     }
 
