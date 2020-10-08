@@ -14,22 +14,22 @@ public class BenFarmTest {
 
     @Before
     public void setUp()  {
-        farm = new Farm();
+        farm = new Farm("Apprentice");
     }
 
     @Test
     public void testPlotNoParams() {
         Plot[] plots = new Plot[10];
-        plots[0] = new Plot(0, "None", 1);
-        plots[1] = new Plot(0, "None", 2);
-        plots[2] = new Plot(0, "None", 3);
-        plots[3] = new Plot(0, "None", 4);
-        plots[4] = new Plot(0, "None", 5);
-        plots[5] = new Plot(0, "None", 6);
-        plots[6] = new Plot(0, "None", 7);
-        plots[7] = new Plot(0, "None", 8);
-        plots[8] = new Plot(0, "None", 9);
-        plots[9] = new Plot(0, "None", 10);
+        plots[0] = new Plot(0, "None", 1, "Apprentice");
+        plots[1] = new Plot(0, "None", 2, "Apprentice");
+        plots[2] = new Plot(0, "None", 3, "Apprentice");
+        plots[3] = new Plot(0, "None", 4, "Apprentice");
+        plots[4] = new Plot(0, "None", 5, "Apprentice");
+        plots[5] = new Plot(0, "None", 6, "Apprentice");
+        plots[6] = new Plot(0, "None", 7, "Apprentice");
+        plots[7] = new Plot(0, "None", 8, "Apprentice");
+        plots[8] = new Plot(0, "None", 9, "Apprentice");
+        plots[9] = new Plot(0, "None", 10, "Apprentice");
         for (int i = 0; i < 10; i++) {
             assertEquals(plots[i].getNumCrops(), farm.getPlots()[i].getNumCrops());
             assertEquals(plots[i].getType(), farm.getPlots()[i].getType());
@@ -40,14 +40,14 @@ public class BenFarmTest {
     @Test
     public void testPlotSizeParam() {
         int size = 6;
-        farm = new Farm(6);
+        farm = new Farm(6, "Apprentice");
         Plot[] plots = new Plot[size];
-        plots[0] = new Plot(0, "None", 1);
-        plots[1] = new Plot(0, "None", 2);
-        plots[2] = new Plot(0, "None", 3);
-        plots[3] = new Plot(0, "None", 4);
-        plots[4] = new Plot(0, "None", 5);
-        plots[5] = new Plot(0, "None", 6);
+        plots[0] = new Plot(0, "None", 1, "Apprentice");
+        plots[1] = new Plot(0, "None", 2, "Apprentice");
+        plots[2] = new Plot(0, "None", 3, "Apprentice");
+        plots[3] = new Plot(0, "None", 4, "Apprentice");
+        plots[4] = new Plot(0, "None", 5, "Apprentice");
+        plots[5] = new Plot(0, "None", 6, "Apprentice");
         for (int i = 0; i < size; i++) {
             assertEquals(plots[i].getNumCrops(), farm.getPlots()[i].getNumCrops());
             assertEquals(plots[i].getType(), farm.getPlots()[i].getType());

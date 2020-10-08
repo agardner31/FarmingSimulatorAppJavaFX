@@ -12,7 +12,7 @@
     -fx-padding: 20;
 }
 .vBox {
-    -fx-padding: 50;
+    -fx-padding: 30;
     -fx-alignment: BASELINE_CENTER;
     -fx-background-color: #658E6E;
     -fx-spacing: 10;
@@ -24,4 +24,29 @@
 }
 .displayDateLabel {
     -fx-font: 14px "Segoe UI";
+}
+.cropBox {
+    -fx-border-color: black;
+    -fx-border-radius: 2;
+    -fx-border-width: 2;
+    -fx-wrap-text: true;
+    -fx-padding: 5;
+    -fx-min-height: 60;
+    -fx-min-width: 60;
+    -fx-alignment: CENTER;
+}
+.inventoryPane {
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    -fx-alignment: CENTER;
+    -fx-padding: 0;
+}
+.inventoryButton {
+    -fx-alignment: TOP_LEFT;
+    -fx-spacing: 20;
+}
+.inventoryLabel {
+    -fx-font: 16px "Segoe UI";
+    -fx-alignment: CENTER;
+    -fx-padding: 20;
 }

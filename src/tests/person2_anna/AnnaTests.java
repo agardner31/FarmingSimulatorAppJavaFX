@@ -17,7 +17,7 @@ public class AnnaTests {
 
     @Before
     public void setUp()  {
-        farm = new Farm();
+        farm = new Farm("Apprentice");
         player = new Player();
         plot = new Plot();
     }

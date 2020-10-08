@@ -3,6 +3,8 @@ package model;
 public class Plot {
     private int numCrops;
 
+    private Crop[] crops;
+
     private String type;
 
     private String title;
@@ -13,8 +15,12 @@ public class Plot {
         title = "";
     }
 
-    public Plot(int numCrops, String type, int title) {
+    public Plot(int numCrops, String type, int title, String difficulty) {
         this.numCrops = numCrops;
+        this.crops = new Crop[numCrops * 2];
+        for (int i = 0; i < numCrops; i++) {
+            this.crops[i] = new Crop(type, difficulty);
+        }
         this.type = type;
         this.title = "Plot " + title;
     }

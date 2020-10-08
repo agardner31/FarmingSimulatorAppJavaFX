@@ -14,7 +14,7 @@ public class JustinTests {
 
     @Before
     public void setUp()  {
-        farm = new Farm();
+        farm = new Farm("Master Farmer");
     }
 
     @Test
@@ -33,7 +33,7 @@ public class JustinTests {
     @Test
     public void testFarmInitialization() {
         int size = 4;
-        farm = new Farm(4);
+        farm = new Farm(4, "Master Farmer");
         Plot[] plots = new Plot[size];
         for (int i = 0; i < size; i++) {
             plots[i] = new Plot();

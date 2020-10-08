@@ -15,8 +15,8 @@ import view.WelcomeScreen;
 
 public class Controller extends Application {
     private Stage mainWindow;
-    private final int width = 800;
-    private final int height = 800;
+    private final int width = 820;
+    private final int height = 820;
 
     @Override
     public void start(Stage primaryStage) {
