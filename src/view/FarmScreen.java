@@ -23,6 +23,8 @@ public class FarmScreen implements IScreen {
     private Plot[] plots;
     private Inventory inventory;
     private GridPane inventoryPane;
+    private Button inventoryButton;
+    private HBox plotBox;
 
     public FarmScreen(int width, int height, String difficulty) {
         this.width = width;
@@ -33,12 +35,44 @@ public class FarmScreen implements IScreen {
         plots = player.getFarm().getPlots();
         inventory = player.getInventory();
         inventoryPane = new GridPane();
+        inventoryButton = new Button("Inventory");
+        plotBox = fillPlotPane();
     }
     public Scene getScene() {
         // farm scene
+
+        Label inventoryLabel = new Label("Items");
+
+        fillInventoryPane();
+
+        VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
+        inventoryWithLabel.setVisible(false);
+
+        inventoryButton.setOnAction((e) -> {
+            if (!inventoryWithLabel.isVisible()) {
+                inventoryWithLabel.setVisible(true);
+            } else {
+                inventoryWithLabel.setVisible(false);
+            }
+        });
+
+        VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox, inventoryWithLabel);
+
+        inventoryButton.getStyleClass().add("inventoryButton");
+        inventoryLabel.getStyleClass().add("inventoryLabel");
+        inventoryPane.getStyleClass().add("inventoryPane");
         moneyLabel.getStyleClass().add("moneyLabel");
         displayDateLabel.getStyleClass().add("displayDateLabel");
+        plotBox.getStyleClass().add("plotBox");
+        vbox.getStyleClass().add("vBox");
 
+        VBox finalScene = new VBox(inventoryButton, vbox);
+        finalScene.setStyle("-fx-background-color: #658E6E; -fx-padding: 15");
+
+        return new Scene(finalScene, width, height);
+    }
+
+    private HBox fillPlotPane() {
         HBox plotBox = new HBox();
         for (int i = 0; i < plots.length; i++) {
             Label plotLabel = new Label("Plot #" + (i + 1) + "\n"
@@ -54,18 +88,10 @@ public class FarmScreen implements IScreen {
             plotLabel.getStyleClass().add("plotLabel");
             plotBox.getChildren().add(plotLabel);
         }
-        plotBox.getStyleClass().add("plotBox");
+        return plotBox;
+    }
 
-
-        for (int i = 0; i < 20; i++) {
-            inventory.getInventoryArray()[i] = new Crop("Pumpkin", player.getDifficulty());
-        }
-
-
-
-        Label inventoryLabel = new Label("Items");
-        inventoryLabel.getStyleClass().add("inventoryLabel");
-
+    private void fillInventoryPane() {
         int j = -1;
         for (int i = 0; i < Inventory.getCAPACITY(); i++) {
             Crop crop = inventory.getInventoryArray()[i];
@@ -97,37 +123,14 @@ public class FarmScreen implements IScreen {
             final int temp_index = i;
             System.out.println(temp_index);
             cropBox.setOnMouseClicked((e) -> {
-                doSomething(temp_index); //how to get the specific inventory item
+                doSomethingWithCrop(temp_index); //how to get the specific inventory item
             });
 
             inventoryPane.add(cropBox, i % 10, j);
         }
-        inventoryPane.getStyleClass().add("inventoryPane");
-        VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
-        inventoryWithLabel.setVisible(false);
-
-
-
-        Button inventoryButton = new Button("Inventory");
-        inventoryButton.setOnAction((e) -> {
-            if (!inventoryWithLabel.isVisible()) {
-                inventoryWithLabel.setVisible(true);
-            } else {
-                inventoryWithLabel.setVisible(false);
-            }
-        });
-        inventoryButton.getStyleClass().add("inventoryButton");
-
-        VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox, inventoryWithLabel);
-        vbox.getStyleClass().add("vBox");
-
-        VBox finalScene = new VBox(inventoryButton, vbox);
-        finalScene.setStyle("-fx-background-color: #658E6E; -fx-padding: 15");
-
-        return new Scene(finalScene, width, height);
     }
 
-    private void doSomething(int index) {
+    private void doSomethingWithCrop(int index) {
         Crop tempCrop = inventory.getInventoryArray()[index];
         VBox temp = (VBox) inventoryPane.getChildren().get(index);
         Label temp2 = (Label) temp.getChildren().get(0);
