@@ -1,5 +1,7 @@
 package model;
 
+import java.util.HashMap;
+
 public class Crop {
     private String type;
 
@@ -65,5 +67,22 @@ public class Crop {
             stage = CropStage.MATURE;
         }
         return stage;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Crop) {
+            Crop temp = (Crop) obj;
+            boolean typeCheck = type.equals(temp.getType());
+            boolean stageCheck = stage.equals(temp.getStage());
+            return typeCheck && stageCheck;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return type + " - " + stage.name();
     }
 }
