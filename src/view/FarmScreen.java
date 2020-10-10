@@ -2,6 +2,7 @@ package view;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -11,6 +12,7 @@ import model.CropStage;
 import model.Inventory;
 import model.Player;
 import model.Plot;
+import controller.Controller;
 
 public class FarmScreen implements IScreen {
     private int width;
@@ -22,6 +24,7 @@ public class FarmScreen implements IScreen {
     private Inventory inventory;
     private GridPane inventoryPane;
     private Button inventoryButton;
+    private Button marketButton;
     private HBox plotBox;
 
     public FarmScreen(int width, int height, String difficulty, String startSeed) {
@@ -78,6 +81,13 @@ public class FarmScreen implements IScreen {
             }
         });
 
+        //moves to market scene
+        marketButton = new Button("Market");
+        marketButton.setVisible(true);
+        marketButton.setOnAction((e) -> {
+            Controller.enterMarket(player, player.getDifficulty(), "Pumpkin");
+        });
+
         VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox, inventoryWithLabel);
 
         inventoryButton.getStyleClass().add("inventoryButton");
@@ -87,7 +97,9 @@ public class FarmScreen implements IScreen {
         plotBox.getStyleClass().add("plotBox");
         vbox.getStyleClass().add("vBox");
 
-        VBox finalScene = new VBox(inventoryButton, vbox);
+        HBox buttonRow = new HBox(inventoryButton, marketButton);
+        buttonRow.setSpacing(10);
+        VBox finalScene = new VBox(buttonRow, vbox);
         finalScene.setStyle("-fx-background-color: #658E6E; -fx-padding: 15");
 
         return new Scene(finalScene, width, height);

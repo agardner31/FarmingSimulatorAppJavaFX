@@ -11,13 +11,14 @@ import javafx.stage.Stage;
 import model.Player;
 import view.ConfigScreen;
 import view.FarmScreen;
+import view.MarketScreen;
 import view.WelcomeScreen;
 
 
 public class Controller extends Application {
-    private Stage mainWindow;
-    private final int width = 820;
-    private final int height = 820;
+    private static Stage mainWindow;
+    private final static int width = 820;
+    private final static int height = 820;
 
     @Override
     public void start(Stage primaryStage) {
@@ -64,7 +65,7 @@ public class Controller extends Application {
         mainWindow.show();
     }
 
-    private void enterFarm(String difficulty, String seed) {
+    public static void enterFarm(String difficulty, String seed) {
         FarmScreen farmScreen = new FarmScreen(width, height, difficulty, seed);
         Scene scene = farmScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");
@@ -72,8 +73,12 @@ public class Controller extends Application {
         mainWindow.show();
     }
 
-    private void enterMarket(Player player) {
-        // get player param from farm screen
+    public static void enterMarket(Player player, String difficulty, String seed) {
+        MarketScreen marketScreen = new MarketScreen(width, height, difficulty, seed);
+        Scene scene = marketScreen.getScene();
+        scene.getStylesheets().add("file:resources/css/FarmScreen.css");
+        mainWindow.setScene(scene);
+        mainWindow.show();
     }
 
     /**
