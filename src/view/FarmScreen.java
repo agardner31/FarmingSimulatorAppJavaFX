@@ -42,56 +42,24 @@ public class FarmScreen implements IScreen {
         int j = -1;
         for (int i = 0; i < Inventory.getCAPACITY(); i++) {
             Crop crop = inventory.getInventoryArray()[i];
-            VBox cropBox = new VBox();
-            Label cropType = new Label();
-            Label cropStage = new Label();
-            Label cropPrice = new Label();
+            Label cropLabel = new Label("");
             if (crop != null) {
-                cropType = new Label(crop.getType());
-                if (crop.getStage().equals(CropStage.SEED)) {
-                    cropStage = new Label("Seed");
-                } else if (crop.getStage().equals(CropStage.IMMATURE)) {
-                    cropStage = new Label("Immature");
-                } else {
-                    cropStage = new Label("Mature");
-                }
-                if (crop.getStage().equals(CropStage.MATURE)) {
-                    cropPrice = new Label("$" + crop.getSellPrice() + ".00");
-                } else {
-                    cropPrice = new Label("$0.00");
-                }
+                cropLabel = new Label(crop.toString());
             }
-            cropBox.getChildren().addAll(cropType, cropStage, cropPrice);
-            cropBox.getStyleClass().add("cropBox");
+            cropLabel.getStyleClass().add("cropBox");
             if (i % 10 == 0) {
                 j++;
             }
-            final int tempIndex = i;
-            cropBox.setOnMouseClicked((e) -> {
-                removeItem(tempIndex); //how to get the specific inventory item
+            final int targetCrop = i;
+            cropLabel.setOnMouseClicked((e) -> {
+                inventory.removeItem(targetCrop); //how to get the specific inventory item
             });
 
-            inventoryPane.add(cropBox, i % 10, j);
+            inventoryPane.add(cropLabel, i % 10, j);
         }
         inventory.setInventoryPane(inventoryPane);
         inventoryPane.getStyleClass().add("inventoryPane");
         return inventoryPane;
-    }
-
-    public void removeItem(int index) {
-        inventory.getInventoryArray()[index] = null;
-        removeFromPane(index);
-        inventory.setSize(inventory.getSize() - 1);
-    }
-
-    private void removeFromPane(int index) {
-        VBox temp = (VBox) inventoryPane.getChildren().get(index);
-        Label temp2 = (Label) temp.getChildren().get(0);
-        Label temp3 = (Label) temp.getChildren().get(1);
-        Label temp4 = (Label) temp.getChildren().get(2);
-        temp2.setText("");
-        temp3.setText("");
-        temp4.setText("");
     }
 
     public Scene getScene() {

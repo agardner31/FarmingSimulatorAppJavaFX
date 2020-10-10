@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class Inventory {
@@ -32,6 +33,17 @@ public class Inventory {
 
         inventoryArray[size++] = item;
         return true;
+    }
+
+    public void removeItem(int targetCrop) {
+        inventoryArray[targetCrop] = null;
+        removeFromPane(targetCrop);
+        size--;
+    }
+
+    private void removeFromPane(int targetCrop) {
+        Label temp = (Label) inventoryPane.getChildren().get(targetCrop);
+        temp.setText("");
     }
 
     public void setInventoryPane(GridPane inventoryPane) { this.inventoryPane = inventoryPane; }

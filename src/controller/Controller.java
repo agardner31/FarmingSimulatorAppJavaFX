@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import model.Player;
 import view.ConfigScreen;
 import view.FarmScreen;
 import view.WelcomeScreen;
@@ -65,11 +66,14 @@ public class Controller extends Application {
 
     private void enterFarm(String difficulty, String seed) {
         FarmScreen farmScreen = new FarmScreen(width, height, difficulty, seed);
-
         Scene scene = farmScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");
         mainWindow.setScene(scene);
         mainWindow.show();
+    }
+
+    private void enterMarket(Player player) {
+        // get player param from farm screen
     }
 
     /**

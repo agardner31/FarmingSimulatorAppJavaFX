@@ -83,6 +83,10 @@ public class Crop {
 
     @Override
     public String toString() {
-        return type + " - " + stage.name();
+        if (stage.equals(CropStage.MATURE)) {
+            return type + "\n" + stage.toString() + "\n" + "$" + sellPrice + ".00";
+        } else {
+            return type + "\n" + stage.toString() + "\n" + "$0.00";
+        }
     }
 }
