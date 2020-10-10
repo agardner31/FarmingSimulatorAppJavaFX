@@ -74,7 +74,7 @@ public class Controller extends Application {
     }
 
     public static void enterMarket(Player player, String difficulty, String seed) {
-        MarketScreen marketScreen = new MarketScreen(width, height, difficulty, seed);
+        MarketScreen marketScreen = new MarketScreen(width, height, difficulty, seed, player);
         Scene scene = marketScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");
         mainWindow.setScene(scene);

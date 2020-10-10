@@ -43,6 +43,7 @@ public class Crop {
             sellPrice = 6 * difficulty;
         }
         sellPrice = (int) (sellPrice + Math.random() * .5 * sellPrice - .25 * sellPrice);
+        buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
     }
 
     public int getBuyPrice() {

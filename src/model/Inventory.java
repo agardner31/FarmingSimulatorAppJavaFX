@@ -1,10 +1,11 @@
 package model;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class Inventory {
-    private Crop[] inventoryArray;
+    private Crop[] inventoryArray; //delete
 
     private int size;
 

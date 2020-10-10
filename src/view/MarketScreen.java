@@ -7,8 +7,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import model.Crop;
 import model.Inventory;
+import model.Market;
 import model.Player;
 import model.Plot;
 
@@ -19,30 +21,34 @@ public class MarketScreen implements IScreen {
     private Label displayMarketLabel;
     private Label moneyLabel;
     private Plot[] plots;
-    private Inventory inventory;
     private GridPane inventoryPane;
     private Button inventoryButton;
     private Button farmButton;
     private HBox plotBox;
+    private GridPane marketPane;
+    private Market market;
+    private Inventory playerInventory;
+    private Inventory marketInventory;
 
-    public MarketScreen(int width, int height, String difficulty, String startSeed) {
+    public MarketScreen(int width, int height, String difficulty, String startSeed, Player player) {
         this.width = width;
         this.height = height;
-        player = new Player(difficulty, startSeed);
+        this.player = player;
         displayMarketLabel = new Label("Market");
         moneyLabel = new Label("Money: $" + player.getMoney() + ".00");
-        plots = player.getFarm().getPlots();
-        inventory = player.getInventory();
-        inventoryPane = getInventoryPane();
+        market = new Market(player, difficulty);
+        marketInventory = market.getMarketInventory();
+        playerInventory = market.getPlayerInventory();
         inventoryButton = new Button("Inventory");
-        plotBox = fillPlotPane();
+        inventoryPane = getInventoryPane();
+        marketPane = getMarketPane();
     }
 
     private GridPane getInventoryPane() {
         inventoryPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCAPACITY(); i++) {
-            Crop crop = inventory.getInventoryArray()[i];
+            Crop crop = playerInventory.getInventoryArray()[i];
             Label cropLabel = new Label("");
             if (crop != null) {
                 cropLabel = new Label(crop.toString());
@@ -53,14 +59,45 @@ public class MarketScreen implements IScreen {
             }
             final int targetCrop = i;
             cropLabel.setOnMouseClicked((e) -> {
-                inventory.removeItem(targetCrop); //how to get the specific inventory item
+                market.sell(crop);
+                playerInventory.removeItem(targetCrop); //how to get the specific inventory item
             });
 
             inventoryPane.add(cropLabel, i % 10, j);
         }
-        inventory.setInventoryPane(inventoryPane);
+        playerInventory.setInventoryPane(inventoryPane);
         inventoryPane.getStyleClass().add("inventoryPane");
         return inventoryPane;
+    }
+
+
+    private GridPane getMarketPane() {
+        marketPane = new GridPane();
+        int j = -1;
+        for (int i = 0; i < Inventory.getCAPACITY(); i++) {
+            Crop crop = marketInventory.getInventoryArray()[i];
+            Label cropLabel = new Label("");
+            if (crop != null) {
+                cropLabel = new Label(crop.toString());
+            }
+            cropLabel.getStyleClass().add("cropBox");
+            if (i % 10 == 0) {
+                j++;
+            }
+            final int targetCrop = i;
+            cropLabel.setOnMouseClicked((e) -> {
+                int price = crop.getBuyPrice();
+                if (player.getMoney() >= price) {
+                    playerInventory.addItem(crop);
+                    market.buy(crop, price);
+                }
+            });
+
+            marketPane.add(cropLabel, i % 10, j);
+        }
+        marketInventory.setInventoryPane(marketPane);
+        marketPane.getStyleClass().add("inventoryPane");
+        return marketPane;
     }
 
     @Override
@@ -70,15 +107,6 @@ public class MarketScreen implements IScreen {
         Label inventoryLabel = new Label("Items");
 
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
-        inventoryWithLabel.setVisible(false);
-
-        inventoryButton.setOnAction((e) -> {
-            if (!inventoryWithLabel.isVisible()) {
-                inventoryWithLabel.setVisible(true);
-            } else {
-                inventoryWithLabel.setVisible(false);
-            }
-        });
 
         //moves to market scene
         farmButton = new Button("Farm");
@@ -87,41 +115,26 @@ public class MarketScreen implements IScreen {
             Controller.enterFarm(player.getDifficulty(), "Pumpkin");
         });
 
-        VBox vbox = new VBox(moneyLabel, displayMarketLabel, plotBox, inventoryWithLabel);
+        Text buySell = new Text("Click on item in your inventory to sell it or"
+                + " click on item in the market inventory to buy");
+        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, inventoryWithLabel, buySell);
 
-        inventoryButton.getStyleClass().add("inventoryButton");
         inventoryLabel.getStyleClass().add("inventoryLabel");
         moneyLabel.getStyleClass().add("moneyLabel");
         displayMarketLabel.getStyleClass().add("displayDateLabel");
-        plotBox.getStyleClass().add("plotBox");
-        vbox.getStyleClass().add("vBox");
+        marketPane.getStyleClass().add("plotBox"); //change to marketPane css later
+        //vbox.getStyleClass().add("vBox");
+        vbox.setSpacing(20);
 
-        HBox buttonRow = new HBox(inventoryButton, farmButton);
+        HBox buttonRow = new HBox(farmButton);
         buttonRow.setSpacing(10);
         VBox finalScene = new VBox(buttonRow, vbox);
+        finalScene.setSpacing(10);
         finalScene.setStyle("-fx-background-color: #658E6E; -fx-padding: 15");
 
         return new Scene(finalScene, width, height);
     }
 
-    private HBox fillPlotPane() {
-        HBox plotBox = new HBox();
-        for (int i = 0; i < plots.length; i++) {
-            Label plotLabel = new Label("Plot #" + (i + 1) + "\n"
-                    + "Crops: " + plots[i].getNumCrops());
-            plotLabel.setOnMouseEntered(e -> {
-                plotLabel.setScaleX(1.5);
-                plotLabel.setScaleY(1.5);
-            });
-            plotLabel.setOnMouseExited(e -> {
-                plotLabel.setScaleX(1);
-                plotLabel.setScaleY(1);
-            });
-            plotLabel.getStyleClass().add("plotLabel");
-            plotBox.getChildren().add(plotLabel);
-        }
-        return plotBox;
-    }
 
 
     public void harvestCrop() {
