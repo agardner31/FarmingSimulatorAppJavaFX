@@ -1,11 +1,13 @@
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class Inventory {
-    private Crop[] inventoryArray; //delete
+    private ObservableList<Crop> inventoryList;
 
     private int size;
 
@@ -15,9 +17,9 @@ public class Inventory {
 
     public Inventory(String startSeed, String difficulty) {
         size = 0;
-        inventoryArray = new Crop[CAPACITY];
-        addStartSeed(startSeed, difficulty);
+        inventoryList = FXCollections.observableArrayList();
         inventoryPane = new GridPane();
+        addStartSeed(startSeed, difficulty);
     }
 
     private void addStartSeed(String startSeed, String difficulty) {
@@ -32,14 +34,34 @@ public class Inventory {
             return false;
         }
 
-        inventoryArray[size++] = item;
+        inventoryList.add(item);
+        addToPane(item);
+        size++;
         return true;
     }
 
+
     public void removeItem(int targetCrop) {
-        inventoryArray[targetCrop] = null;
-        removeFromPane(targetCrop);
-        size--;
+        if (targetCrop >=0 && targetCrop < inventoryList.size()) {
+            inventoryList.set(targetCrop, null);
+            removeFromPane(targetCrop);
+            size--;
+        }
+    }
+
+    private void addToPane(Crop item) {
+        for (int i = 0; i < Inventory.getCAPACITY(); i++) {
+            if (i >= inventoryPane.getChildren().size()) {
+                Label label = new Label(item.toString());
+                inventoryPane.getChildren().add(label);
+            }
+            if (inventoryPane.getChildren().get(i).equals("") ||
+                    inventoryPane.getChildren().get(i) == null) {
+                Label temp = (Label) inventoryPane.getChildren().get(i);
+                temp.setText(item.toString());
+                return;
+            }
+        }
     }
 
     private void removeFromPane(int targetCrop) {
@@ -51,7 +73,7 @@ public class Inventory {
 
     public GridPane getInventoryPane() { return inventoryPane; }
 
-    public Crop[] getInventoryArray() { return inventoryArray; }
+    public ObservableList<Crop> getInventoryList() { return inventoryList; }
 
     public int getSize() { return size; }
 

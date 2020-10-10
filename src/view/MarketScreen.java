@@ -48,18 +48,22 @@ public class MarketScreen implements IScreen {
         inventoryPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCAPACITY(); i++) {
-            Crop crop = playerInventory.getInventoryArray()[i];
-            Label cropLabel = new Label("");
-            if (crop != null) {
-                cropLabel = new Label(crop.toString());
-            }
+            Crop crop = null;
+            Label cropLabel = new Label("");;
+            try {
+                crop = playerInventory.getInventoryList().get(i);
+                if (crop != null) {
+                    cropLabel = new Label(crop.toString());
+                }
+            } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
             if (i % 10 == 0) {
                 j++;
             }
             final int targetCrop = i;
+            final Crop finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
-                market.sell(crop);
+                market.sell(finalCrop);
                 playerInventory.removeItem(targetCrop); //how to get the specific inventory item
             });
 
@@ -75,21 +79,25 @@ public class MarketScreen implements IScreen {
         marketPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCAPACITY(); i++) {
-            Crop crop = marketInventory.getInventoryArray()[i];
+            Crop crop = null;
             Label cropLabel = new Label("");
-            if (crop != null) {
-                cropLabel = new Label(crop.toString());
-            }
+            try {
+                crop = marketInventory.getInventoryList().get(i);
+                if (crop != null) {
+                    cropLabel = new Label(crop.toString());
+                }
+            } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
             if (i % 10 == 0) {
                 j++;
             }
             final int targetCrop = i;
+            final Crop finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
-                int price = crop.getBuyPrice();
+                int price = finalCrop.getBuyPrice();
                 if (player.getMoney() >= price) {
-                    playerInventory.addItem(crop);
-                    market.buy(crop, price);
+                    playerInventory.addItem(finalCrop);
+                    market.buy(finalCrop, price);
                 }
             });
 

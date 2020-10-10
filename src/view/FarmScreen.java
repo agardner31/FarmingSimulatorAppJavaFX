@@ -44,11 +44,14 @@ public class FarmScreen implements IScreen {
         inventoryPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCAPACITY(); i++) {
-            Crop crop = inventory.getInventoryArray()[i];
-            Label cropLabel = new Label("");
-            if (crop != null) {
-                cropLabel = new Label(crop.toString());
-            }
+            Crop crop;
+            Label cropLabel = new Label("");;
+            try {
+                crop = inventory.getInventoryList().get(i);
+                if (crop != null) {
+                    cropLabel = new Label(crop.toString());
+                }
+            } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
             if (i % 10 == 0) {
                 j++;

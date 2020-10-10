@@ -16,8 +16,8 @@ public class Market {
     }
 
     private void fillMarketInventory() {
-        for (int i = 0; i < marketInventory.getInventoryArray().length; i++) {
-            marketInventory.getInventoryArray()[i] = new Crop("Pumpkin", difficulty, CropStage.SEED);
+        for (int i = 0; i < marketInventory.getInventoryList().size(); i++) {
+            marketInventory.getInventoryList().set(i, new Crop("Pumpkin", difficulty, CropStage.SEED));
         }
     }
 
@@ -30,10 +30,14 @@ public class Market {
     }
 
     public void buy (Crop crop, int price) {
-        player.setMoney(player.getMoney() - price);
+        if (crop != null) {
+            player.setMoney(player.getMoney() - price);
+        }
     }
 
     public void sell(Crop crop) {
-        player.setMoney(player.getMoney() + crop.getSellPrice());
+        if (crop != null) {
+            player.setMoney(player.getMoney() + crop.getSellPrice());
+        }
     }
 }
