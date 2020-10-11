@@ -1,7 +1,6 @@
 package model;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -46,7 +45,7 @@ public class Inventory {
 
 
     public void removeItem(int targetCrop) {
-        if (targetCrop >=0 && targetCrop < inventoryList.size()) {
+        if (targetCrop >= 0 && targetCrop < inventoryList.size()) {
             inventoryList.remove(targetCrop);
             removeFromPane(targetCrop);
             size--;
@@ -54,7 +53,7 @@ public class Inventory {
     }
 
     private void addToPane(Crop item) {
-        for (int i = 0; i < Inventory.getCAPACITY(); i++) {
+        for (int i = 0; i < Inventory.getCapacity(); i++) {
             if (i >= inventoryPane.getChildren().size()) {
                 Label label = new Label(item.toString());
                 inventoryPane.getChildren().add(label);
@@ -74,15 +73,27 @@ public class Inventory {
         temp.setText("");
     }
 
-    public void setInventoryPane(GridPane inventoryPane) { this.inventoryPane = inventoryPane; }
+    public void setInventoryPane(GridPane inventoryPane) {
+        this.inventoryPane = inventoryPane;
+    }
 
-    public GridPane getInventoryPane() { return inventoryPane; }
+    public GridPane getInventoryPane() {
+        return inventoryPane;
+    }
 
-    public ObservableList<Crop> getInventoryList() { return inventoryList; }
+    public ObservableList<Crop> getInventoryList() {
+        return inventoryList;
+    }
 
-    public int getSize() { return size; }
+    public int getSize() {
+        return size;
+    }
 
-    public void setSize(int size) { this.size = size; }
+    public void setSize(int size) {
+        this.size = size;
+    }
 
-    public static int getCAPACITY() { return CAPACITY; }
+    public static int getCapacity() {
+        return CAPACITY;
+    }
 }

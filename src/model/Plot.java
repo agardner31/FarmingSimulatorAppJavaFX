@@ -19,7 +19,9 @@ public class Plot {
         this.title = "Plot " + title;
     }
 
-    public Crop getCrop() { return crop; }
+    public Crop getCrop() {
+        return crop;
+    }
 
     public String getType() {
         return type;

@@ -18,8 +18,8 @@ import view.WelcomeScreen;
 
 public class Controller extends Application {
     private static Stage mainWindow;
-    private final static int width = 830;
-    private final static int height = 830;
+    private static final int WIDTH = 830;
+    private static final int HEIGHT = 830;
     private static String currentView; //"Welcome", "Config", "Farm", "Market"
 
     @Override
@@ -31,7 +31,7 @@ public class Controller extends Application {
 
     private static void initWelcomeScreen() {
         currentView = "Welcome";
-        WelcomeScreen welcomeScreen = new WelcomeScreen(width, height);
+        WelcomeScreen welcomeScreen = new WelcomeScreen(WIDTH, HEIGHT);
         Button startButton = welcomeScreen.getStartButton();
         startButton.setOnAction(e -> goToConfig());
 
@@ -43,7 +43,7 @@ public class Controller extends Application {
 
     private static void goToConfig() {
         currentView = "Config";
-        ConfigScreen configScreen = new ConfigScreen(width, height);
+        ConfigScreen configScreen = new ConfigScreen(WIDTH, HEIGHT);
         Button startGame = configScreen.getStartGame();
         Label warning = configScreen.getWarning();
         TextField enterName = configScreen.getEnterName();
@@ -60,7 +60,8 @@ public class Controller extends Application {
             } else if (seedList.getValue() == null) {
                 warning.setText("Choose a seed.");
             } else {
-                Player player = new Player(levels.getValue(), new Farm(levels.getValue()), seedList.getValue());
+                Player player = new Player(levels.getValue(), new Farm(levels.getValue()),
+                        seedList.getValue());
                 enterFarm(player, levels.getValue(), seedList.getValue());
             }
         });
@@ -72,7 +73,7 @@ public class Controller extends Application {
 
     public static void enterFarm(Player player, String difficulty, String seed) {
         currentView = "Farm";
-        FarmScreen farmScreen = new FarmScreen(width, height, difficulty, seed, player);
+        FarmScreen farmScreen = new FarmScreen(WIDTH, HEIGHT, difficulty, seed, player);
         Scene scene = farmScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");
         mainWindow.setScene(scene);
@@ -81,14 +82,16 @@ public class Controller extends Application {
 
     public static void enterMarket(Player player, String difficulty) {
         currentView = "Market";
-        MarketScreen marketScreen = new MarketScreen(width, height, difficulty, player);
+        MarketScreen marketScreen = new MarketScreen(WIDTH, HEIGHT, difficulty, player);
         Scene scene = marketScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");
         mainWindow.setScene(scene);
         mainWindow.show();
     }
 
-    public static String getCurrentView() { return currentView; }
+    public static String getCurrentView() {
+        return currentView;
+    }
 
     /**
      * Main method.

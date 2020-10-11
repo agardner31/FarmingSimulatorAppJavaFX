@@ -20,11 +20,11 @@ public class EmilyTest {
         assertEquals(plot.getTitle(), "");
     }
 
-//    @Test
-//    public void testNumCrops() {
-//        plot.setNumCrops(5);
-//        assertEquals(plot.getNumCrops(), 5);
-//    }
+    /*@Test
+    public void testNumCrops() {
+        plot.setNumCrops(5);
+        assertEquals(plot.getNumCrops(), 5);
+    }*/
 
     @Test
     public void testType() {

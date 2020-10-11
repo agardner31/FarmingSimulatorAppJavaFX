@@ -2,13 +2,11 @@ package view;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.Crop;
-import model.CropStage;
 import model.Inventory;
 import model.Player;
 import model.Plot;
@@ -43,9 +41,9 @@ public class FarmScreen implements IScreen {
     private GridPane getInventoryPane() {
         inventoryPane = new GridPane();
         int j = -1;
-        for (int i = 0; i < Inventory.getCAPACITY(); i++) {
+        for (int i = 0; i < Inventory.getCapacity(); i++) {
             Crop crop;
-            Label cropLabel = new Label("");;
+            Label cropLabel = new Label("");
             try {
                 crop = inventory.getInventoryList().get(i);
                 if (crop != null) {
@@ -56,10 +54,10 @@ public class FarmScreen implements IScreen {
             if (i % 10 == 0) {
                 j++;
             }
-//            final int targetCrop = i;
-//            cropLabel.setOnMouseClicked((e) -> {
-//                inventory.removeItem(targetCrop); //how to get the specific inventory item
-//            });
+            /*final int targetCrop = i;
+            cropLabel.setOnMouseClicked((e) -> {
+                inventory.removeItem(targetCrop); //how to get the specific inventory item
+            });*/
 
             inventoryPane.add(cropLabel, i % 10, j);
         }

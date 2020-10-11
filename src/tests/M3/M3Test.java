@@ -1,10 +1,11 @@
 package tests.M3;
 
 import model.Crop;
+import model.Market;
 import model.Player;
 import model.CropStage;
 import static org.junit.Assert.*;
-import org.junit.Before;
+/*import org.junit.Before;*/
 import org.junit.Test;
 
 public class M3Test {
@@ -18,9 +19,12 @@ public class M3Test {
     private Player testPlayerMasterPumpkin;
     private Player testPlayerMasterCorn;
     private Player testPlayerMasterTomato;
+    private Market testMarket;
+    private Player player;
+    private String difficulty;
 
 
-    @Before
+    /*@Before
     public void setUp() {
         testPlayerApprenticePumpkin = new Player("Apprentice", "Pumpkin");
         testPlayerApprenticeCorn = new Player("Apprentice", "Corn");
@@ -31,6 +35,19 @@ public class M3Test {
         testPlayerMasterPumpkin = new Player("Master Farmer", "Pumpkin");
         testPlayerMasterCorn = new Player("Master Farmer", "Corn");
         testPlayerMasterTomato = new Player("Master Farmer", "Tomato");
+    }*/
+
+    @Test
+    public void justinCropBuySellPrice() {
+        Crop crop = new Crop("Pumpkin", "Apprentice", CropStage.SEED);
+        Crop crop2 = new Crop("Tomato", "Apprentice", CropStage.SEED);
+        Crop crop3 = new Crop("Pumpkin", "Ordinary Joe", CropStage.SEED);
+        Crop crop4 = new Crop("Corn", "Ordinary Joe", CropStage.SEED);
+
+        assertNotSame(crop.getBuyPrice(), crop.getSellPrice());
+        assertNotSame(crop2.getBuyPrice(), crop.getSellPrice());
+        assertNotSame(crop3.getBuyPrice(), crop.getSellPrice());
+        assertNotSame(crop4.getBuyPrice(), crop.getSellPrice());
     }
 
     /*public void benTestCropArrayCreation() {

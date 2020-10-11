@@ -1,9 +1,5 @@
 package model;
 
-import javafx.scene.PointLight;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-
 public class Market {
     private Inventory marketInventory;
     private Inventory playerInventory;
@@ -31,7 +27,7 @@ public class Market {
         return playerInventory;
     }
 
-    public void buy (Crop crop, int price) {
+    public void buy(Crop crop, int price) {
         if (crop != null) {
             player.setMoney(player.getMoney() - price);
         }

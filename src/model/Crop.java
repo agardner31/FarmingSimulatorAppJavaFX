@@ -1,9 +1,5 @@
 package model;
 
-import controller.Controller;
-
-import java.util.HashMap;
-
 public class Crop {
     private String type;
 

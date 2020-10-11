@@ -9,7 +9,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.Crop;
-import model.CropStage;
 import model.Inventory;
 import model.Market;
 import model.Player;
@@ -48,9 +47,9 @@ public class MarketScreen implements IScreen {
     private GridPane getInventoryPane() {
         inventoryPane = new GridPane();
         int j = -1;
-        for (int i = 0; i < Inventory.getCAPACITY(); i++) {
+        for (int i = 0; i < Inventory.getCapacity(); i++) {
             Crop crop = null;
-            Label cropLabel = new Label("");;
+            Label cropLabel = new Label("");
             try {
                 crop = playerInventory.getInventoryList().get(i);
                 if (crop != null) {
@@ -67,7 +66,7 @@ public class MarketScreen implements IScreen {
                 market.sell(finalCrop);
                 moneyLabel.setText("Money: $" + player.getMoney() + ".00");
                 playerInventory.removeItem(targetCrop); //how to get the specific inventory item
-//                Controller.enterMarket(player, player.getDifficulty());
+                /*Controller.enterMarket(player, player.getDifficulty());*/
             });
             Label finalCropLabel = cropLabel;
             cropLabel.setOnMouseEntered(e -> {
@@ -90,7 +89,7 @@ public class MarketScreen implements IScreen {
     private GridPane getMarketPane() {
         marketPane = new GridPane();
         int j = -1;
-        for (int i = 0; i < Inventory.getCAPACITY(); i++) {
+        for (int i = 0; i < Inventory.getCapacity(); i++) {
             Crop crop = null;
             Label cropLabel = new Label("");
             try {
@@ -111,7 +110,7 @@ public class MarketScreen implements IScreen {
                         if (playerInventory.addItem(finalCrop)) {
                             market.buy(finalCrop, price);
                             moneyLabel.setText("Money: $" + player.getMoney() + ".00");
-//                            Controller.enterMarket(player, player.getDifficulty());
+                            /*Controller.enterMarket(player, player.getDifficulty());*/
                         }
                     }
                 }
@@ -157,7 +156,8 @@ public class MarketScreen implements IScreen {
 
         Text buySell = new Text("Click on item in your inventory to sell it or"
                 + " click on item in the market inventory to buy");
-        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, inventoryWithLabel, buySell);
+        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, inventoryWithLabel,
+                buySell);
         buySell.getStyleClass().add("moneyLabel");
         inventoryLabel.getStyleClass().add("inventoryLabel");
         moneyLabel.getStyleClass().add("moneyLabel");
