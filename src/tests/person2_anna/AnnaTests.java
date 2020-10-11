@@ -1,9 +1,8 @@
 package tests.person2_anna;
 
-import main.Farm;
-import main.Plot;
-import main.Player;
-import main.Farm
+import model.Farm;
+import model.Plot;
+import model.Player;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +17,7 @@ public class AnnaTests {
 
     @Before
     public void setUp()  {
-        farm = new Farm();
+        farm = new Farm("Apprentice");
         player = new Player();
         plot = new Plot();
     }
@@ -30,7 +29,7 @@ public class AnnaTests {
     @Test
     public void testPlayerSetFarm() {
         player.setFarm(farm);
-        assertEquals(plot.getFarm(), farm);
+        assertEquals(player.getFarm(), farm);
     }
     @Test
     public void testPlotSetTitle() {
