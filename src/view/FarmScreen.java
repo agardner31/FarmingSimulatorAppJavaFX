@@ -111,8 +111,9 @@ public class FarmScreen implements IScreen {
     private HBox fillPlotPane() {
         HBox plotBox = new HBox();
         for (int i = 0; i < plots.length; i++) {
+            Plot temp = plots[i];
             Label plotLabel = new Label("Plot #" + (i + 1) + "\n"
-                    + "Crops: " + plots[i].getNumCrops());
+                    + temp.getType() + "\n" + temp.getCrop().getStage().toString());
             plotLabel.setOnMouseEntered(e -> {
                 plotLabel.setScaleX(1.5);
                 plotLabel.setScaleY(1.5);

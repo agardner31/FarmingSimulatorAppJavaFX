@@ -5,11 +5,12 @@
     -fx-wrap-text: true;
     -fx-padding: 5;
     -fx-alignment: CENTER;
+    -fx-min-width: 65;
 }
 .plotBox {
     -fx-spacing: 10;
     -fx-alignment: CENTER;
-    -fx-padding: 20;
+    -fx-padding: 10;
 }
 .vBox {
     -fx-padding: 30;

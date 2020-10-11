@@ -8,14 +8,14 @@ public class Farm {
     public Farm(String difficulty) {
         plots = new Plot[initialCapacity];
         for (int i = 0; i < plots.length; i++) {
-            plots[i] = new Plot(0, "None", i + 1, difficulty);
+            plots[i] = new Plot(new Crop("Pumpkin", difficulty), i + 1);
         }
     }
 
     public Farm(int size, String difficulty) {
         plots = new Plot[size];
         for (int i = 0; i < plots.length; i++) {
-            plots[i] = new Plot(0, "None", i + 1, difficulty);
+            plots[i] = new Plot(new Crop("Pumpkin", difficulty), i + 1);
         }
     }
 

@@ -16,16 +16,15 @@ public class EmilyTest {
 
     @Test
     public void testPlotInitialization() {
-        assertEquals(plot.getNumCrops(), 0);
         assertEquals(plot.getType(), "None");
         assertEquals(plot.getTitle(), "");
     }
 
-    @Test
-    public void testNumCrops() {
-        plot.setNumCrops(5);
-        assertEquals(plot.getNumCrops(), 5);
-    }
+//    @Test
+//    public void testNumCrops() {
+//        plot.setNumCrops(5);
+//        assertEquals(plot.getNumCrops(), 5);
+//    }
 
     @Test
     public void testType() {
