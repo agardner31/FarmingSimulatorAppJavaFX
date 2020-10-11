@@ -223,7 +223,7 @@ public class FarmScreen implements IScreen {
         });
         VBox singlePlot5 = new VBox(plotLabel5, img5, growButton5);
 
-        plotBox.getChildren().addAll(plotLabel1, plotLabel2, plotLabel3, plotLabel4, plotLabel5);
+        plotBox.getChildren().addAll(singlePlot1, singlePlot2, singlePlot3, singlePlot4, singlePlot5);
 
         return plotBox;
     }
