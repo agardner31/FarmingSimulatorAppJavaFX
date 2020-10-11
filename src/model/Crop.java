@@ -9,6 +9,10 @@ public class Crop {
 
     private int sellPrice;
 
+    private int baseSellPrice;
+
+    private int baseBuyPrice;
+
     public Crop(String type, String difficulty) {
         this(type, difficulty, CropStage.SEED);
     }
@@ -32,13 +36,19 @@ public class Crop {
     private void setPriceHelper(String type, double difficultyMultiplier) {
         if (type.equals("Pumpkin")) {
             buyPrice = 20;
+            baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
+            baseSellPrice = sellPrice;
         } else if (type.equals("Corn")) {
             buyPrice = 10;
+            baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
+            baseSellPrice = sellPrice;
         } else if (type.equals("Tomato")) {
             buyPrice = 5;
+            baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
+            baseSellPrice = sellPrice;
         }
         sellPrice = (int) (sellPrice + Math.random() * .5 * sellPrice - .25 * sellPrice);
         buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
@@ -50,6 +60,14 @@ public class Crop {
 
     public int getSellPrice() {
         return sellPrice;
+    }
+
+    public int getBaseSellPrice() {
+        return baseSellPrice;
+    }
+
+    public int getBaseBuyPrice() {
+        return baseBuyPrice;
     }
 
     public String getType() {
