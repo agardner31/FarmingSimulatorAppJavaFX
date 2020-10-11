@@ -63,10 +63,11 @@ public class MarketScreen implements IScreen {
             final int targetCrop = i;
             final Crop finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
-                market.sell(finalCrop);
                 //moneyLabel.setText("Money: $" + player.getMoney() + ".00");
-                playerInventory.removeItem(targetCrop); //how to get the specific inventory item
-                Controller.enterMarket(player, player.getDifficulty());
+                if (playerInventory.removeItem(targetCrop)) { //how to get the specific inventory item
+                    market.sell(finalCrop);
+                    Controller.enterMarket(player, player.getDifficulty());
+                }
             });
             Label finalCropLabel = cropLabel;
             cropLabel.setOnMouseEntered(e -> {
