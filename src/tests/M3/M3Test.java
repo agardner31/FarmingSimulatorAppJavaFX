@@ -40,19 +40,17 @@ public class M3Test {
          */
     }
 
-
     @Test
-    public void justinMarketInitializationTest() {
-        player = new Player();
-        difficulty = "Apprentice";
-        testMarket = new Market(player, difficulty);
-        Inventory marketInventory = new Inventory(difficulty);
+    public void justinCropBuySellPrice() {
+        Crop crop = new Crop("Pumpkin", "Apprentice", CropStage.SEED);
+        Crop crop2 = new Crop("Tomato", "Apprentice", CropStage.SEED);
+        Crop crop3 = new Crop("Pumpkin", "Ordinary Joe", CropStage.SEED);
+        Crop crop4 = new Crop("Corn", "Ordinary Joe", CropStage.SEED);
 
-        marketInventory.addItem(new Crop("Pumpkin", difficulty, CropStage.SEED));
-        marketInventory.addItem(new Crop("Corn", difficulty, CropStage.SEED));
-        marketInventory.addItem(new Crop("Tomato", difficulty, CropStage.SEED));
-
-        assertEquals(testMarket.getMarketInventory(), marketInventory);
+        assertNotEquals(crop.getBuyPrice(),crop.getSellPrice());
+        assertNotEquals(crop2.getBuyPrice(),crop.getSellPrice());
+        assertNotEquals(crop3.getBuyPrice(),crop.getSellPrice());
+        assertNotEquals(crop4.getBuyPrice(),crop.getSellPrice());
     }
 
     /*public void benTestCropArrayCreation() {
