@@ -21,24 +21,24 @@ public class Crop {
 
     private void setPrice(String difficulty, String type) {
         if (difficulty.equals("Apprentice")) {
-            setPriceHelper(type, 3);
-        } else if (difficulty.equals("Ordinary Joe")) {
             setPriceHelper(type, 2);
-        } else {
+        } else if (difficulty.equals("Ordinary Joe")) {
             setPriceHelper(type, 1);
+        } else {
+            setPriceHelper(type, .5);
         }
     }
 
-    private void setPriceHelper(String type, int difficulty) {
+    private void setPriceHelper(String type, double difficultyMultiplier) {
         if (type.equals("Pumpkin")) {
-            buyPrice = 16 / difficulty;
-            sellPrice = 8 * difficulty;
+            buyPrice = 20;
+            sellPrice = (int) (buyPrice * difficultyMultiplier);
         } else if (type.equals("Corn")) {
-            buyPrice = 10 / difficulty;
-            sellPrice = 5 * difficulty;
+            buyPrice = 10;
+            sellPrice = (int) (buyPrice * difficultyMultiplier);
         } else if (type.equals("Tomato")) {
-            buyPrice = 6 / difficulty;
-            sellPrice = 3 * difficulty;
+            buyPrice = 5;
+            sellPrice = (int) (buyPrice * difficultyMultiplier);
         }
         sellPrice = (int) (sellPrice + Math.random() * .5 * sellPrice - .25 * sellPrice);
         buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
@@ -89,7 +89,7 @@ public class Crop {
     public String toString(String type) {
         if (type.equals("buy")) {
             return this.type + "\n" + stage.toString() + "\n" + "$" + buyPrice + ".00";
-        } else if (stage.equals(CropStage.MATURE)) {
+        } else if (type.equals("sell")) {
             return this.type + "\n" + stage.toString() + "\n" + "$" + sellPrice + ".00";
         } else {
             return this.type + "\n" + stage.toString() + "\n" + "$0.00";
