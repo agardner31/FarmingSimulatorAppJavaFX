@@ -1,5 +1,10 @@
 package model;
 
+import javafx.scene.image.Image;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 public class Plot {
 
     private Crop crop;
@@ -8,15 +13,31 @@ public class Plot {
 
     private String title;
 
+    private Image img;
+
     public Plot() {
         type = "None";
         title = "";
+        try {
+            Image image = new Image(new FileInputStream("/resources/images/dirt.jpg"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public Plot(Crop crop, int title) {
         this.crop = crop;
         this.type = crop.getType();
         this.title = "Plot " + title;
+        try {
+            Image image = new Image(new FileInputStream("/resources/images/dirt.jpg"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Image getImg() {
+        return img;
     }
 
     public Crop getCrop() {
