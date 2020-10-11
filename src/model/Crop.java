@@ -35,14 +35,14 @@ public class Crop {
 
     private void setPriceHelper(String type, int difficulty) {
         if (type.equals("Pumpkin")) {
-            buyPrice = 8 / difficulty;
-            sellPrice = 16 * difficulty;
+            buyPrice = 16 / difficulty;
+            sellPrice = 8 * difficulty;
         } else if (type.equals("Corn")) {
-            buyPrice = 5 / difficulty;
-            sellPrice = 10 * difficulty;
+            buyPrice = 10 / difficulty;
+            sellPrice = 5 * difficulty;
         } else if (type.equals("Tomato")) {
-            buyPrice = 3 / difficulty;
-            sellPrice = 6 * difficulty;
+            buyPrice = 6 / difficulty;
+            sellPrice = 3 * difficulty;
         }
         sellPrice = (int) (sellPrice + Math.random() * .5 * sellPrice - .25 * sellPrice);
         buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);

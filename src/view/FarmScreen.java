@@ -27,10 +27,10 @@ public class FarmScreen implements IScreen {
     private Button marketButton;
     private HBox plotBox;
 
-    public FarmScreen(int width, int height, String difficulty, String startSeed) {
+    public FarmScreen(int width, int height, String difficulty, String startSeed, Player player) {
         this.width = width;
         this.height = height;
-        player = new Player(difficulty, startSeed);
+        this.player = player;
         displayDateLabel = new Label("Day 1");
         moneyLabel = new Label("Money: $" + player.getMoney() + ".00");
         plots = player.getFarm().getPlots();
@@ -88,7 +88,7 @@ public class FarmScreen implements IScreen {
         marketButton = new Button("Market");
         marketButton.setVisible(true);
         marketButton.setOnAction((e) -> {
-            Controller.enterMarket(player, player.getDifficulty(), "Pumpkin");
+            Controller.enterMarket(player, player.getDifficulty());
         });
 
         VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox, inventoryWithLabel);

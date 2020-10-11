@@ -10,15 +10,17 @@ public class Market {
     private String difficulty;
     private Player player;
     public Market(Player player, String difficulty) {
-        marketInventory = new Inventory("Pumpkin", difficulty);
+        marketInventory = new Inventory(difficulty);
         playerInventory = player.getInventory();
+        this.difficulty = difficulty;
         this.player = player;
+        fillMarketInventory();
     }
 
     private void fillMarketInventory() {
-        for (int i = 0; i < marketInventory.getInventoryList().size(); i++) {
-            marketInventory.getInventoryList().set(i, new Crop("Pumpkin", difficulty, CropStage.SEED));
-        }
+        marketInventory.addItem(new Crop("Pumpkin", difficulty, CropStage.SEED));
+        marketInventory.addItem(new Crop("Corn", difficulty, CropStage.SEED));
+        marketInventory.addItem(new Crop("Tomato", difficulty, CropStage.SEED));
     }
 
     public Inventory getMarketInventory() {
