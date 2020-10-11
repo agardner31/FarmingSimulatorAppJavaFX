@@ -16,10 +16,14 @@ public class Inventory {
     private GridPane inventoryPane;
 
     public Inventory(String startSeed, String difficulty) {
+        this(difficulty);
+        addStartSeed(startSeed, difficulty);
+    }
+
+    public Inventory(String difficulty) {
         size = 0;
         inventoryList = FXCollections.observableArrayList();
         inventoryPane = new GridPane();
-        addStartSeed(startSeed, difficulty);
     }
 
     private void addStartSeed(String startSeed, String difficulty) {
@@ -43,7 +47,7 @@ public class Inventory {
 
     public void removeItem(int targetCrop) {
         if (targetCrop >=0 && targetCrop < inventoryList.size()) {
-            inventoryList.set(targetCrop, null);
+            inventoryList.remove(targetCrop);
             removeFromPane(targetCrop);
             size--;
         }
@@ -52,19 +56,14 @@ public class Inventory {
     private void addToPane(Crop item) {
         for (int i = 0; i < Inventory.getCAPACITY(); i++) {
             if (i >= inventoryPane.getChildren().size()) {
-                Label label = new Label(item.toString("sell"));
+                Label label = new Label(item.toString());
                 inventoryPane.getChildren().add(label);
+                return;
             }
-            String labelContent = "foo";
-
-            if (inventoryPane.getChildren().get(i) != null) {
-                labelContent = ((Label) inventoryPane.getChildren().get(i)).getText();
-            }
-
-            if (inventoryPane.getChildren().get(i) == null ||
-                    labelContent.equals("")) {
-                Label temp = (Label) inventoryPane.getChildren().get(i);
-                temp.setText(item.toString("sell"));
+            Label temp = (Label) inventoryPane.getChildren().get(i);
+            if (temp.getText().equals("")
+                    || inventoryPane.getChildren().get(i) == null) {
+                temp.setText(item.toString());
                 return;
             }
         }

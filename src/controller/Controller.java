@@ -59,7 +59,8 @@ public class Controller extends Application {
             } else if (seedList.getValue() == null) {
                 warning.setText("Choose a seed.");
             } else {
-                enterFarm(levels.getValue(), seedList.getValue());
+                Player player = new Player(levels.getValue(), new Farm(levels.getValue()), seedList.getValue());
+                enterFarm(player, levels.getValue(), seedList.getValue());
             }
         });
         Scene scene = configScreen.getScene();
@@ -68,18 +69,18 @@ public class Controller extends Application {
         mainWindow.show();
     }
 
-    public static void enterFarm(String difficulty, String seed) {
+    public static void enterFarm(Player player, String difficulty, String seed) {
         currentView = "Farm";
-        FarmScreen farmScreen = new FarmScreen(width, height, difficulty, seed);
+        FarmScreen farmScreen = new FarmScreen(width, height, difficulty, seed, player);
         Scene scene = farmScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");
         mainWindow.setScene(scene);
         mainWindow.show();
     }
 
-    public static void enterMarket(Player player, String difficulty, String seed) {
+    public static void enterMarket(Player player, String difficulty) {
         currentView = "Market";
-        MarketScreen marketScreen = new MarketScreen(width, height, difficulty, seed, player);
+        MarketScreen marketScreen = new MarketScreen(width, height, difficulty, player);
         Scene scene = marketScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");
         mainWindow.setScene(scene);
