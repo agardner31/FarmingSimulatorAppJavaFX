@@ -1,5 +1,7 @@
 package model;
 
+import controller.Controller;
+
 import java.util.HashMap;
 
 public class Crop {
@@ -62,7 +64,7 @@ public class Crop {
         return stage;
     }
 
-    public CropStage incrementStage() {
+    public CropStage incrementStage() { //make sure to change label price by calling to String again
         if (stage.equals(CropStage.SEED)) {
             stage = CropStage.IMMATURE;
         } else if (stage.equals(CropStage.IMMATURE)) {
@@ -85,10 +87,16 @@ public class Crop {
 
     @Override
     public String toString() {
-        if (stage.equals(CropStage.MATURE)) {
-            return type + "\n" + stage.toString() + "\n" + "$" + sellPrice + ".00";
+        return toString("sell");
+    }
+
+    public String toString(String type) {
+        if (type.equals("buy")) {
+            return this.type + "\n" + stage.toString() + "\n" + "$" + buyPrice + ".00";
+        } else if (stage.equals(CropStage.MATURE)) {
+            return this.type + "\n" + stage.toString() + "\n" + "$" + sellPrice + ".00";
         } else {
-            return type + "\n" + stage.toString() + "\n" + "$0.00";
+            return this.type + "\n" + stage.toString() + "\n" + "$0.00";
         }
     }
 }
