@@ -1,6 +1,8 @@
 package tests.M3;
 
 import model.Crop;
+import model.Market;
+import model.Inventory;
 import model.Player;
 import model.CropStage;
 import static org.junit.Assert.*;
@@ -18,10 +20,14 @@ public class M3Test {
     private Player testPlayerMasterPumpkin;
     private Player testPlayerMasterCorn;
     private Player testPlayerMasterTomato;
+    private Market testMarket;
+    private Player player;
+    private String difficulty;
 
 
     @Before
     public void setUp() {
+        /*
         testPlayerApprenticePumpkin = new Player("Apprentice", "Pumpkin");
         testPlayerApprenticeCorn = new Player("Apprentice", "Corn");
         testPlayerApprenticeTomato = new Player("Apprentice", "Tomato");
@@ -31,6 +37,22 @@ public class M3Test {
         testPlayerMasterPumpkin = new Player("Master Farmer", "Pumpkin");
         testPlayerMasterCorn = new Player("Master Farmer", "Corn");
         testPlayerMasterTomato = new Player("Master Farmer", "Tomato");
+         */
+    }
+
+
+    @Test
+    public void justinMarketInitializationTest() {
+        player = new Player();
+        difficulty = "Apprentice";
+        testMarket = new Market(player, difficulty);
+        Inventory marketInventory = new Inventory(difficulty);
+
+        marketInventory.addItem(new Crop("Pumpkin", difficulty, CropStage.SEED));
+        marketInventory.addItem(new Crop("Corn", difficulty, CropStage.SEED));
+        marketInventory.addItem(new Crop("Tomato", difficulty, CropStage.SEED));
+
+        assertEquals(testMarket.getMarketInventory(), marketInventory);
     }
 
     /*public void benTestCropArrayCreation() {
