@@ -30,7 +30,7 @@ public class MarketScreen implements IScreen {
     private Inventory playerInventory;
     private Inventory marketInventory;
 
-    public MarketScreen(int width, int height, String difficulty, String startSeed, Player player) {
+    public MarketScreen(int width, int height, String difficulty, Player player) {
         this.width = width;
         this.height = height;
         this.player = player;
@@ -65,6 +65,16 @@ public class MarketScreen implements IScreen {
             cropLabel.setOnMouseClicked((e) -> {
                 market.sell(finalCrop);
                 playerInventory.removeItem(targetCrop); //how to get the specific inventory item
+                Controller.enterMarket(player, player.getDifficulty());
+            });
+            Label finalCropLabel = cropLabel;
+            cropLabel.setOnMouseEntered(e -> {
+                finalCropLabel.setScaleX(1.5);
+                finalCropLabel.setScaleY(1.5);
+            });
+            cropLabel.setOnMouseExited(e -> {
+                finalCropLabel.setScaleX(1);
+                finalCropLabel.setScaleY(1);
             });
 
             inventoryPane.add(cropLabel, i % 10, j);
@@ -94,11 +104,24 @@ public class MarketScreen implements IScreen {
             final int targetCrop = i;
             final Crop finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
-                int price = finalCrop.getBuyPrice();
-                if (player.getMoney() >= price) {
-                    playerInventory.addItem(finalCrop);
-                    market.buy(finalCrop, price);
+                if (finalCrop != null) {
+                    int price = finalCrop.getBuyPrice();
+                    if (player.getMoney() >= price) {
+                        if (playerInventory.addItem(finalCrop)) {
+                            market.buy(finalCrop, price);
+                            Controller.enterMarket(player, player.getDifficulty());
+                        }
+                    }
                 }
+            });
+            Label finalCropLabel = cropLabel;
+            cropLabel.setOnMouseEntered(e -> {
+                finalCropLabel.setScaleX(1.5);
+                finalCropLabel.setScaleY(1.5);
+            });
+            cropLabel.setOnMouseExited(e -> {
+                finalCropLabel.setScaleX(1);
+                finalCropLabel.setScaleY(1);
             });
 
             marketPane.add(cropLabel, i % 10, j);
@@ -110,7 +133,6 @@ public class MarketScreen implements IScreen {
 
     @Override
     public Scene getScene() {
-        // farm scene
 
         Label inventoryLabel = new Label("Items");
 
@@ -120,13 +142,13 @@ public class MarketScreen implements IScreen {
         farmButton = new Button("Farm");
         farmButton.setVisible(true);
         farmButton.setOnAction((e) -> {
-            Controller.enterFarm(player.getDifficulty(), "Pumpkin");
+            Controller.enterFarm(player, player.getDifficulty(), "Pumpkin");
         });
 
-        Text buySell = new Text("Click on item in your inventory to sell it or"
-                + " click on item in the market inventory to buy");
+        Text buySell = new Text("Click on an item in your inventory to sell it or"
+                + " click on item in the market inventory to buy it");
         VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, inventoryWithLabel, buySell);
-
+        buySell.getStyleClass().add("moneyLabel");
         inventoryLabel.getStyleClass().add("inventoryLabel");
         moneyLabel.getStyleClass().add("moneyLabel");
         displayMarketLabel.getStyleClass().add("displayDateLabel");
