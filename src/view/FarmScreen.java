@@ -10,8 +10,8 @@ import javafx.scene.layout.VBox;
 import model.Crop;
 import model.Inventory;
 import model.Player;
-import model.Plot;
 import controller.Controller;
+import model.Plot;
 
 public class FarmScreen implements IScreen {
     private int width;
