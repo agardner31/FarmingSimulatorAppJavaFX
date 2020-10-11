@@ -19,6 +19,7 @@ public class Controller extends Application {
     private static Stage mainWindow;
     private final static int width = 820;
     private final static int height = 820;
+    private static String currentView; //"Welcome", "Config", "Farm", "Market"
 
     @Override
     public void start(Stage primaryStage) {
@@ -27,7 +28,8 @@ public class Controller extends Application {
         initWelcomeScreen();
     }
 
-    private void initWelcomeScreen() {
+    private static void initWelcomeScreen() {
+        currentView = "Welcome";
         WelcomeScreen welcomeScreen = new WelcomeScreen(width, height);
         Button startButton = welcomeScreen.getStartButton();
         startButton.setOnAction(e -> goToConfig());
@@ -38,7 +40,8 @@ public class Controller extends Application {
         mainWindow.show();
     }
 
-    private void goToConfig() {
+    private static void goToConfig() {
+        currentView = "Config";
         ConfigScreen configScreen = new ConfigScreen(width, height);
         Button startGame = configScreen.getStartGame();
         Label warning = configScreen.getWarning();
@@ -66,6 +69,7 @@ public class Controller extends Application {
     }
 
     public static void enterFarm(String difficulty, String seed) {
+        currentView = "Farm";
         FarmScreen farmScreen = new FarmScreen(width, height, difficulty, seed);
         Scene scene = farmScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");
@@ -74,12 +78,15 @@ public class Controller extends Application {
     }
 
     public static void enterMarket(Player player, String difficulty, String seed) {
+        currentView = "Market";
         MarketScreen marketScreen = new MarketScreen(width, height, difficulty, seed, player);
         Scene scene = marketScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");
         mainWindow.setScene(scene);
         mainWindow.show();
     }
+
+    public static String getCurrentView() { return currentView; }
 
     /**
      * Main method.

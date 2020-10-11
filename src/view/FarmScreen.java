@@ -49,17 +49,17 @@ public class FarmScreen implements IScreen {
             try {
                 crop = inventory.getInventoryList().get(i);
                 if (crop != null) {
-                    cropLabel = new Label(crop.toString());
+                    cropLabel = new Label(crop.toString("sell"));
                 }
             } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
             if (i % 10 == 0) {
                 j++;
             }
-            final int targetCrop = i;
-            cropLabel.setOnMouseClicked((e) -> {
-                inventory.removeItem(targetCrop); //how to get the specific inventory item
-            });
+//            final int targetCrop = i;
+//            cropLabel.setOnMouseClicked((e) -> {
+//                inventory.removeItem(targetCrop); //how to get the specific inventory item
+//            });
 
             inventoryPane.add(cropLabel, i % 10, j);
         }

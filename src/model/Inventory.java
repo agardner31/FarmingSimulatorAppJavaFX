@@ -52,13 +52,19 @@ public class Inventory {
     private void addToPane(Crop item) {
         for (int i = 0; i < Inventory.getCAPACITY(); i++) {
             if (i >= inventoryPane.getChildren().size()) {
-                Label label = new Label(item.toString());
+                Label label = new Label(item.toString("sell"));
                 inventoryPane.getChildren().add(label);
             }
-            if (inventoryPane.getChildren().get(i).equals("") ||
-                    inventoryPane.getChildren().get(i) == null) {
+            String labelContent = "foo";
+
+            if (inventoryPane.getChildren().get(i) != null) {
+                labelContent = ((Label) inventoryPane.getChildren().get(i)).getText();
+            }
+
+            if (inventoryPane.getChildren().get(i) == null ||
+                    labelContent.equals("")) {
                 Label temp = (Label) inventoryPane.getChildren().get(i);
-                temp.setText(item.toString());
+                temp.setText(item.toString("sell"));
                 return;
             }
         }

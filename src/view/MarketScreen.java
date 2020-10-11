@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.Crop;
+import model.CropStage;
 import model.Inventory;
 import model.Market;
 import model.Player;
@@ -53,7 +54,7 @@ public class MarketScreen implements IScreen {
             try {
                 crop = playerInventory.getInventoryList().get(i);
                 if (crop != null) {
-                    cropLabel = new Label(crop.toString());
+                    cropLabel = new Label(crop.toString("sell"));
                 }
             } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
@@ -63,8 +64,11 @@ public class MarketScreen implements IScreen {
             final int targetCrop = i;
             final Crop finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
-                market.sell(finalCrop);
-                playerInventory.removeItem(targetCrop); //how to get the specific inventory item
+                if (finalCrop != null && finalCrop.getStage().equals(CropStage.MATURE)) {
+                    market.sell(finalCrop);
+                    moneyLabel.setText("Money: $" + player.getMoney() + ".00");
+                    playerInventory.removeItem(targetCrop); //how to get the specific inventory item
+                 }
             });
 
             inventoryPane.add(cropLabel, i % 10, j);
@@ -84,7 +88,7 @@ public class MarketScreen implements IScreen {
             try {
                 crop = marketInventory.getInventoryList().get(i);
                 if (crop != null) {
-                    cropLabel = new Label(crop.toString());
+                    cropLabel = new Label(crop.toString("buy"));
                 }
             } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
@@ -94,10 +98,14 @@ public class MarketScreen implements IScreen {
             final int targetCrop = i;
             final Crop finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
-                int price = finalCrop.getBuyPrice();
-                if (player.getMoney() >= price) {
-                    playerInventory.addItem(finalCrop);
-                    market.buy(finalCrop, price);
+                if (finalCrop != null) {
+                    int price = finalCrop.getBuyPrice();
+                    if (player.getMoney() >= price) {
+                        playerInventory.addItem(finalCrop);
+                        market.buy(finalCrop, price);
+                        moneyLabel.setText("Money: $" + player.getMoney() + ".00");
+                        remove(targetCrop);
+                    }
                 }
             });
 
@@ -106,6 +114,13 @@ public class MarketScreen implements IScreen {
         marketInventory.setInventoryPane(marketPane);
         marketPane.getStyleClass().add("inventoryPane");
         return marketPane;
+    }
+
+    private void remove(int targetCrop) {
+        ((Label) marketPane.getChildren().get(targetCrop)).setText("");
+        marketPane.getChildren().get(targetCrop).setOnMouseClicked((e) -> {
+
+        });
     }
 
     @Override
