@@ -109,6 +109,7 @@ public class MarketScreen implements IScreen {
                     int price = finalCrop.getBuyPrice();
                     if (player.getMoney() >= price) {
                         if (playerInventory.addItem(finalCrop)) {
+                            playerInventory.addToPane(finalCrop);
                             market.buy(finalCrop, price);
                             //moneyLabel.setText("Money: $" + player.getMoney() + ".00");
                             Controller.enterMarket(player, player.getDifficulty());

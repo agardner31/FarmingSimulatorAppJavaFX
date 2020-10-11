@@ -10,20 +10,35 @@ import static org.junit.Assert.assertEquals;
 
 public class M3MarketTests {
     private Player player;
+    private Market market;
+    private Crop crop;
     private String difficulty1;
     private String difficulty2;
     private String difficulty3;
+
     @Before
     public void setUp() {
-        player = new Player();
+        player = new Player(difficulty1, "Pumpkin");
+        market = new Market(player, player.getDifficulty());
+        crop = new Crop("Tomato", player.getDifficulty());
         difficulty1 = "Apprentice";
         difficulty2 = "Ordinary Joe";
         difficulty3 = "Master Farmer";
     }
 
     @Test
+    public void testMarketBuy() {
+        market.buy(crop, crop.getBuyPrice());
+    }
+
+    @Test
+    public void testMarketSell() {
+
+    }
+
+
     public void testMarketInitialization() {
-        /*Market market = new Market(player, difficulty1);
+        Market market = new Market(player, difficulty1);
         Crop crop = new Crop("Pumpkin", difficulty1);
 
         assertEquals(crop.getBuyPrice(), market.getMarketInventory().getInventoryList().get(0).getBuyPrice());
@@ -96,6 +111,5 @@ public class M3MarketTests {
             assertEquals(crop.getBuyPrice(), market.getPlayerInventory().getInventoryList().get(i).getBuyPrice());
             assertEquals(crop.getSellPrice(), market.getPlayerInventory().getInventoryList().get(i).getSellPrice());
         }
-*/
     }
 }

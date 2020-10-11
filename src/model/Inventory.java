@@ -38,7 +38,7 @@ public class Inventory {
         }
 
         inventoryList.add(item);
-        addToPane(item);
+        //addToPane(item);
         size++;
         return true;
     }
@@ -54,7 +54,7 @@ public class Inventory {
         return false;
     }
 
-    private void addToPane(Crop item) {
+    public void addToPane(Crop item) {
         for (int i = 0; i < Inventory.getCapacity(); i++) {
             if (i >= inventoryPane.getChildren().size()) {
                 Label label = new Label(item.toString());
