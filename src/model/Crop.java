@@ -78,7 +78,9 @@ public class Crop {
         return stage;
     }
 
-    public void setStage(CropStage stage) {this.stage = stage;}
+    public void setStage(CropStage stage) {
+        this.stage = stage;
+    }
 
     public CropStage incrementStage() { //make sure to change label price by calling to String again
         if (stage.equals(CropStage.DIRT)) {

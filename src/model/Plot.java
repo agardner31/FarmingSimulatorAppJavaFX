@@ -62,7 +62,9 @@ public class Plot {
         return crop;
     }
 
-    public void setCrop() { this.crop = crop; }
+    public void setCrop() {
+        this.crop = crop;
+    }
 
     public String getType() {
         return type;

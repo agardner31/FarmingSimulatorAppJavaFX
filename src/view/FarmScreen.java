@@ -4,7 +4,6 @@ import controller.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -121,11 +120,11 @@ public class FarmScreen implements IScreen {
                 growStage = new Label("");
             }
             VBox boxOfLabels = new VBox(plotNumber, plotType, growStage);
-            boxOfLabels.setOnMouseEntered(e-> {
+            boxOfLabels.setOnMouseEntered((e) -> {
                 boxOfLabels.setScaleX(1.5);
                 boxOfLabels.setScaleY(1.5);
             });
-            boxOfLabels.setOnMouseExited(e-> {
+            boxOfLabels.setOnMouseExited((e) -> {
                 boxOfLabels.setScaleX(1);
                 boxOfLabels.setScaleY(1);
             });
@@ -134,10 +133,10 @@ public class FarmScreen implements IScreen {
             boxOfLabels.getStyleClass().add("plotLabel");
             ImageView img = new ImageView(temp.getImg());
             Button growButton = new Button("Plant");
-            growButton.setOnAction(e-> {
-                if(!temp.getType().equals("None")) {
+            growButton.setOnAction((e) -> {
+                if (!temp.getType().equals("None")) {
                     temp.getCrop().incrementStage();
-                    if(!temp.getType().equals("None")) {
+                    if (!temp.getType().equals("None")) {
                         growStage.setText(temp.getCrop().getStage().toString());
                     }
                 }
