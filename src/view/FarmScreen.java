@@ -1,8 +1,10 @@
 package view;
 
+import controller.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -11,7 +13,6 @@ import model.Crop;
 import model.Inventory;
 import model.Player;
 import model.Plot;
-import controller.Controller;
 
 public class FarmScreen implements IScreen {
     private int width;
@@ -50,9 +51,7 @@ public class FarmScreen implements IScreen {
                 if (crop != null) {
                     cropLabel = new Label(crop.toString("sell"));
                 }
-            } catch (IndexOutOfBoundsException e) {
-                e.printStackTrace();
-            }
+            } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
             if (i % 10 == 0) {
                 j++;
@@ -77,12 +76,20 @@ public class FarmScreen implements IScreen {
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
         inventoryWithLabel.setVisible(false);
 
-        inventoryButton.setOnAction((e) -> inventoryWithLabel.setVisible(!inventoryWithLabel.isVisible()));
+        inventoryButton.setOnAction((e) -> {
+            if (!inventoryWithLabel.isVisible()) {
+                inventoryWithLabel.setVisible(true);
+            } else {
+                inventoryWithLabel.setVisible(false);
+            }
+        });
 
         //moves to market scene
         marketButton = new Button("Market");
         marketButton.setVisible(true);
-        marketButton.setOnAction((e) -> Controller.enterMarket(player, player.getDifficulty()));
+        marketButton.setOnAction((e) -> {
+            Controller.enterMarket(player, player.getDifficulty());
+        });
 
         VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox, inventoryWithLabel);
 
@@ -105,37 +112,61 @@ public class FarmScreen implements IScreen {
         HBox plotBox = new HBox(20);
         for (int i = 0; i < plots.length; i++) {
             Plot temp = plots[i];
-            Label plotNumber = new Label("Plot #" + (i + 1));
-            Label plotType =  new Label("Plot Type:" + temp.getType());
-            Label growStage = new Label("Growth Stage:" + (temp.getCrop()).getStage().toString());
+            Label plotNumber = new Label("Plot#" + (i + 1));
+            Label plotType = new Label(temp.getType());
+            Label growStage;
+            if (!temp.getType().equals("None")) {
+                growStage = new Label((temp.getCrop()).getStage().toString());
+            } else {
+                growStage = new Label("");
+            }
             VBox boxOfLabels = new VBox(plotNumber, plotType, growStage);
-            boxOfLabels.setOnMouseEntered(e -> {
+            boxOfLabels.setOnMouseEntered(e-> {
                 boxOfLabels.setScaleX(1.5);
                 boxOfLabels.setScaleY(1.5);
             });
-            boxOfLabels.setOnMouseExited(e -> {
+            boxOfLabels.setOnMouseExited(e-> {
                 boxOfLabels.setScaleX(1);
                 boxOfLabels.setScaleY(1);
             });
 
+            final int index = i;
             boxOfLabels.getStyleClass().add("plotLabel");
             ImageView img = new ImageView(temp.getImg());
-            Button growButton = new Button("Grow!");
-
-            growButton.setOnAction(e -> {
-                temp.getCrop().incrementStage();
-                growStage.setText("Growth Stage:" + (temp.getCrop()).getStage().toString());
+            Button growButton = new Button("Plant");
+            growButton.setOnAction(e-> {
+                if(!temp.getType().equals("None")) {
+                    temp.getCrop().incrementStage();
+                    if(!temp.getType().equals("None")) {
+                        growStage.setText(temp.getCrop().getStage().toString());
+                    }
+                }
+                if ((temp.getCrop()).getStage().toString().equals("Dirt")) {
+                    growButton.setText("Plant");
+                } else if ((temp.getCrop()).getStage().toString().equals("Seed")) {
+                    growButton.setText("Water");
+                } else if ((temp.getCrop()).getStage().toString().equals("Immature")) {
+                    growButton.setText("Water");
+                } else if ((temp.getCrop()).getStage().toString().equals("Mature")) {
+                    growButton.setText("Harvest");
+                } else if ((temp.getCrop()).getStage().toString().equals("Harvested")) {
+                    harvestCrop(temp, plotType, growStage, boxOfLabels);
+                    growButton.setText("New Plant");
+                }
             });
             VBox onePlot = new VBox(boxOfLabels, img, growButton);
             plotBox.getChildren().add(onePlot);
         }
         return plotBox;
-
     }
 
 
-    public void harvestCrop() {
-        //harvest a crop
+    public void harvestCrop(Plot plot, Label plotType, Label growStage, VBox boxOfLabels) {
+        inventory.addToPane(plot.getCrop());
+        inventory.addItem(plot.getCrop());
+        boxOfLabels.setOnMouseClicked((e) -> {
+            return;
+        });
     }
 
     public int getWidth() {

@@ -1,7 +1,7 @@
 package model;
 
 public enum CropStage {
-    SEED("Seed"), IMMATURE("Immature"), MATURE("Mature");
+    SEED("Seed"), IMMATURE("Immature"), MATURE("Mature"), DIRT("Dirt"), HARVESTED("Harvested");
 
     private final String name;
 

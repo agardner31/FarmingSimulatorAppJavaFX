@@ -3,7 +3,7 @@ package model;
 public class Farm {
     private Plot[] plots;
 
-    private final int initialCapacity = 10;
+    private final int initialCapacity = 5;
 
     public Farm(String difficulty) {
         plots = new Plot[initialCapacity];

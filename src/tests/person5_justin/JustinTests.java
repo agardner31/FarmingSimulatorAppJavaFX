@@ -1,8 +1,8 @@
 package tests.person5_justin;
 
 import model.Farm;
-import model.Plot;
 
+import model.Plot;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;

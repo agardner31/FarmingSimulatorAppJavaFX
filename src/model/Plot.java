@@ -16,13 +16,8 @@ public class Plot {
     private Image img;
 
     public Plot() {
-        type = "None";
-        title = "";
-        try {
-            Image image = new Image(new FileInputStream("/resources/images/dirt.jpg"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        this(new Crop("Pumpkin", "Amateur"), 0);
+        type = "Pumpkin";
     }
 
     public Plot(Crop crop, int title) {
@@ -30,19 +25,44 @@ public class Plot {
         this.type = crop.getType();
         this.title = "Plot " + title;
         try {
-            Image image = new Image(new FileInputStream("/resources/images/dirt.jpg"));
+            img = new Image(new FileInputStream("images/dirt.jpg"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    public void setImage(Image img) {
+        this.img = img;
+    }
     public Image getImg() {
+        String cropStage = crop.getStage().toString();
+        try {
+            if (cropStage.equals("Dirt")) {
+                img = new Image(new FileInputStream("images/dirt.jpg"));
+            } else if (cropStage.equals("Seed")) {
+                img = new Image(new FileInputStream("images/seed.jpg"));
+            } else if (cropStage.equals("Immature")) {
+                img = new Image(new FileInputStream("images/seedling.jpg"));
+            } else if (cropStage.equals("Mature")) {
+                if (type.equals("Pumpkin")) {
+                    img = new Image(new FileInputStream("images/pumpkinHarvest.jpg"));
+                } else if (type.equals("Tomato")) {
+                    img = new Image(new FileInputStream("images/tomatoHarvest.jpg"));
+                } else if (type.equals("Corn")) {
+                    img = new Image(new FileInputStream("images/cornHarvest.jpg"));
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return img;
     }
 
     public Crop getCrop() {
         return crop;
     }
+
+    public void setCrop() { this.crop = crop; }
 
     public String getType() {
         return type;

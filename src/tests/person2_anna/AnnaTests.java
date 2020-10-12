@@ -1,9 +1,9 @@
 package tests.person2_anna;
 
 import model.Farm;
-import model.Plot;
 import model.Player;
 
+import model.Plot;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;

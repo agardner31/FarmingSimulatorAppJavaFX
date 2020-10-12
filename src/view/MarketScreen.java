@@ -8,11 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import model.Crop;
-import model.Inventory;
-import model.Market;
-import model.Player;
-import model.Plot;
+import model.*;
 
 public class MarketScreen implements IScreen {
     private int width;
@@ -64,7 +60,7 @@ public class MarketScreen implements IScreen {
             final Crop finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
                 //moneyLabel.setText("Money: $" + player.getMoney() + ".00");
-                if (playerInventory.removeItem(targetCrop)) {
+                if (playerInventory.removeItem(targetCrop)) { //how to get the specific inventory item
                     market.sell(finalCrop);
                     Controller.enterMarket(player, player.getDifficulty());
                 }

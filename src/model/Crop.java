@@ -9,12 +9,8 @@ public class Crop {
 
     private int sellPrice;
 
-    private int baseSellPrice;
-
-    private int baseBuyPrice;
-
     public Crop(String type, String difficulty) {
-        this(type, difficulty, CropStage.SEED);
+        this(type, difficulty, CropStage.DIRT);
     }
 
     public Crop(String type, String difficulty, CropStage stage) {
@@ -36,19 +32,13 @@ public class Crop {
     private void setPriceHelper(String type, double difficultyMultiplier) {
         if (type.equals("Pumpkin")) {
             buyPrice = 20;
-            baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
-            baseSellPrice = sellPrice;
         } else if (type.equals("Corn")) {
             buyPrice = 10;
-            baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
-            baseSellPrice = sellPrice;
         } else if (type.equals("Tomato")) {
             buyPrice = 5;
-            baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
-            baseSellPrice = sellPrice;
         }
         sellPrice = (int) (sellPrice + Math.random() * .5 * sellPrice - .25 * sellPrice);
         buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
@@ -62,14 +52,6 @@ public class Crop {
         return sellPrice;
     }
 
-    public int getBaseSellPrice() {
-        return baseSellPrice;
-    }
-
-    public int getBaseBuyPrice() {
-        return baseBuyPrice;
-    }
-
     public String getType() {
         return type;
     }
@@ -78,11 +60,29 @@ public class Crop {
         return stage;
     }
 
+    public void setStage(CropStage stage) {this.stage = stage;}
+
     public CropStage incrementStage() { //make sure to change label price by calling to String again
-        if (stage.equals(CropStage.SEED)) {
+        if (stage.equals(CropStage.DIRT)) {
+            stage = CropStage.SEED;
+        } else if (stage.equals(CropStage.SEED)) {
             stage = CropStage.IMMATURE;
         } else if (stage.equals(CropStage.IMMATURE)) {
             stage = CropStage.MATURE;
+        } else if (stage.equals(CropStage.MATURE)) {
+            stage = CropStage.HARVESTED;
+            //inventory.addItem()
+            //
+            //
+            ///
+            //
+            //
+
+
+
+
+        } else if (stage.equals(CropStage.HARVESTED)) {
+            stage = CropStage.DIRT;
         }
         return stage;
     }
