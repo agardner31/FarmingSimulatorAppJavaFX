@@ -45,12 +45,14 @@ public class Plot {
                 img = new Image(new FileInputStream("images/seedling.jpg"));
             } else if (cropStage.equals("Mature")) {
                 if (type.equals("Pumpkin")) {
-                    img = new Image(new FileInputStream("images/pumpkin harvest.jpg"));
+                    img = new Image(new FileInputStream("images/pumpkinHarvest.jpg"));
                 } else if (type.equals("Tomato")) {
                     img = new Image(new FileInputStream("images/tomatoHarvest.jpg"));
                 } else if (type.equals("Corn")) {
                     img = new Image(new FileInputStream("images/cornHarvest.jpg"));
                 }
+            } else if (cropStage.equals("Harvested")) {
+                img = new Image(new FileInputStream("images/dirt.jpg"));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

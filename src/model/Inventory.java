@@ -98,4 +98,6 @@ public class Inventory {
     public static int getCapacity() {
         return CAPACITY;
     }
+
+    public boolean isFull() {return size == CAPACITY; }
 }

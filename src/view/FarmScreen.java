@@ -135,6 +135,11 @@ public class FarmScreen implements IScreen {
             Button growButton = new Button("Plant");
             growButton.setOnAction((e) -> {
                 if (!temp.getType().equals("None")) {
+                    if (temp.getCrop().getStage().toString().equals("Mature")) {
+                        if (inventory.isFull()) {
+                            return;
+                        }
+                    }
                     temp.getCrop().incrementStage();
                     if (!temp.getType().equals("None")) {
                         growStage.setText(temp.getCrop().getStage().toString());
