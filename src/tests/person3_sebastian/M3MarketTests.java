@@ -12,9 +12,9 @@ public class M3MarketTests {
     private Player player;
     private Market market;
     private Crop crop;
-    private String difficulty1;
-    private String difficulty2;
-    private String difficulty3;
+    private String difficulty1 = "Apprentice";
+    private String difficulty2 = "Ordinary Joe";
+    private String difficulty3 = "Master Farmer";
 
     @Before
     public void setUp() {
@@ -36,80 +36,104 @@ public class M3MarketTests {
 
     }
 
-
+    @Test
     public void testMarketInitialization() {
-        Market market = new Market(player, difficulty1);
-        Crop crop = new Crop("Pumpkin", difficulty1);
+        market = new Market(player, difficulty1);
+        crop = new Crop("Pumpkin", difficulty1);
 
-        assertEquals(crop.getBuyPrice(), market.getMarketInventory().getInventoryList().get(0).getBuyPrice());
-        assertEquals(crop.getSellPrice(), market.getMarketInventory().getInventoryList().get(0).getSellPrice());
+        assertEquals(crop.getBaseBuyPrice(),
+                market.getMarketInventory().getInventoryList().get(0).getBaseBuyPrice());
+        assertEquals(crop.getBaseSellPrice(),
+                market.getMarketInventory().getInventoryList().get(0).getBaseSellPrice());
 
         crop = new Crop("Corn", difficulty1);
 
-        assertEquals(crop.getBuyPrice(), market.getMarketInventory().getInventoryList().get(1).getBuyPrice());
-        assertEquals(crop.getSellPrice(), market.getMarketInventory().getInventoryList().get(1).getSellPrice());
+        assertEquals(crop.getBaseBuyPrice(),
+                market.getMarketInventory().getInventoryList().get(1).getBaseBuyPrice());
+        assertEquals(crop.getBaseSellPrice(),
+                market.getMarketInventory().getInventoryList().get(1).getBaseSellPrice());
 
         crop = new Crop("Tomato", difficulty1);
 
-        assertEquals(crop.getBuyPrice(), market.getMarketInventory().getInventoryList().get(2).getBuyPrice());
-        assertEquals(crop.getSellPrice(), market.getMarketInventory().getInventoryList().get(2).getSellPrice());
+        assertEquals(crop.getBaseBuyPrice(),
+                market.getMarketInventory().getInventoryList().get(2).getBaseBuyPrice());
+        assertEquals(crop.getBaseSellPrice(),
+                market.getMarketInventory().getInventoryList().get(2).getBaseSellPrice());
 
 
         market = new Market(player, difficulty2);
         crop = new Crop("Pumpkin", difficulty2);
 
-        assertEquals(crop.getBuyPrice(), market.getMarketInventory().getInventoryList().get(0).getBuyPrice());
-        assertEquals(crop.getSellPrice(), market.getMarketInventory().getInventoryList().get(0).getSellPrice());
+        assertEquals(crop.getBaseBuyPrice(),
+                market.getMarketInventory().getInventoryList().get(0).getBaseBuyPrice());
+        assertEquals(crop.getBaseSellPrice(),
+                market.getMarketInventory().getInventoryList().get(0).getBaseSellPrice());
 
         crop = new Crop("Corn", difficulty2);
 
-        assertEquals(crop.getBuyPrice(), market.getMarketInventory().getInventoryList().get(1).getBuyPrice());
-        assertEquals(crop.getSellPrice(), market.getMarketInventory().getInventoryList().get(1).getSellPrice());
+        assertEquals(crop.getBaseBuyPrice(),
+                market.getMarketInventory().getInventoryList().get(1).getBaseBuyPrice());
+        assertEquals(crop.getBaseSellPrice(),
+                market.getMarketInventory().getInventoryList().get(1).getBaseSellPrice());
 
         crop = new Crop("Tomato", difficulty2);
 
-        assertEquals(crop.getBuyPrice(), market.getMarketInventory().getInventoryList().get(2).getBuyPrice());
-        assertEquals(crop.getSellPrice(), market.getMarketInventory().getInventoryList().get(2).getSellPrice());
+        assertEquals(crop.getBaseBuyPrice(),
+                market.getMarketInventory().getInventoryList().get(2).getBaseBuyPrice());
+        assertEquals(crop.getBaseSellPrice(),
+                market.getMarketInventory().getInventoryList().get(2).getBaseSellPrice());
 
         market = new Market(player, difficulty3);
         crop = new Crop("Pumpkin", difficulty3);
 
-        assertEquals(crop.getBuyPrice(), market.getMarketInventory().getInventoryList().get(0).getBuyPrice());
-        assertEquals(crop.getSellPrice(), market.getMarketInventory().getInventoryList().get(0).getSellPrice());
+        assertEquals(crop.getBaseBuyPrice(),
+                market.getMarketInventory().getInventoryList().get(0).getBaseBuyPrice());
+        assertEquals(crop.getBaseSellPrice(),
+                market.getMarketInventory().getInventoryList().get(0).getBaseSellPrice());
 
         crop = new Crop("Corn", difficulty3);
 
-        assertEquals(crop.getBuyPrice(), market.getMarketInventory().getInventoryList().get(1).getBuyPrice());
-        assertEquals(crop.getSellPrice(), market.getMarketInventory().getInventoryList().get(1).getSellPrice());
+        assertEquals(crop.getBaseBuyPrice(),
+                market.getMarketInventory().getInventoryList().get(1).getBaseBuyPrice());
+        assertEquals(crop.getBaseSellPrice(),
+                market.getMarketInventory().getInventoryList().get(1).getBaseSellPrice());
 
         crop = new Crop("Tomato", difficulty3);
 
-        assertEquals(crop.getBuyPrice(), market.getMarketInventory().getInventoryList().get(2).getBuyPrice());
-        assertEquals(crop.getSellPrice(), market.getMarketInventory().getInventoryList().get(2).getSellPrice());
+        assertEquals(crop.getBaseBuyPrice(),
+                market.getMarketInventory().getInventoryList().get(2).getBaseBuyPrice());
+        assertEquals(crop.getBaseSellPrice(),
+                market.getMarketInventory().getInventoryList().get(2).getBaseSellPrice());
 
 
         player = new Player(difficulty1, "Pumpkin");
         market = new Market(player, difficulty1);
         crop = new Crop("Pumpkin", difficulty1);
         for (int i = 0; i < 3; i++) {
-            assertEquals(crop.getBuyPrice(), market.getPlayerInventory().getInventoryList().get(i).getBuyPrice());
-            assertEquals(crop.getSellPrice(), market.getPlayerInventory().getInventoryList().get(i).getSellPrice());
+            assertEquals(crop.getBaseBuyPrice(),
+                    market.getPlayerInventory().getInventoryList().get(i).getBaseBuyPrice());
+            assertEquals(crop.getBaseSellPrice(),
+                    market.getPlayerInventory().getInventoryList().get(i).getBaseSellPrice());
         }
 
         player = new Player(difficulty2, "Pumpkin");
         market = new Market(player, difficulty2);
         crop = new Crop("Pumpkin", difficulty2);
         for (int i = 0; i < 3; i++) {
-            assertEquals(crop.getBuyPrice(), market.getPlayerInventory().getInventoryList().get(i).getBuyPrice());
-            assertEquals(crop.getSellPrice(), market.getPlayerInventory().getInventoryList().get(i).getSellPrice());
+            assertEquals(crop.getBaseBuyPrice(),
+                    market.getPlayerInventory().getInventoryList().get(i).getBaseBuyPrice());
+            assertEquals(crop.getBaseSellPrice(),
+                    market.getPlayerInventory().getInventoryList().get(i).getBaseSellPrice());
         }
 
         player = new Player(difficulty3, "Pumpkin");
         market = new Market(player, difficulty3);
         crop = new Crop("Pumpkin", difficulty3);
         for (int i = 0; i < 3; i++) {
-            assertEquals(crop.getBuyPrice(), market.getPlayerInventory().getInventoryList().get(i).getBuyPrice());
-            assertEquals(crop.getSellPrice(), market.getPlayerInventory().getInventoryList().get(i).getSellPrice());
+            assertEquals(crop.getBaseBuyPrice(),
+                    market.getPlayerInventory().getInventoryList().get(i).getBaseBuyPrice());
+            assertEquals(crop.getBaseSellPrice(),
+                    market.getPlayerInventory().getInventoryList().get(i).getBaseSellPrice());
         }
     }
 }
