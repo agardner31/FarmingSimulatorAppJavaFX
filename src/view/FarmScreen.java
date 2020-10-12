@@ -143,15 +143,20 @@ public class FarmScreen implements IScreen {
                 }
                 if ((temp.getCrop()).getStage().toString().equals("Dirt")) {
                     growButton.setText("Plant");
+                    img.setImage(temp.getImg());
                 } else if ((temp.getCrop()).getStage().toString().equals("Seed")) {
                     growButton.setText("Water");
+                    img.setImage(temp.getImg());
                 } else if ((temp.getCrop()).getStage().toString().equals("Immature")) {
                     growButton.setText("Water");
+                    img.setImage(temp.getImg());
                 } else if ((temp.getCrop()).getStage().toString().equals("Mature")) {
                     growButton.setText("Harvest");
+                    img.setImage(temp.getImg());
                 } else if ((temp.getCrop()).getStage().toString().equals("Harvested")) {
                     harvestCrop(temp, plotType, growStage, boxOfLabels);
                     growButton.setText("New Plant");
+                    img.setImage(temp.getImg());
                 }
             });
             VBox onePlot = new VBox(boxOfLabels, img, growButton);

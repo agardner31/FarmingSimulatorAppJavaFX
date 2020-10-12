@@ -45,7 +45,7 @@ public class Plot {
                 img = new Image(new FileInputStream("images/seedling.jpg"));
             } else if (cropStage.equals("Mature")) {
                 if (type.equals("Pumpkin")) {
-                    img = new Image(new FileInputStream("images/pumpkinHarvest.jpg"));
+                    img = new Image(new FileInputStream("images/pumpkin harvest.jpg"));
                 } else if (type.equals("Tomato")) {
                     img = new Image(new FileInputStream("images/tomatoHarvest.jpg"));
                 } else if (type.equals("Corn")) {
