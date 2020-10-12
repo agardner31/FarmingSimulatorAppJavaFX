@@ -10,7 +10,7 @@ public class Crop {
     private int sellPrice;
 
     public Crop(String type, String difficulty) {
-        this(type, difficulty, CropStage.SEED);
+        this(type, difficulty, CropStage.DIRT);
     }
 
     public Crop(String type, String difficulty, CropStage stage) {
@@ -60,11 +60,29 @@ public class Crop {
         return stage;
     }
 
+    public void setStage(CropStage stage) {this.stage = stage;}
+
     public CropStage incrementStage() { //make sure to change label price by calling to String again
-        if (stage.equals(CropStage.SEED)) {
+        if (stage.equals(CropStage.DIRT)) {
+            stage = CropStage.SEED;
+        } else if (stage.equals(CropStage.SEED)) {
             stage = CropStage.IMMATURE;
         } else if (stage.equals(CropStage.IMMATURE)) {
             stage = CropStage.MATURE;
+        } else if (stage.equals(CropStage.MATURE)) {
+            stage = CropStage.HARVESTED;
+            //inventory.addItem()
+            //
+            //
+            ///
+            //
+            //
+
+
+
+
+        } else if (stage.equals(CropStage.HARVESTED)) {
+            stage = CropStage.DIRT;
         }
         return stage;
     }

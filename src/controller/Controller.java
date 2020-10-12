@@ -7,9 +7,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import model.Player;
 import model.Farm;
+import model.Player;
 import view.ConfigScreen;
 import view.FarmScreen;
 import view.MarketScreen;

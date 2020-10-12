@@ -1,8 +1,10 @@
 package view;
 
+import controller.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -10,7 +12,6 @@ import javafx.scene.layout.VBox;
 import model.Crop;
 import model.Inventory;
 import model.Player;
-import controller.Controller;
 import model.Plot;
 
 public class FarmScreen implements IScreen {
@@ -108,129 +109,64 @@ public class FarmScreen implements IScreen {
     }
 
     private HBox fillPlotPane() {
-        HBox plotBox = new HBox();
+        HBox plotBox = new HBox(20);
+        for (int i = 0; i < plots.length; i++) {
+            Plot temp = plots[i];
+            Label plotNumber = new Label("Plot#" + (i + 1));
+            Label plotType = new Label(temp.getType());
+            Label growStage;
+            if (!temp.getType().equals("None")) {
+                growStage = new Label((temp.getCrop()).getStage().toString());
+            } else {
+                growStage = new Label("");
+            }
+            VBox boxOfLabels = new VBox(plotNumber, plotType, growStage);
+            boxOfLabels.setOnMouseEntered(e-> {
+                boxOfLabels.setScaleX(1.5);
+                boxOfLabels.setScaleY(1.5);
+            });
+            boxOfLabels.setOnMouseExited(e-> {
+                boxOfLabels.setScaleX(1);
+                boxOfLabels.setScaleY(1);
+            });
 
-        //plot box 1
-        Plot temp = plots[0];
-        Label plotLabel1 = new Label("Plot #" + 2 + "\nPlot Type:" + temp.getType() + "\nGrowth Stage:" + (temp.getCrop()).getStage().toString());
-        plotLabel1.setOnMouseEntered(e -> {
-            plotLabel1.setScaleX(1.5);
-            plotLabel1.setScaleY(1.5);
-        });
-        plotLabel1.setOnMouseExited(e -> {
-            plotLabel1.setScaleX(1);
-            plotLabel1.setScaleY(1);
-        });
-
-        plotLabel1.getStyleClass().add("plotLabel");
-        ImageView img1 = new ImageView(temp.getImg());
-        Button growButton1 = new Button("Grow!");
-        growButton1.setOnAction(e -> {
-            plots[0].getCrop().incrementStage();
-            plotLabel1.setText("Plot #" + 1 + "\nPlot Type:" + plots[0].getType() + "\nGrowth Stage:"
-                    + (plots[0].getCrop()).getStage().toString());
-        });
-        VBox singlePlot1 = new VBox(plotLabel1, img1, growButton1);
-
-        //plot box 2
-        temp = plots[1];
-        Label plotLabel2 = new Label("Plot #" + 2 + "\nPlot Type:" + temp.getType() + "\nGrowth Stage:" + (temp.getCrop()).getStage().toString());
-        plotLabel2.setOnMouseEntered(e -> {
-            plotLabel2.setScaleX(1.5);
-            plotLabel2.setScaleY(1.5);
-        });
-        plotLabel2.setOnMouseExited(e -> {
-            plotLabel2.setScaleX(1);
-            plotLabel2.setScaleY(1);
-        });
-
-        plotLabel2.getStyleClass().add("plotLabel");
-        ImageView img2 = new ImageView(temp.getImg());
-        Button growButton2 = new Button("Grow!");
-        growButton2.setOnAction(e -> {
-            plots[1].getCrop().incrementStage();
-            plotLabel2.setText("Plot #" + 2 + "\nPlot Type:" + plots[1].getType() + "\nGrowth Stage:"
-                    + (plots[1].getCrop()).getStage().toString());
-        });
-        VBox singlePlot2 = new VBox(plotLabel2, img2, growButton2);
-
-
-        //plot box 3
-        temp = plots[2];
-        Label plotLabel3 = new Label("Plot #" + 3 + "\nPlot Type:" + temp.getType() + "\nGrowth Stage:" + (temp.getCrop()).getStage().toString());
-        plotLabel3.setOnMouseEntered(e -> {
-            plotLabel3.setScaleX(1.5);
-            plotLabel3.setScaleY(1.5);
-        });
-        plotLabel3.setOnMouseExited(e -> {
-            plotLabel3.setScaleX(1);
-            plotLabel3.setScaleY(1);
-        });
-
-        plotLabel3.getStyleClass().add("plotLabel");
-        ImageView img3 = new ImageView(temp.getImg());
-        Button growButton3 = new Button("Grow!");
-        growButton3.setOnAction(e -> {
-            plots[2].getCrop().incrementStage();
-            plotLabel3.setText("Plot #" + 3 + "\nPlot Type:" + plots[2].getType() + "\nGrowth Stage:"
-                    + (plots[2].getCrop()).getStage().toString());
-        });
-
-        VBox singlePlot3 = new VBox(plotLabel3, img3, growButton3);
-
-        //plot box 4
-        temp = plots[3];
-        Label plotLabel4 = new Label("Plot #" + 4 + "\nPlot Type:" + temp.getType() + "\nGrowth Stage:"
-                + (temp.getCrop()).getStage().toString());
-        plotLabel4.setOnMouseEntered(e -> {
-            plotLabel4.setScaleX(1.5);
-            plotLabel4.setScaleY(1.5);
-        });
-        plotLabel4.setOnMouseExited(e -> {
-            plotLabel4.setScaleX(1);
-            plotLabel4.setScaleY(1);
-        });
-
-        plotLabel4.getStyleClass().add("plotLabel");
-        ImageView img4 = new ImageView(temp.getImg());
-        Button growButton4 = new Button("Grow!");
-        growButton4.setOnAction(e -> {
-            plots[3].getCrop().incrementStage();
-            plotLabel4.setText("Plot #" + 4 + "\nPlot Type:" + plots[3].getType() + "\nGrowth Stage:"
-                    + (plots[3].getCrop()).getStage().toString());
-        });
-        VBox singlePlot4 = new VBox(plotLabel4, img4, growButton4);
-
-        //plot box 5
-        temp = plots[4];
-        Label plotLabel5 = new Label("Plot #" + 3 + "\nPlot Type:" + temp.getType() + "\nGrowth Stage:" + (temp.getCrop()).getStage().toString());
-        plotLabel5.setOnMouseEntered(e -> {
-            plotLabel5.setScaleX(1.5);
-            plotLabel5.setScaleY(1.5);
-        });
-        plotLabel5.setOnMouseExited(e -> {
-            plotLabel5.setScaleX(1);
-            plotLabel5.setScaleY(1);
-        });
-
-        plotLabel5.getStyleClass().add("plotLabel");
-        ImageView img5 = new ImageView(temp.getImg());
-        Button growButton5 = new Button("Grow!");
-        growButton5.setOnAction(e -> {
-            plots[4].getCrop().incrementStage();
-            plotLabel5.setText("Plot #" + 5 + "\nPlot Type:" + plots[4].getType() + "\nGrowth Stage:"
-                    + (plots[4].getCrop()).getStage().toString());
-        });
-        VBox singlePlot5 = new VBox(plotLabel5, img5, growButton5);
-
-        plotBox.getChildren().addAll(singlePlot1, singlePlot2, singlePlot3, singlePlot4, singlePlot5);
-
+            final int index = i;
+            boxOfLabels.getStyleClass().add("plotLabel");
+            ImageView img = new ImageView(temp.getImg());
+            Button growButton = new Button("Plant");
+            growButton.setOnAction(e-> {
+                if(!temp.getType().equals("None")) {
+                    temp.getCrop().incrementStage();
+                    if(!temp.getType().equals("None")) {
+                        growStage.setText(temp.getCrop().getStage().toString());
+                    }
+                }
+                if ((temp.getCrop()).getStage().toString().equals("Dirt")) {
+                    growButton.setText("Plant");
+                } else if ((temp.getCrop()).getStage().toString().equals("Seed")) {
+                    growButton.setText("Water");
+                } else if ((temp.getCrop()).getStage().toString().equals("Immature")) {
+                    growButton.setText("Water");
+                } else if ((temp.getCrop()).getStage().toString().equals("Mature")) {
+                    growButton.setText("Harvest");
+                } else if ((temp.getCrop()).getStage().toString().equals("Harvested")) {
+                    harvestCrop(temp, plotType, growStage, boxOfLabels);
+                    growButton.setText("New Plant");
+                }
+            });
+            VBox onePlot = new VBox(boxOfLabels, img, growButton);
+            plotBox.getChildren().add(onePlot);
+        }
         return plotBox;
     }
 
 
-    public void harvestCrop() {
-        //harvest a crop
+    public void harvestCrop(Plot plot, Label plotType, Label growStage, VBox boxOfLabels) {
+        inventory.addToPane(plot.getCrop());
+        inventory.addItem(plot.getCrop());
+        boxOfLabels.setOnMouseClicked((e) -> {
+            return;
+        });
     }
 
     public int getWidth() {
