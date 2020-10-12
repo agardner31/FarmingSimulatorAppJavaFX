@@ -17,8 +17,8 @@ import view.WelcomeScreen;
 
 public class Controller extends Application {
     private static Stage mainWindow;
-    private static final int WIDTH = 1200;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 800;
     private static String currentView; //"Welcome", "Config", "Farm", "Market"
 
     @Override
