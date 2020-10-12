@@ -16,7 +16,7 @@ public class Plot {
     private Image img;
 
     public Plot() {
-        this(new Crop("Pumpkin", "Amateur"), 0);
+        this(new Crop("Pumpkin", "Apprentice"), 0);
         type = "Pumpkin";
     }
 

@@ -2,14 +2,14 @@ package tests.M3;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Crop;
-import model.Market;
-import model.Player;
-import model.CropStage;
-import static org.junit.Assert.*;
-/*import org.junit.Before;*/
+import model.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+
+/*import org.junit.Before;*/
 
 public class M3Test {
 
@@ -80,5 +80,24 @@ public class M3Test {
         assertEquals(expected1, testArray1);
         assertEquals(expected2, testArray2);
         assertEquals(expected3, testArray3);
+    }
+
+    @Test
+    public void AnnaTestCropIncrementation() {
+        Crop dirtCrop = new Crop("Pumpkin", "Apprentice", CropStage.DIRT);
+        Crop seedCrop = new Crop("Pumpkin", "Apprentice", CropStage.SEED);
+        Crop immatureCrop = new Crop("Pumpkin", "Apprentice", CropStage.IMMATURE);
+        Crop matureCrop = new Crop("Pumpkin", "Apprentice", CropStage.MATURE);
+        Crop harvestedCrop = new Crop("Pumpkin", "Apprentice", CropStage.HARVESTED);
+        dirtCrop.incrementStage();
+        seedCrop.incrementStage();
+        immatureCrop.incrementStage();
+        matureCrop.incrementStage();
+        harvestedCrop.incrementStage();
+        assertEquals(dirtCrop.getStage(), CropStage.SEED);
+        assertEquals(seedCrop.getStage(), CropStage.IMMATURE);
+        assertEquals(immatureCrop.getStage(), CropStage.MATURE);
+        assertEquals(matureCrop.getStage(), CropStage.HARVESTED);
+        assertEquals(harvestedCrop.getStage(), CropStage.DIRT);
     }
 }
