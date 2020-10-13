@@ -9,8 +9,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
-/*import org.junit.Before;*/
-
 public class M3Test {
 
     private Player testPlayerApprenticePumpkin;
@@ -83,7 +81,7 @@ public class M3Test {
     }
 
     @Test
-    public void AnnaTestCropIncrementation() {
+    public void annaTestCropIncrementation() {
         Crop dirtCrop = new Crop("Pumpkin", "Apprentice", CropStage.DIRT);
         Crop seedCrop = new Crop("Pumpkin", "Apprentice", CropStage.SEED);
         Crop immatureCrop = new Crop("Pumpkin", "Apprentice", CropStage.IMMATURE);
@@ -99,5 +97,34 @@ public class M3Test {
         assertEquals(immatureCrop.getStage(), CropStage.MATURE);
         assertEquals(matureCrop.getStage(), CropStage.HARVESTED);
         assertEquals(harvestedCrop.getStage(), CropStage.DIRT);
+    }
+
+    @Test
+    public void emilyTestInventoryPersistence() {
+        player = testPlayerApprenticePumpkin;
+        Farm temp = player.getFarm();
+        String[] tempStrings = new String[5];
+        for (int i = 0; i < 5; i++) {
+            tempStrings[i] = temp.getPlots()[i].getType();
+        }
+        String[] expected = new String[5];
+        expected[0] = "Pumpkin";
+        expected[1] = "Pumpkin";
+        expected[2] = "Pumpkin";
+        expected[3] = "Pumpkin";
+        expected[4] = "Pumpkin";
+        assertNotSame(expected, temp.getPlots());
+        expected[0] = "Corn";
+        expected[1] = "Corn";
+        expected[2] = "Corn";
+        expected[3] = "Corn";
+        expected[4] = "Corn";
+        assertNotSame(expected, temp.getPlots());
+        expected[0] = "Tomato";
+        expected[1] = "Tomato";
+        expected[2] = "Tomato";
+        expected[3] = "Tomato";
+        expected[4] = "Tomato";
+        assertNotSame(expected, temp.getPlots());
     }
 }

@@ -99,5 +99,7 @@ public class Inventory {
         return CAPACITY;
     }
 
-    public boolean isFull() {return size == CAPACITY; }
+    public boolean isFull() {
+        return size == CAPACITY;
+    }
 }

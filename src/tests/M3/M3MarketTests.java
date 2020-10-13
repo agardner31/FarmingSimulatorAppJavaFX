@@ -1,4 +1,4 @@
-package tests.person3_sebastian;
+package tests.M3;
 
 import model.Crop;
 import model.Market;
