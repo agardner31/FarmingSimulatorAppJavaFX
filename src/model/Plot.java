@@ -38,21 +38,27 @@ public class Plot {
         String cropStage = crop.getStage().toString();
         try {
             if (cropStage.equals("Dirt")) {
-                img = new Image(new FileInputStream("images/dirt.jpg"));
+                img = new Image(new FileInputStream("images/empty.jpg"));
             } else if (cropStage.equals("Seed")) {
-                img = new Image(new FileInputStream("images/seed.jpg"));
+                img = new Image(new FileInputStream("images/seeds.jpg"));
             } else if (cropStage.equals("Immature")) {
-                img = new Image(new FileInputStream("images/seedling.jpg"));
+                if (type.equals("Pumpkin")) {
+                    img = new Image(new FileInputStream("images/immaturePumpkin.jpg"));
+                } else if (type.equals("Tomato")) {
+                    img = new Image(new FileInputStream("images/immatureTomato.jpg"));
+                } else if (type.equals("Corn")) {
+                    img = new Image(new FileInputStream("images/immatureCorn.jpg"));
+                }
             } else if (cropStage.equals("Mature")) {
                 if (type.equals("Pumpkin")) {
-                    img = new Image(new FileInputStream("images/pumpkinHarvest.jpg"));
+                    img = new Image(new FileInputStream("images/maturePumpkin.jpg"));
                 } else if (type.equals("Tomato")) {
-                    img = new Image(new FileInputStream("images/tomatoHarvest.jpg"));
+                    img = new Image(new FileInputStream("images/matureTomato.jpg"));
                 } else if (type.equals("Corn")) {
-                    img = new Image(new FileInputStream("images/cornHarvest.jpg"));
+                    img = new Image(new FileInputStream("images/matureCorn.jpg"));
                 }
             } else if (cropStage.equals("Harvested")) {
-                img = new Image(new FileInputStream("images/dirt.jpg"));
+                img = new Image(new FileInputStream("images/empty.jpg"));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -132,6 +132,8 @@ public class FarmScreen implements IScreen {
             final int index = i;
             boxOfLabels.getStyleClass().add("plotLabel");
             ImageView img = new ImageView(temp.getImg());
+            img.setPreserveRatio(true);
+            img.setFitHeight(120);
             Button growButton = new Button("Plant");
             growButton.setOnAction((e) -> {
                 if (!temp.getType().equals("None")) {
