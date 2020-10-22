@@ -14,7 +14,7 @@
 }
 .vBox {
     -fx-padding: 30;
-    -fx-alignment: BASELINE_CENTER;
+    -fx-alignment: CENTER;
     -fx-background-color: #658E6E;
     -fx-spacing: 10;
     -fx-max-height: 800;

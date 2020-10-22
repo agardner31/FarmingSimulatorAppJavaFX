@@ -78,7 +78,6 @@ public class FarmScreen implements IScreen {
         Label inventoryLabel = new Label("Items");
 
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
-        System.out.println(inventoryVisible);
         inventoryWithLabel.setVisible(inventoryVisible);
 
         incrementTimeButton.setOnAction((e) -> {
