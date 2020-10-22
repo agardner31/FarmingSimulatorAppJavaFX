@@ -4,9 +4,12 @@ import controller.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.*;
 
@@ -68,10 +71,13 @@ public class MarketScreen implements IScreen {
             cropLabel.setOnMouseEntered(e -> {
                 finalCropLabel.setScaleX(1.5);
                 finalCropLabel.setScaleY(1.5);
+                finalCropLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("#B9E1C1"),
+                        null, null)));
             });
             cropLabel.setOnMouseExited(e -> {
                 finalCropLabel.setScaleX(1);
                 finalCropLabel.setScaleY(1);
+                finalCropLabel.setBackground(null);
             });
 
             inventoryPane.add(cropLabel, i % 10, j);
@@ -116,10 +122,13 @@ public class MarketScreen implements IScreen {
             cropLabel.setOnMouseEntered(e -> {
                 finalCropLabel.setScaleX(1.5);
                 finalCropLabel.setScaleY(1.5);
+                finalCropLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("#B9E1C1"),
+                        null, null)));
             });
             cropLabel.setOnMouseExited(e -> {
                 finalCropLabel.setScaleX(1);
                 finalCropLabel.setScaleY(1);
+                finalCropLabel.setBackground(null);
             });
 
             marketPane.add(cropLabel, i % 10, j);

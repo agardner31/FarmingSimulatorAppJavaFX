@@ -9,11 +9,10 @@ public class Farm {
 
     public Farm(String difficulty) {
         plots = new Plot[initialCapacity];
-        String[] randomType = new String[]{"Pumpkin", "Tomato", "Corn"};
-        Random rand = new Random();
+//        String[] randomType = new String[]{"Pumpkin", "Tomato", "Corn"};
+//        Random rand = new Random();
         for (int i = 0; i < plots.length; i++) {
-            plots[i] = new Plot(new Crop(randomType[rand.nextInt(3)],
-                    difficulty), i + 1);
+            plots[i] = new Plot(null, i + 1);
         }
     }
 

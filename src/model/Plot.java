@@ -22,7 +22,9 @@ public class Plot {
 
     public Plot(Crop crop, int title) {
         this.crop = crop;
-        this.type = crop.getType();
+        if (crop != null) {
+            this.type = crop.getType();
+        }
         this.title = "Plot " + title;
         try {
             img = new Image(new FileInputStream("images/dirt.jpg"));

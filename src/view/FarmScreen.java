@@ -5,9 +5,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import model.Crop;
 import model.CropStage;
 import model.Inventory;
@@ -28,6 +31,8 @@ public class FarmScreen implements IScreen {
     private HBox plotBox;
     private Button incrementTimeButton;
     private boolean inventoryVisible;
+    private int targetPlantCrop;
+    private Label targetCropLabel;
 
     public FarmScreen(int width, int height, Player player, boolean inventoryVisible) {
         this.inventoryVisible = inventoryVisible;
@@ -42,13 +47,14 @@ public class FarmScreen implements IScreen {
         inventoryButton = new Button("Inventory");
         incrementTimeButton = new Button("Next Day");
         plotBox = fillPlotPane();
+        targetPlantCrop = -1;
     }
 
     private GridPane getInventoryPane() {
         inventoryPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCapacity(); i++) {
-            Crop crop;
+            Crop crop = null;
             Label cropLabel = new Label("");
             try {
                 crop = inventory.getInventoryList().get(i);
@@ -60,10 +66,33 @@ public class FarmScreen implements IScreen {
             if (i % 10 == 0) {
                 j++;
             }
-            /*final int targetCrop = i;
+            final int finalCropIndex = i;
+            final Crop finalCrop = crop;
+            final Label finalCropLabel = cropLabel;
             cropLabel.setOnMouseClicked((e) -> {
-                inventory.removeItem(targetCrop); //how to get the specific inventory item
-            });*/
+                if (finalCrop != null && finalCrop.getStage().equals(CropStage.SEED)) {
+                    if (targetPlantCrop == -1) {
+                        targetCropLabel = finalCropLabel;
+                        targetCropLabel.setScaleX(1.5);
+                        targetCropLabel.setScaleY(1.5);
+                        targetPlantCrop = finalCropIndex;
+                    } else {
+                        targetCropLabel = finalCropLabel;
+                        targetCropLabel.setScaleX(1);
+                        targetCropLabel.setScaleY(1);
+                        targetPlantCrop = -1;
+                    }
+                }
+            });
+
+            cropLabel.setOnMouseEntered((f) -> {
+                finalCropLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("#B9E1C1"),
+                        null, null)));
+            });
+
+            cropLabel.setOnMouseExited((f) -> {
+                finalCropLabel.setBackground(null);
+            });
 
             inventoryPane.add(cropLabel, i % 10, j);
         }
@@ -140,12 +169,11 @@ public class FarmScreen implements IScreen {
             }
             VBox boxOfLabels = new VBox(plotNumber, plotType, growStage);
             boxOfLabels.setOnMouseEntered((e) -> {
-                boxOfLabels.setScaleX(1.5);
-                boxOfLabels.setScaleY(1.5);
+                boxOfLabels.setBackground(new Background(new BackgroundFill(Color.valueOf("#B9E1C1"),
+                        null, null)));
             });
             boxOfLabels.setOnMouseExited((e) -> {
-                boxOfLabels.setScaleX(1);
-                boxOfLabels.setScaleY(1);
+                boxOfLabels.setBackground(null);
             });
 
             final int index = i;
@@ -175,11 +203,17 @@ public class FarmScreen implements IScreen {
                         img.setImage(temp.getImg());
                     }
                 } else {
-                    plantAndWaterButton.setText("Water");
-                    plant(temp);
-                    growStage.setText(temp.getCrop().getStage().toString());
-                    plotType.setText(temp.getCrop().getType());
-                    img.setImage(temp.getImg());
+                    if (targetPlantCrop != -1) {
+                        plantAndWaterButton.setText("Water");
+                        plant(temp);
+                        growStage.setText(temp.getCrop().getStage().toString());
+                        plotType.setText(temp.getCrop().getType());
+                        img.setImage(temp.getImg());
+                        targetCropLabel.setScaleX(1);
+                        targetCropLabel.setScaleY(1);
+                        targetPlantCrop = -1;
+                        Controller.enterFarm(player, player.getDifficulty(), true);
+                    }
                 }
             });
             VBox onePlot = new VBox(boxOfLabels, img, plantAndWaterButton);
@@ -198,7 +232,8 @@ public class FarmScreen implements IScreen {
     private void plant(Plot temp) {
         //NOT YET FULLY IMPLEMENTED
         //TO DO: GET CROP SELECTED FROM INVENTORY, SET TEMP'S CROP TO THAT. REMOVE THAT CROP FROM INVENTORY.
-        temp.setCrop(new Crop("Pumpkin", player.getDifficulty()));
+        temp.setCrop(player.getInventory().getInventoryList().get(targetPlantCrop));
+        player.getInventory().removeItem(targetPlantCrop);
     }
 
     private String getPlantAndWaterButton(Plot plot) {
