@@ -1,5 +1,6 @@
 package tests.person4_emily;
 
+import model.Crop;
 import model.Plot;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ public class EmilyTest {
 
     @Test
     public void testPlotInitialization() {
-        assertEquals(plot.getType(), "None");
+        assertEquals(plot.getCrop().getType(), "None");
         assertEquals(plot.getTitle(), "");
     }
 
@@ -28,7 +29,7 @@ public class EmilyTest {
 
     @Test
     public void testType() {
-        plot.setType("Tomato");
-        assertEquals(plot.getType(), "Tomato");
+        plot.setCrop(new Crop("Tomato", "Apprentice"));
+        assertEquals(plot.getCrop().getType(), "Tomato");
     }
 }
