@@ -152,7 +152,6 @@ public class FarmScreen implements IScreen {
         return new Scene(finalScene, width, height);
     }
 
-    //TO DO: ADD ABILITY TO SELECT CROPS TO PLANT FROM INVENTORY
     private HBox fillPlotPane() {
         HBox plotBox = new HBox(20);
         for (int i = 0; i < plots.length; i++) {
@@ -176,7 +175,6 @@ public class FarmScreen implements IScreen {
                 boxOfLabels.setBackground(null);
             });
 
-            final int index = i;
             boxOfLabels.getStyleClass().add("plotLabel");
             ImageView img = new ImageView(temp.getImg());
             img.setPreserveRatio(true);
@@ -230,8 +228,6 @@ public class FarmScreen implements IScreen {
     }
 
     private void plant(Plot temp) {
-        //NOT YET FULLY IMPLEMENTED
-        //TO DO: GET CROP SELECTED FROM INVENTORY, SET TEMP'S CROP TO THAT. REMOVE THAT CROP FROM INVENTORY.
         temp.setCrop(player.getInventory().getInventoryList().get(targetPlantCrop));
         player.getInventory().removeItem(targetPlantCrop);
     }
