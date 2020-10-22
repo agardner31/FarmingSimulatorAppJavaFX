@@ -80,8 +80,7 @@ public class M3Test {
         assertEquals(expected3, testArray3);
     }
 
-    @Test
-    public void annaTestCropIncrementation() {
+    /*public void annaTestCropIncrementation() {
         Crop dirtCrop = new Crop("Pumpkin", "Apprentice", CropStage.DIRT);
         Crop seedCrop = new Crop("Pumpkin", "Apprentice", CropStage.SEED);
         Crop immatureCrop = new Crop("Pumpkin", "Apprentice", CropStage.IMMATURE);
@@ -97,7 +96,7 @@ public class M3Test {
         assertEquals(immatureCrop.getStage(), CropStage.MATURE);
         assertEquals(matureCrop.getStage(), CropStage.HARVESTED);
         assertEquals(harvestedCrop.getStage(), CropStage.DIRT);
-    }
+    }*/
 
     @Test
     public void emilyTestInventoryPersistence() {

@@ -35,30 +35,36 @@ public class Plot {
         this.img = img;
     }
     public Image getImg() {
-        String cropStage = crop.getStage().toString();
         try {
-            if (cropStage.equals("Dirt")) {
+            if (crop == null) {
                 img = new Image(new FileInputStream("images/empty.jpg"));
-            } else if (cropStage.equals("Seed")) {
-                img = new Image(new FileInputStream("images/seeds.jpg"));
-            } else if (cropStage.equals("Immature")) {
-                if (type.equals("Pumpkin")) {
-                    img = new Image(new FileInputStream("images/immaturePumpkin.jpg"));
-                } else if (type.equals("Tomato")) {
-                    img = new Image(new FileInputStream("images/immatureTomato.jpg"));
-                } else if (type.equals("Corn")) {
-                    img = new Image(new FileInputStream("images/immatureCorn.jpg"));
+            } else {
+                String cropStage = crop.getStage().toString();
+                if (cropStage.equals("Dirt")) {
+                    img = new Image(new FileInputStream("images/empty.jpg"));
+                } else if (cropStage.equals("Seed")) {
+                    img = new Image(new FileInputStream("images/seeds.jpg"));
+                } else if (cropStage.equals("Immature")) {
+                    if (type.equals("Pumpkin")) {
+                        img = new Image(new FileInputStream("images/immaturePumpkin.jpg"));
+                    } else if (type.equals("Tomato")) {
+                        img = new Image(new FileInputStream("images/immatureTomato.jpg"));
+                    } else if (type.equals("Corn")) {
+                        img = new Image(new FileInputStream("images/immatureCorn.jpg"));
+                    }
+                } else if (cropStage.equals("Mature")) {
+                    if (type.equals("Pumpkin")) {
+                        img = new Image(new FileInputStream("images/maturePumpkin.jpg"));
+                    } else if (type.equals("Tomato")) {
+                        img = new Image(new FileInputStream("images/matureTomato.jpg"));
+                    } else if (type.equals("Corn")) {
+                        img = new Image(new FileInputStream("images/matureCorn.jpg"));
+                    }
+                } else if (cropStage.equals("Harvested")) {
+                    img = new Image(new FileInputStream("images/empty.jpg"));
+                } else if (cropStage.equals("Dead")) {
+                    img = new Image(new FileInputStream("images/empty.jpg")); //dead crop image not yet made
                 }
-            } else if (cropStage.equals("Mature")) {
-                if (type.equals("Pumpkin")) {
-                    img = new Image(new FileInputStream("images/maturePumpkin.jpg"));
-                } else if (type.equals("Tomato")) {
-                    img = new Image(new FileInputStream("images/matureTomato.jpg"));
-                } else if (type.equals("Corn")) {
-                    img = new Image(new FileInputStream("images/matureCorn.jpg"));
-                }
-            } else if (cropStage.equals("Harvested")) {
-                img = new Image(new FileInputStream("images/empty.jpg"));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -70,7 +76,7 @@ public class Plot {
         return crop;
     }
 
-    public void setCrop() {
+    public void setCrop(Crop crop) {
         this.crop = crop;
     }
 

@@ -148,7 +148,7 @@ public class MarketScreen implements IScreen {
         farmButton = new Button("Farm");
         farmButton.setVisible(true);
         farmButton.setOnAction((e) -> {
-            Controller.enterFarm(player, player.getDifficulty(), "Pumpkin");
+            Controller.enterFarm(player, player.getDifficulty());
         });
 
         Text buySell = new Text("Click on item in your inventory to sell it or"

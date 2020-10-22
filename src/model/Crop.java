@@ -13,14 +13,17 @@ public class Crop {
 
     private int baseSellPrice;
 
+    private double waterLevel;
+
     public Crop(String type, String difficulty) {
-        this(type, difficulty, CropStage.DIRT);
+        this(type, difficulty, CropStage.SEED);
     }
 
     public Crop(String type, String difficulty, CropStage stage) {
         this.type = type;
         this.stage = stage;
         setPrice(difficulty, type);
+        waterLevel = .5;
     }
 
     private void setPrice(String difficulty, String type) {
@@ -82,29 +85,35 @@ public class Crop {
         this.stage = stage;
     }
 
-    public CropStage incrementStage() { //make sure to change label price by calling to String again
-        if (stage.equals(CropStage.DIRT)) {
-            stage = CropStage.SEED;
-        } else if (stage.equals(CropStage.SEED)) {
+    public boolean grow() { //make sure to change label price by calling to String again
+        if (stage.equals(CropStage.SEED)) {
             stage = CropStage.IMMATURE;
         } else if (stage.equals(CropStage.IMMATURE)) {
             stage = CropStage.MATURE;
         } else if (stage.equals(CropStage.MATURE)) {
-            stage = CropStage.HARVESTED;
+            stage = CropStage.DEAD;
+        } else {
+            return false; //crop did not grow
+        }
+        waterLevel -= .4;
+        if (waterLevel < 0) {
+            stage = CropStage.DEAD;
+        }
+        return true; //crop did grow
+    }
+
+    public boolean harvest() {
+        if (stage.equals(CropStage.MATURE)) {
+            stage = CropStage.DIRT;
+            return true;
             //inventory.addItem()
             //
             //
             ///
             //
             //
-
-
-
-
-        } else if (stage.equals(CropStage.HARVESTED)) {
-            stage = CropStage.DIRT;
         }
-        return stage;
+        return false;
     }
 
     @Override
@@ -131,6 +140,15 @@ public class Crop {
             return this.type + "\n" + stage.toString() + "\n" + "$" + sellPrice + ".00";
         } else {
             return this.type + "\n" + stage.toString() + "\n" + "$0.00";
+        }
+    }
+
+    public void water() {
+        if (!stage.equals(CropStage.DEAD)) {
+            waterLevel += .4;
+        }
+        if (waterLevel > 1) {
+            stage = CropStage.DEAD;
         }
     }
 }
