@@ -27,8 +27,10 @@ public class FarmScreen implements IScreen {
     private Button marketButton;
     private HBox plotBox;
     private Button incrementTimeButton;
+    private boolean inventoryVisible;
 
-    public FarmScreen(int width, int height, String difficulty, Player player) {
+    public FarmScreen(int width, int height, Player player, boolean inventoryVisible) {
+        this.inventoryVisible = inventoryVisible;
         this.width = width;
         this.height = height;
         this.player = player;
@@ -76,7 +78,8 @@ public class FarmScreen implements IScreen {
         Label inventoryLabel = new Label("Items");
 
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
-        inventoryWithLabel.setVisible(false);
+        System.out.println(inventoryVisible);
+        inventoryWithLabel.setVisible(inventoryVisible);
 
         incrementTimeButton.setOnAction((e) -> {
             for (int i = 0; i < plots.length; i++) {
@@ -84,14 +87,16 @@ public class FarmScreen implements IScreen {
                     plots[i].getCrop().grow();
                 }
             }
-            Controller.enterFarm(player, player.getDifficulty());
+            Controller.enterFarm(player, player.getDifficulty(), inventoryVisible);
         });
 
         inventoryButton.setOnAction((e) -> {
             if (!inventoryWithLabel.isVisible()) {
                 inventoryWithLabel.setVisible(true);
+                inventoryVisible = true;
             } else {
                 inventoryWithLabel.setVisible(false);
+                inventoryVisible = false;
             }
         });
 
@@ -160,16 +165,9 @@ public class FarmScreen implements IScreen {
                             plantAndWaterButton.setText("Plant");
                             img.setImage(temp.getImg());
                         }
-                    } else if ((temp.getCrop()).getStage().toString().equals("Seed")) {
-                        temp.getCrop().water();
-                        plantAndWaterButton.setText(getPlantAndWaterButton(temp));
-                        growStage.setText(temp.getCrop().getStage().toString());
-                        img.setImage(temp.getImg());
-                    } else if ((temp.getCrop()).getStage().toString().equals("Immature")) {
-                        temp.getCrop().water();
-                        plantAndWaterButton.setText(getPlantAndWaterButton(temp));
-                        growStage.setText(temp.getCrop().getStage().toString());
-                        img.setImage(temp.getImg());
+                    } else if ((temp.getCrop()).getStage().toString().equals("Seed")
+                            || (temp.getCrop()).getStage().toString().equals("Immature")) {
+                        displayGrowth(temp, plantAndWaterButton, growStage, img);
                     } else if (temp.getCrop().getStage().equals(CropStage.DEAD)) {
                         growStage.setText("Dirt");
                         plotType.setText("Empty");
@@ -189,6 +187,13 @@ public class FarmScreen implements IScreen {
             plotBox.getChildren().add(onePlot);
         }
         return plotBox;
+    }
+
+    private void displayGrowth(Plot temp, Button plantAndWaterButton, Label growStage, ImageView img) {
+        temp.getCrop().water();
+        plantAndWaterButton.setText(getPlantAndWaterButton(temp));
+        growStage.setText(temp.getCrop().getStage().toString());
+        img.setImage(temp.getImg());
     }
 
     private void plant(Plot temp) {

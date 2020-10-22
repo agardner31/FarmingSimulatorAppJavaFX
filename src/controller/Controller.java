@@ -61,7 +61,7 @@ public class Controller extends Application {
             } else {
                 Player player = new Player(levels.getValue(), new Farm(levels.getValue()),
                         seedList.getValue());
-                enterFarm(player, levels.getValue());
+                enterFarm(player, levels.getValue(), false);
             }
         });
         Scene scene = configScreen.getScene();
@@ -70,9 +70,9 @@ public class Controller extends Application {
         mainWindow.show();
     }
 
-    public static void enterFarm(Player player, String difficulty) {
+    public static void enterFarm(Player player, String difficulty, boolean inventoryVisible) {
         currentView = "Farm";
-        FarmScreen farmScreen = new FarmScreen(WIDTH, HEIGHT, difficulty, player);
+        FarmScreen farmScreen = new FarmScreen(WIDTH, HEIGHT, player, inventoryVisible);
         Scene scene = farmScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");
         mainWindow.setScene(scene);
