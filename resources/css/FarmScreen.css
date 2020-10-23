@@ -14,7 +14,7 @@
 }
 .vBox {
     -fx-padding: 30;
-    -fx-alignment: CENTER;
+    -fx-alignment: TOP_CENTER;
     -fx-background-color: #658E6E;
     -fx-spacing: 10;
     -fx-max-height: 800;
@@ -50,4 +50,9 @@
     -fx-font: 16px "Segoe UI";
     -fx-alignment: CENTER;
     -fx-padding: 20;
+}
+.plantAndHarvestPlusWaterButtons {
+    -fx-hgap: 5;
+    -fx-vgap: 10;
+    -fx-alignment: CENTER;
 }

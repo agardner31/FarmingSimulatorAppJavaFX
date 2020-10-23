@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +17,9 @@ import model.CropStage;
 import model.Inventory;
 import model.Player;
 import model.Plot;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FarmScreen implements IScreen {
     private int width;
@@ -159,14 +163,17 @@ public class FarmScreen implements IScreen {
             Label plotNumber = new Label("Plot#" + (i + 1));
             Label plotType;
             Label growStage;
+            Label waterLevel;
             if (temp.getCrop() == null) {
                 plotType = new Label("Empty");
                 growStage = new Label("Dirt");
+                waterLevel = new Label("Moisture: 50%");
             } else {
                 plotType = new Label(temp.getCrop().getType());
                 growStage = new Label((temp.getCrop()).getStage().toString());
+                waterLevel = new Label(String.valueOf("Moisture: " + (temp.getCrop().getWaterLevel())) + '%');
             }
-            VBox boxOfLabels = new VBox(plotNumber, plotType, growStage);
+            VBox boxOfLabels = new VBox(plotNumber, plotType, growStage, waterLevel);
             boxOfLabels.setOnMouseEntered((e) -> {
                 boxOfLabels.setBackground(new Background(new BackgroundFill(Color.valueOf("#B9E1C1"),
                         null, null)));
@@ -179,34 +186,35 @@ public class FarmScreen implements IScreen {
             ImageView img = new ImageView(temp.getImg());
             img.setPreserveRatio(true);
             img.setFitHeight(120);
-            Button plantAndWaterButton = new Button(getPlantAndWaterButton(temp));
-            plantAndWaterButton.setOnAction((e) -> {
+            Button plantAndHarvestButton = new Button(getPlantAndHarvestButtonString(temp));
+            plantAndHarvestButton.setOnAction((e) -> {
                 if (temp.getCrop() != null) {
                     if (temp.getCrop().getStage().toString().equals("Mature")) {
                         if (!inventory.isFull()) {
                             harvestCrop(temp);
-                            growStage.setText("Dirt");
-                            plotType.setText("Empty");
-                            plantAndWaterButton.setText("Plant");
-                            img.setImage(temp.getImg());
+                            displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
                         }
                     } else if ((temp.getCrop()).getStage().toString().equals("Seed")
                             || (temp.getCrop()).getStage().toString().equals("Immature")) {
-                        displayGrowth(temp, plantAndWaterButton, growStage, img);
+                        temp.getCrop().grow();
+                        displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
                     } else if (temp.getCrop().getStage().equals(CropStage.DEAD)) {
-                        growStage.setText("Dirt");
                         plotType.setText("Empty");
                         temp.setCrop(null);
-                        plantAndWaterButton.setText("Plant");
-                        img.setImage(temp.getImg());
+                        displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
                     }
                 } else {
                     if (targetPlantCrop != -1) {
-                        plantAndWaterButton.setText("Water");
-                        plant(temp);
-                        growStage.setText(temp.getCrop().getStage().toString());
+                        String waterLevelText = "";
+                        Pattern p = Pattern.compile("\\d+");
+                        Matcher m = p.matcher(waterLevel.getText());
+                        while(m.find()) {
+                            waterLevelText = m.group();
+                        }
+                        int waterLevelInt = (int)Integer.parseInt(waterLevelText);
+                        plant(temp, waterLevelInt);
+                        displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
                         plotType.setText(temp.getCrop().getType());
-                        img.setImage(temp.getImg());
                         targetCropLabel.setScaleX(1);
                         targetCropLabel.setScaleY(1);
                         targetPlantCrop = -1;
@@ -214,34 +222,63 @@ public class FarmScreen implements IScreen {
                     }
                 }
             });
-            VBox onePlot = new VBox(boxOfLabels, img, plantAndWaterButton);
+
+            Button waterButton = new Button("Water");
+            waterButton.setOnAction((e) -> {
+                        if (temp.getCrop() != null) {
+                            temp.getCrop().water();
+                        } else {
+                            String waterLevelText = "";
+                            Pattern p = Pattern.compile("\\d+");
+                            Matcher m = p.matcher(waterLevel.getText());
+                            while(m.find()) {
+                                waterLevelText = m.group();
+                            }
+                            int waterLevelInt = (int)Integer.parseInt(waterLevelText) + 20;
+                            if (waterLevelInt > 100) {
+                                waterLevelInt = 100;
+                            }
+                            waterLevel.setText("Moisture: " + String.valueOf((int)waterLevelInt) + "%");
+                        }
+                        displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
+                    }
+            );
+            HBox plantAndHarvestPlusWaterButtons = new HBox(plantAndHarvestButton, waterButton);
+            plantAndHarvestPlusWaterButtons.setSpacing(10);
+            plantAndHarvestPlusWaterButtons.setAlignment(Pos.CENTER);
+            VBox onePlot = new VBox(boxOfLabels, img, plantAndHarvestPlusWaterButtons);
             plotBox.getChildren().add(onePlot);
         }
         return plotBox;
     }
 
-    private void displayGrowth(Plot temp, Button plantAndWaterButton, Label growStage, ImageView img) {
-        temp.getCrop().water();
-        plantAndWaterButton.setText(getPlantAndWaterButton(temp));
-        growStage.setText(temp.getCrop().getStage().toString());
+    private void displayGrowth(Plot temp, Button plantAndHarvestButton, Label growStage, ImageView img, Label waterLevel) {
+        plantAndHarvestButton.setText(getPlantAndHarvestButtonString(temp));
         img.setImage(temp.getImg());
+        if (temp.getCrop() == null ) {
+            growStage.setText("Dirt");
+        } else {
+            growStage.setText(temp.getCrop().getStage().toString());
+            waterLevel.setText("Moisture: " + String.valueOf((int)temp.getCrop().getWaterLevel()) + "%");
+        }
     }
 
-    private void plant(Plot temp) {
+    private void plant(Plot temp, int waterLevel) {
         temp.setCrop(player.getInventory().getInventoryList().get(targetPlantCrop));
         player.getInventory().removeItem(targetPlantCrop);
+        temp.getCrop().setWaterLevel(waterLevel);
     }
 
-    private String getPlantAndWaterButton(Plot plot) {
+    private String getPlantAndHarvestButtonString(Plot plot) {
         String string;
         if (plot.getCrop() == null || plot.getCrop().getStage().equals(CropStage.DIRT)) {
             string = "Plant";
         } else if (plot.getCrop().getStage().equals(CropStage.SEED) || plot.getCrop().getStage().equals(CropStage.IMMATURE)) {
-            string  = "Water";
+            string  = "Wait";
         } else if (plot.getCrop().getStage().equals(CropStage.MATURE)) {
             string = "Harvest";
         } else if (plot.getCrop().getStage().equals(CropStage.DEAD)) {
-            string = "Remove dead crop";
+            string = "Compost";
         } else {
             throw new IllegalArgumentException("Illegal crop stage");
         }

@@ -13,7 +13,7 @@ public class Crop {
 
     private int baseSellPrice;
 
-    private double waterLevel;
+    private int waterLevel;
 
     public Crop(String type, String difficulty) {
         this(type, difficulty, CropStage.SEED);
@@ -23,7 +23,7 @@ public class Crop {
         this.type = type;
         this.stage = stage;
         setPrice(difficulty, type);
-        waterLevel = .5;
+        waterLevel = 50;
     }
 
     private void setPrice(String difficulty, String type) {
@@ -85,6 +85,10 @@ public class Crop {
         this.stage = stage;
     }
 
+    public double getWaterLevel() {return this.waterLevel; }
+
+    public void setWaterLevel(int waterLevel) {this.waterLevel = waterLevel; }
+
     public boolean grow() { //make sure to change label price by calling to String again
         if (stage.equals(CropStage.SEED)) {
             stage = CropStage.IMMATURE;
@@ -95,13 +99,16 @@ public class Crop {
         } else {
             return false; //crop did not grow
         }
-        waterLevel -= .4;
-        if (waterLevel < 0) {
+        if (waterLevel > 30) {
+            waterLevel -= 30;
+        } else {
+            waterLevel = 0;
             stage = CropStage.DEAD;
         }
         return true; //crop did grow
     }
 
+    //NO LONGER VALID METHOD
     public boolean harvest() {
         if (stage.equals(CropStage.MATURE)) {
             stage = CropStage.DIRT;
@@ -145,10 +152,11 @@ public class Crop {
 
     public void water() {
         if (!stage.equals(CropStage.DEAD)) {
-            waterLevel += .4;
+            waterLevel += 20;
         }
-        if (waterLevel > 1) {
+        if (waterLevel > 100) {
             stage = CropStage.DEAD;
+            waterLevel = 100;
         }
     }
 }
