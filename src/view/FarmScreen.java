@@ -194,10 +194,6 @@ public class FarmScreen implements IScreen {
                             harvestCrop(temp);
                             displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
                         }
-                    } else if ((temp.getCrop()).getStage().toString().equals("Seed")
-                            || (temp.getCrop()).getStage().toString().equals("Immature")) {
-                        temp.getCrop().grow();
-                        displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
                     } else if (temp.getCrop().getStage().equals(CropStage.DEAD)) {
                         plotType.setText("Empty");
                         temp.setCrop(null);
@@ -238,7 +234,7 @@ public class FarmScreen implements IScreen {
                             if (waterLevelInt > 100) {
                                 waterLevelInt = 100;
                             }
-                            waterLevel.setText("Moisture: " + String.valueOf((int)waterLevelInt) + "%");
+                            waterLevel.setText("Moisture: " + ((int) waterLevelInt) + "%");
                         }
                         displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
                     }
@@ -259,7 +255,8 @@ public class FarmScreen implements IScreen {
             growStage.setText("Dirt");
         } else {
             growStage.setText(temp.getCrop().getStage().toString());
-            waterLevel.setText("Moisture: " + String.valueOf((int)temp.getCrop().getWaterLevel()) + "%");
+            int waterLevelInt = (int) temp.getCrop().getWaterLevel();
+            waterLevel.setText("Moisture: " + ((int) waterLevelInt) + "%");
         }
     }
 
