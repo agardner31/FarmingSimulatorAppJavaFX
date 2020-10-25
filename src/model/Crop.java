@@ -85,9 +85,13 @@ public class Crop {
         this.stage = stage;
     }
 
-    public double getWaterLevel() {return this.waterLevel; }
+    public double getWaterLevel() {
+        return this.waterLevel;
+    }
 
-    public void setWaterLevel(int waterLevel) {this.waterLevel = waterLevel; }
+    public void setWaterLevel(int waterLevel) {
+        this.waterLevel = waterLevel;
+    }
 
     public boolean grow() { //make sure to change label price by calling to String again
         if (stage.equals(CropStage.SEED)) {

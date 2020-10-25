@@ -65,7 +65,7 @@ public class Plot {
                 } else if (cropStage.equals("Harvested")) {
                     img = new Image(new FileInputStream("images/empty.jpg"));
                 } else if (cropStage.equals("Dead")) {
-                    img = new Image(new FileInputStream("images/empty.jpg")); //dead crop image not yet made
+                    img = new Image(new FileInputStream("images/empty.jpg"));
                 }
             }
         } catch (FileNotFoundException e) {

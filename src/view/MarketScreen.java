@@ -71,8 +71,9 @@ public class MarketScreen implements IScreen {
             cropLabel.setOnMouseEntered(e -> {
                 finalCropLabel.setScaleX(1.5);
                 finalCropLabel.setScaleY(1.5);
-                finalCropLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("#B9E1C1"),
-                        null, null)));
+                finalCropLabel.setBackground(new Background(
+                        new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                                null)));
             });
             cropLabel.setOnMouseExited(e -> {
                 finalCropLabel.setScaleX(1);
@@ -122,8 +123,9 @@ public class MarketScreen implements IScreen {
             cropLabel.setOnMouseEntered(e -> {
                 finalCropLabel.setScaleX(1.5);
                 finalCropLabel.setScaleY(1.5);
-                finalCropLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("#B9E1C1"),
-                        null, null)));
+                finalCropLabel.setBackground(new Background(
+                        new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                                null)));
             });
             cropLabel.setOnMouseExited(e -> {
                 finalCropLabel.setScaleX(1);
