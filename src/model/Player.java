@@ -9,6 +9,8 @@ public class Player {
 
     private Inventory inventory;
 
+    private int day;
+
     public Player() {
         this("Apprentice", new Farm("Apprentice"), "Corn");
     }
@@ -30,6 +32,7 @@ public class Player {
             this.money = 100;
         }
         this.inventory = new Inventory(startSeed, this.difficulty);
+        day = 1;
     }
 
     public Inventory getInventory() {
@@ -63,5 +66,13 @@ public class Player {
     public int addMoney(int money) {
         this.money += money;
         return money;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void incrementDay() {
+        day++;
     }
 }

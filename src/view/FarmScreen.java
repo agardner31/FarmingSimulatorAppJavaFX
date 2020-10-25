@@ -43,7 +43,7 @@ public class FarmScreen implements IScreen {
         this.width = width;
         this.height = height;
         this.player = player;
-        displayDateLabel = new Label("Day 1");
+        displayDateLabel = new Label("Day " + player.getDay());
         moneyLabel = new Label("Money: $" + player.getMoney() + ".00");
         plots = player.getFarm().getPlots();
         inventory = player.getInventory();
@@ -119,6 +119,7 @@ public class FarmScreen implements IScreen {
                     plots[i].getCrop().grow();
                 }
             }
+            player.incrementDay();
             Controller.enterFarm(player, player.getDifficulty(), inventoryVisible);
         });
 
@@ -187,6 +188,11 @@ public class FarmScreen implements IScreen {
             img.setPreserveRatio(true);
             img.setFitHeight(120);
             Button plantAndHarvestButton = new Button(getPlantAndHarvestButtonString(temp));
+            if (getPlantAndHarvestButtonString(temp).equals("Wait")) {
+                plantAndHarvestButton.setVisible(false);
+            } else {
+                plantAndHarvestButton.setVisible(true);
+            }
             plantAndHarvestButton.setOnAction((e) -> {
                 if (temp.getCrop() != null) {
                     if (temp.getCrop().getStage().toString().equals("Mature")) {
@@ -204,10 +210,10 @@ public class FarmScreen implements IScreen {
                         String waterLevelText = "";
                         Pattern p = Pattern.compile("\\d+");
                         Matcher m = p.matcher(waterLevel.getText());
-                        while(m.find()) {
+                        while (m.find()) {
                             waterLevelText = m.group();
                         }
-                        int waterLevelInt = (int)Integer.parseInt(waterLevelText);
+                        int waterLevelInt = (int) Integer.parseInt(waterLevelText);
                         plant(temp, waterLevelInt);
                         displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
                         plotType.setText(temp.getCrop().getType());
@@ -221,23 +227,23 @@ public class FarmScreen implements IScreen {
 
             Button waterButton = new Button("Water");
             waterButton.setOnAction((e) -> {
-                        if (temp.getCrop() != null) {
-                            temp.getCrop().water();
-                        } else {
-                            String waterLevelText = "";
-                            Pattern p = Pattern.compile("\\d+");
-                            Matcher m = p.matcher(waterLevel.getText());
-                            while(m.find()) {
-                                waterLevelText = m.group();
-                            }
-                            int waterLevelInt = (int)Integer.parseInt(waterLevelText) + 20;
-                            if (waterLevelInt > 100) {
-                                waterLevelInt = 100;
-                            }
-                            waterLevel.setText("Moisture: " + ((int) waterLevelInt) + "%");
+                    if (temp.getCrop() != null) {
+                        temp.getCrop().water();
+                    } else {
+                        String waterLevelText = "";
+                        Pattern p = Pattern.compile("\\d+");
+                        Matcher m = p.matcher(waterLevel.getText());
+                        while(m.find()) {
+                            waterLevelText = m.group();
                         }
-                        displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
+                        int waterLevelInt = (int) Integer.parseInt(waterLevelText) + 20;
+                        if (waterLevelInt > 100) {
+                            waterLevelInt = 100;
+                        }
+                        waterLevel.setText("Moisture: " + ((int) waterLevelInt) + "%");
                     }
+                    displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
+                }
             );
             HBox plantAndHarvestPlusWaterButtons = new HBox(plantAndHarvestButton, waterButton);
             plantAndHarvestPlusWaterButtons.setSpacing(10);
@@ -250,8 +256,13 @@ public class FarmScreen implements IScreen {
 
     private void displayGrowth(Plot temp, Button plantAndHarvestButton, Label growStage, ImageView img, Label waterLevel) {
         plantAndHarvestButton.setText(getPlantAndHarvestButtonString(temp));
+        if (getPlantAndHarvestButtonString(temp).equals("Wait")) {
+            plantAndHarvestButton.setVisible(false);
+        } else {
+            plantAndHarvestButton.setVisible(true);
+        }
         img.setImage(temp.getImg());
-        if (temp.getCrop() == null ) {
+        if (temp.getCrop() == null) {
             growStage.setText("Dirt");
         } else {
             growStage.setText(temp.getCrop().getStage().toString());
