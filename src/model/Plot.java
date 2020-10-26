@@ -15,6 +15,8 @@ public class Plot {
 
     private Image img;
 
+    private int waterLevel;
+
     public Plot() {
         this(new Crop("Pumpkin", "Apprentice"), 0);
         type = "Pumpkin";
@@ -31,6 +33,7 @@ public class Plot {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        waterLevel = 50;
     }
 
     public void setImage(Image img) {
@@ -74,6 +77,14 @@ public class Plot {
         return img;
     }
 
+    public void setWaterLevel(int waterLevel) {
+        this.waterLevel = waterLevel;
+    }
+
+    public int getWaterLevel() {
+        return waterLevel;
+    }
+
     public Crop getCrop() {
         return crop;
     }
@@ -96,5 +107,13 @@ public class Plot {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void dry() {
+        if (waterLevel > 30) {
+            waterLevel -= 30;
+        } else {
+            waterLevel = 0;
+        }
     }
 }

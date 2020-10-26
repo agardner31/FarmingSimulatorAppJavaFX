@@ -93,15 +93,13 @@ public class Crop {
         this.waterLevel = waterLevel;
     }
 
-    public boolean grow() { //make sure to change label price by calling to String again
+    public void grow() { //make sure to change label price by calling to String again
         if (stage.equals(CropStage.SEED)) {
             stage = CropStage.IMMATURE;
         } else if (stage.equals(CropStage.IMMATURE)) {
             stage = CropStage.MATURE;
         } else if (stage.equals(CropStage.MATURE)) {
             stage = CropStage.DEAD;
-        } else {
-            return false; //crop did not grow
         }
         if (waterLevel > 30) {
             waterLevel -= 30;
@@ -109,7 +107,6 @@ public class Crop {
             waterLevel = 0;
             stage = CropStage.DEAD;
         }
-        return true; //crop did grow
     }
 
     //NO LONGER VALID METHOD
@@ -155,9 +152,7 @@ public class Crop {
     }
 
     public void water() {
-        if (!stage.equals(CropStage.DEAD)) {
-            waterLevel += 20;
-        }
+        waterLevel += 20;
         if (waterLevel > 100) {
             stage = CropStage.DEAD;
             waterLevel = 100;
