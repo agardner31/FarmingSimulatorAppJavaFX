@@ -85,7 +85,7 @@ public class Crop {
         this.stage = stage;
     }
 
-    public double getWaterLevel() {
+    public int getWaterLevel() {
         return this.waterLevel;
     }
 

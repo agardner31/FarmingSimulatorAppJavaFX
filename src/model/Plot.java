@@ -114,6 +114,7 @@ public class Plot {
             waterLevel -= 30;
         } else {
             waterLevel = 0;
+            //crop.setStage(CropStage.DEAD);
         }
     }
 }
