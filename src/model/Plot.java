@@ -29,7 +29,7 @@ public class Plot {
         }
         this.title = "Plot " + title;
         try {
-            img = new Image(new FileInputStream("images/dirt.jpg"));
+            img = new Image(new FileInputStream("images/empty.jpg"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

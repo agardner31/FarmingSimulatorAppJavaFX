@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -18,6 +19,8 @@ import model.Inventory;
 import model.Player;
 import model.Plot;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,8 +51,28 @@ public class FarmScreen implements IScreen {
         plots = player.getFarm().getPlots();
         inventory = player.getInventory();
         inventoryPane = getInventoryPane();
-        inventoryButton = new Button("Inventory");
-        incrementTimeButton = new Button("Next Day");
+        inventoryButton = new Button();
+        ImageView inventoryIcon = null;
+        try {
+            inventoryIcon = new ImageView(new Image(new FileInputStream("images/InventoryIcon.png")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        inventoryIcon.setPreserveRatio(true);
+        inventoryIcon.setFitHeight(50);
+        inventoryButton.setGraphic(inventoryIcon);
+
+
+        incrementTimeButton = new Button();
+        ImageView nextDayIcon = null;
+        try {
+            nextDayIcon = new ImageView(new Image(new FileInputStream("images/NextDayIcon.png")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        nextDayIcon.setPreserveRatio(true);
+        nextDayIcon.setFitHeight(50);
+        incrementTimeButton.setGraphic(nextDayIcon);
         plotBox = fillPlotPane();
         targetPlantCrop = -1;
     }
@@ -136,8 +159,17 @@ public class FarmScreen implements IScreen {
         });
 
         //moves to market scene
-        marketButton = new Button("Market");
+        ImageView marketIcon = null;
+        try {
+            marketIcon = new ImageView(new Image(new FileInputStream("images/MarketIcon.png")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        marketIcon.setPreserveRatio(true);
+        marketIcon.setFitHeight(50);
+        marketButton = new Button();
         marketButton.setVisible(true);
+        marketButton.setGraphic(marketIcon);
         marketButton.setOnAction((e) -> {
             Controller.enterMarket(player, player.getDifficulty());
         });

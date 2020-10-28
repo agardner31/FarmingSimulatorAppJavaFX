@@ -4,6 +4,8 @@ import controller.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -12,6 +14,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.*;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class MarketScreen implements IScreen {
     private int width;
@@ -156,7 +161,16 @@ public class MarketScreen implements IScreen {
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
 
         //moves to market scene
-        farmButton = new Button("Farm");
+        farmButton = new Button();
+        ImageView farmIcon = null;
+        try {
+            farmIcon = new ImageView(new Image(new FileInputStream("images/FarmIcon.png")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        farmIcon.setPreserveRatio(true);
+        farmIcon.setFitHeight(50);
+        farmButton.setGraphic(farmIcon);
         farmButton.setVisible(true);
         farmButton.setOnAction((e) -> {
             Controller.enterFarm(player, player.getDifficulty(), false);
