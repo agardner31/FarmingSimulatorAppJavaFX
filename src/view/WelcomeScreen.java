@@ -1,9 +1,15 @@
 package view;
 
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class WelcomeScreen implements IScreen {
     private int width;
@@ -13,20 +19,25 @@ public class WelcomeScreen implements IScreen {
     public WelcomeScreen(int width, int height) {
         this.width = width;
         this.height = height;
-        startButton = new Button("Enter game");
+        startButton = new Button("Start");
     }
 
 
     public Scene getScene() {
         // welcome screen
-        Label welcome = new Label("Farming Game");
-        welcome.getStyleClass().add("welcome");
+        Image welcome = null;
+        try {
+            welcome = new Image(new FileInputStream("images/FarmingSimulator.png"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ImageView welcomeImage = new ImageView(welcome);
 
-        VBox vBox = new VBox(20);
-        vBox.getChildren().addAll(welcome, startButton);
-        vBox.getStyleClass().add("vBox");
+        VBox vbox = new VBox(20);
+        vbox.getChildren().addAll(welcomeImage, startButton);
+        vbox.getStyleClass().add("vBox");
 
-        return new Scene(vBox, width, height);
+        return new Scene(vbox, width, height);
     }
 
     public Button getStartButton() {
