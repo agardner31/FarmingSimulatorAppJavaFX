@@ -54,7 +54,8 @@ public class FarmScreen implements IScreen {
         inventoryButton = new Button();
         ImageView inventoryIcon = null;
         try {
-            inventoryIcon = new ImageView(new Image(new FileInputStream("images/InventoryIcon.png")));
+            inventoryIcon = new ImageView(new Image(
+                    new FileInputStream("images/InventoryIcon.png")));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
