@@ -11,6 +11,7 @@
     -fx-spacing: 10;
     -fx-alignment: CENTER;
     -fx-padding: 10;
+    -fx-background-color: #658E6E;
 }
 .vBox {
     -fx-padding: 30;
@@ -55,4 +56,10 @@
     -fx-hgap: 5;
     -fx-vgap: 10;
     -fx-alignment: CENTER;
+}
+.plotScrollPane {
+    -fx-border-width: 0;
+    -fx-border-radius: 0;
+    -fx-background-color: #658E6E;
+    -fx-min-height: 262;
 }

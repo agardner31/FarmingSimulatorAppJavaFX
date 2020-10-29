@@ -28,9 +28,9 @@ public class Crop {
 
     private void setPrice(String difficulty, String type) {
         if (difficulty.equals("Apprentice")) {
-            setPriceHelper(type, 3);
-        } else if (difficulty.equals("Ordinary Joe")) {
             setPriceHelper(type, 2);
+        } else if (difficulty.equals("Ordinary Joe")) {
+            setPriceHelper(type, 1.5);
         } else {
             setPriceHelper(type, 1);
         }

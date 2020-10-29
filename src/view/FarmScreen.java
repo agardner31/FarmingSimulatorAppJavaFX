@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -35,7 +36,7 @@ public class FarmScreen implements IScreen {
     private GridPane inventoryPane;
     private Button inventoryButton;
     private Button marketButton;
-    private HBox plotBox;
+    private ScrollPane plotBox;
     private Button incrementTimeButton;
     private boolean inventoryVisible;
     private int targetPlantCrop;
@@ -181,7 +182,7 @@ public class FarmScreen implements IScreen {
         inventoryLabel.getStyleClass().add("inventoryLabel");
         moneyLabel.getStyleClass().add("moneyLabel");
         displayDateLabel.getStyleClass().add("displayDateLabel");
-        plotBox.getStyleClass().add("plotBox");
+//        plotBox.getStyleClass().add("plotBox");
         vbox.getStyleClass().add("vBox");
 
         HBox buttonRow = new HBox(inventoryButton, marketButton, incrementTimeButton);
@@ -192,7 +193,7 @@ public class FarmScreen implements IScreen {
         return new Scene(finalScene, width, height);
     }
 
-    private HBox fillPlotPane() {
+    private ScrollPane fillPlotPane() {
         HBox plotBox = new HBox(20);
         for (int i = 0; i < plots.length; i++) {
             Plot temp = plots[i];
@@ -282,7 +283,12 @@ public class FarmScreen implements IScreen {
             VBox onePlot = new VBox(boxOfLabels, img, plantAndHarvestPlusWaterButtons);
             plotBox.getChildren().add(onePlot);
         }
-        return plotBox;
+        plotBox.getStyleClass().add("plotBox");
+        ScrollPane plotScrollPane = new ScrollPane();
+        plotScrollPane.setContent(plotBox);
+        plotScrollPane.getStyleClass().add("plotScrollPane");
+        plotScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        return plotScrollPane;
     }
 
     private void displayGrowth(Plot temp, Button plantAndHarvestButton, Label growStage,
