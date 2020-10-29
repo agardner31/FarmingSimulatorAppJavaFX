@@ -28,11 +28,11 @@ public class Crop {
 
     private void setPrice(String difficulty, String type) {
         if (difficulty.equals("Apprentice")) {
-            setPriceHelper(type, 2);
+            setPriceHelper(type, 3);
         } else if (difficulty.equals("Ordinary Joe")) {
-            setPriceHelper(type, 1);
+            setPriceHelper(type, 2);
         } else {
-            setPriceHelper(type, .5);
+            setPriceHelper(type, 1);
         }
     }
 
