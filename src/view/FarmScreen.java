@@ -90,7 +90,11 @@ public class FarmScreen implements IScreen {
             try {
                 crop = inventory.getInventoryList().get(i);
                 if (crop != null && crop instanceof Crop) {
-                    cropLabel = new Label(((Crop) crop).toString("sell"));
+                    if (((Crop) crop).getStage().equals(CropStage.MATURE)) {
+                        cropLabel = new Label(((Crop) crop).toString("sell"));
+                    } else {
+                        cropLabel = new Label(((Crop) crop).toString("neither"));
+                    }
                 } else if (crop != null && crop instanceof Fertilizer) {
                     cropLabel = new Label(crop.toString());
                 }
@@ -273,7 +277,8 @@ public class FarmScreen implements IScreen {
                         displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel, fertilizerLevel);
                     }
                 } else {
-                    if (targetPlantCrop != -1) {
+                    Item fertString = new Fertilizer("Apprentice");
+                    if (targetPlantCrop != -1 && !targetCropLabel.getText().equals(fertString.toString())) {
                         String waterLevelText = "";
                         Pattern p = Pattern.compile("\\d+");
                         Matcher m = p.matcher(waterLevel.getText());

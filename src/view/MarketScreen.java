@@ -57,7 +57,13 @@ public class MarketScreen implements IScreen {
             try {
                 crop = playerInventory.getInventoryList().get(i);
                 if (crop != null && crop instanceof Crop) {
-                    cropLabel = new Label(((Crop) crop).toString("sell"));
+                    if (((Crop) crop).getStage().equals(CropStage.MATURE)) {
+                        cropLabel = new Label(((Crop) crop).toString("sell"));
+                    } else {
+                        cropLabel = new Label(((Crop) crop).toString("neither"));
+                    }
+                } else if (crop != null && crop instanceof Fertilizer) {
+                    cropLabel = new Label(crop.toString());
                 }
             } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
@@ -67,9 +73,11 @@ public class MarketScreen implements IScreen {
             final int targetCrop = i;
             final Item finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
-                if (playerInventory.removeItem(targetCrop)) {
-                    market.sell(finalCrop);
-                    Controller.enterMarket(player, player.getDifficulty());
+                if (finalCrop instanceof Crop && ((Crop) finalCrop).getStage().equals(CropStage.MATURE)) {
+                    if (playerInventory.removeItem(targetCrop)) {
+                        market.sell(finalCrop);
+                        Controller.enterMarket(player, player.getDifficulty());
+                    }
                 }
             });
             Label finalCropLabel = cropLabel;
@@ -104,6 +112,8 @@ public class MarketScreen implements IScreen {
                 crop = marketInventory.getInventoryList().get(i);
                 if (crop != null && crop instanceof Crop) {
                     cropLabel = new Label(((Crop) crop).toString("buy"));
+                } else if (crop != null && crop instanceof Fertilizer) {
+                    cropLabel = new Label(((Fertilizer) crop).toString("buy"));
                 }
             } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");

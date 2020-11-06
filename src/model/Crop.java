@@ -40,12 +40,12 @@ public class Crop implements Item {
     @Override
     public void setPriceHelper(String type, double difficultyMultiplier) {
         if (type.equals("Pumpkin")) {
-            buyPrice = 20;
+            buyPrice = 8;
             baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
             baseSellPrice = sellPrice;
         } else if (type.equals("Corn")) {
-            buyPrice = 10;
+            buyPrice = 6;
             baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
             baseSellPrice = sellPrice;
