@@ -24,6 +24,7 @@ import model.Plot;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -386,6 +387,14 @@ public class FarmScreen implements IScreen {
 
 
     public void harvestCrop(Plot plot) {
+        if (plot.getFertilizerLevel() > 0) {
+            Random rand = new Random();
+            int randNum = rand.nextInt(3); //33% chance to get double yield
+            if (randNum == 1) {
+                inventory.addToPane(plot.getCrop());
+                inventory.addItem(plot.getCrop());
+            }
+        }
         inventory.addToPane(plot.getCrop());
         inventory.addItem(plot.getCrop());
         plot.setCrop(null);
