@@ -30,6 +30,8 @@ public class MarketScreen implements IScreen {
     private Button farmButton;
     private HBox plotBox;
     private GridPane marketPane;
+    private GridPane forHirePane;
+    private Label displayForHireLabel;
     private Market market;
     private Inventory playerInventory;
     private Inventory marketInventory;
@@ -39,6 +41,8 @@ public class MarketScreen implements IScreen {
         this.height = height;
         this.player = player;
         displayMarketLabel = new Label("Market");
+        displayForHireLabel = new Label("Farm Workers for Hire");
+        forHirePane = getForHirePane();
         moneyLabel = new Label("Money: $" + player.getMoney() + ".00");
         market = new Market(player, difficulty);
         marketInventory = market.getMarketInventory();
@@ -93,11 +97,38 @@ public class MarketScreen implements IScreen {
         return inventoryPane;
     }
 
+    private GridPane getForHirePane() {
+        forHirePane = new GridPane();
+        int[] skillLevels = {1,2,3};
+        Label workerLabel = new Label("");
+        Label finalWorkerLabel = new Label("");
+        FarmWorker helper = null;
+
+        for (int i = 0; i < 3; i++) {
+            helper = new FarmWorker(i + 1);
+            workerLabel = new Label(helper.toString());
+            workerLabel.getStyleClass().add("cropBox");
+            Label tempWorkerLabel = workerLabel;
+            workerLabel.setOnMouseEntered(e -> {
+                tempWorkerLabel.setBackground(new Background(
+                        new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                                null)));
+            });
+            workerLabel.setOnMouseExited(e -> {
+                tempWorkerLabel.setBackground(null);
+            });
+
+            forHirePane.add(workerLabel, i, 0);
+        }
+        forHirePane.getStyleClass().add("inventoryPane");
+        return forHirePane;
+    }
+
 
     private GridPane getMarketPane() {
         marketPane = new GridPane();
         int j = -1;
-        for (int i = 0; i < Inventory.getCapacity(); i++) {
+        for (int i = 0; i < 10; i++) {
             Crop crop = null;
             Label cropLabel = new Label("");
             try {
@@ -178,12 +209,13 @@ public class MarketScreen implements IScreen {
 
         Text buySell = new Text("Click on item in your inventory to sell it or"
                 + " click on item in the market inventory to buy");
-        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, inventoryWithLabel,
+        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, displayForHireLabel, forHirePane, inventoryWithLabel,
                 buySell);
         buySell.getStyleClass().add("moneyLabel");
         inventoryLabel.getStyleClass().add("inventoryLabel");
         moneyLabel.getStyleClass().add("moneyLabel");
         displayMarketLabel.getStyleClass().add("displayDateLabel");
+        displayForHireLabel.getStyleClass().add("displayDateLabel");
         marketPane.getStyleClass().add("plotBox"); //change to marketPane css later
         //vbox.getStyleClass().add("vBox");
         vbox.setSpacing(20);

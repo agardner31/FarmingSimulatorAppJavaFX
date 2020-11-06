@@ -7,18 +7,20 @@ public class FarmWorker {
     private int wage;
     private boolean paid;
     private String name;
+    private int skill;
 
-    public FarmWorker(String difficulty) {
-        setWage(difficulty);
+
+    public FarmWorker(int skill) {
+        setWage(skill);
         selectName();
         this.paid = true;
-
+        this.skill = skill;
     }
 
-    private void setWage(String skill) {
-        if (skill.equals("Apprentice")) {
+    private void setWage(int skill) {
+        if (skill == 1) {
             this.wage = 10;
-        } else if (skill.equals("Ordinary Joe")) {
+        } else if (skill == 2) {
             this.wage = 20;
         } else {
             this.wage = 30;
@@ -45,5 +47,18 @@ public class FarmWorker {
 
     public int getWage() {
         return wage;
+    }
+
+    public String toString() {
+        String level = "";
+        if (skill == 1) {
+            level = "Apprentice";
+        } else if (skill == 2) {
+            level = "Ordinary Joe";
+        } else {
+            level = "Master Farmer";
+        }
+        String label = this.name + "\n" + level + "\nDaily Wage: " + this.wage;
+        return label;
     }
 }
