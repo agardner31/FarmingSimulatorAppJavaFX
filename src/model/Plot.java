@@ -25,7 +25,7 @@ public class Plot {
     public Plot(Crop crop, int title) {
         this.crop = crop;
         if (crop != null) {
-            this.type = crop.getType();
+            this.type = ((Crop) crop).getType();
         }
         this.title = "Plot " + title;
         try {

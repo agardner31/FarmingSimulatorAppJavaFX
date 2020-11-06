@@ -1,6 +1,6 @@
 package model;
 
-public class Crop {
+public class Crop implements Item {
     private String type;
 
     private CropStage stage;
@@ -26,7 +26,8 @@ public class Crop {
         waterLevel = 50;
     }
 
-    private void setPrice(String difficulty, String type) {
+    @Override
+    public void setPrice(String difficulty, String type) {
         if (difficulty.equals("Apprentice")) {
             setPriceHelper(type, 2);
         } else if (difficulty.equals("Ordinary Joe")) {
@@ -36,7 +37,8 @@ public class Crop {
         }
     }
 
-    private void setPriceHelper(String type, double difficultyMultiplier) {
+    @Override
+    public void setPriceHelper(String type, double difficultyMultiplier) {
         if (type.equals("Pumpkin")) {
             buyPrice = 20;
             baseBuyPrice = buyPrice;
@@ -57,6 +59,7 @@ public class Crop {
         buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
     }
 
+    @Override
     public int getBuyPrice() {
         return buyPrice;
     }
@@ -65,6 +68,7 @@ public class Crop {
         return sellPrice;
     }
 
+    @Override
     public int getBaseBuyPrice() {
         return baseBuyPrice;
     }

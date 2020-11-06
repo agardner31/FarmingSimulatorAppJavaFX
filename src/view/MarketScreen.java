@@ -52,12 +52,12 @@ public class MarketScreen implements IScreen {
         inventoryPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCapacity(); i++) {
-            Crop crop = null;
+            Item crop = null;
             Label cropLabel = new Label("");
             try {
                 crop = playerInventory.getInventoryList().get(i);
-                if (crop != null) {
-                    cropLabel = new Label(crop.toString("sell"));
+                if (crop != null && crop instanceof Crop) {
+                    cropLabel = new Label(((Crop) crop).toString("sell"));
                 }
             } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
@@ -65,7 +65,7 @@ public class MarketScreen implements IScreen {
                 j++;
             }
             final int targetCrop = i;
-            final Crop finalCrop = crop;
+            final Item finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
                 if (playerInventory.removeItem(targetCrop)) {
                     market.sell(finalCrop);
@@ -98,19 +98,19 @@ public class MarketScreen implements IScreen {
         marketPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCapacity(); i++) {
-            Crop crop = null;
+            Item crop = null;
             Label cropLabel = new Label("");
             try {
                 crop = marketInventory.getInventoryList().get(i);
-                if (crop != null) {
-                    cropLabel = new Label(crop.toString("buy"));
+                if (crop != null && crop instanceof Crop) {
+                    cropLabel = new Label(((Crop) crop).toString("buy"));
                 }
             } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
             if (i % 10 == 0) {
                 j++;
             }
-            final Crop finalCrop = crop;
+            final Item finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
                 if (finalCrop != null) {
                     int price = finalCrop.getBuyPrice();

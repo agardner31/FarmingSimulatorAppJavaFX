@@ -27,15 +27,15 @@ public class Market {
         return playerInventory;
     }
 
-    public void buy(Crop crop, int price) {
+    public void buy(Item crop, int price) {
         if (crop != null) {
             player.setMoney(player.getMoney() - price);
         }
     }
 
-    public void sell(Crop crop) {
-        if (crop != null) {
-            player.setMoney(player.getMoney() + crop.getSellPrice());
+    public void sell(Item crop) {
+        if (crop != null && crop instanceof Crop) {
+            player.setMoney(player.getMoney() + ((Crop) crop).getSellPrice());
         }
     }
 }

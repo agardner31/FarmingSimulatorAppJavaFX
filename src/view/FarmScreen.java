@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import model.Crop;
 import model.CropStage;
 import model.Inventory;
+import model.Item;
 import model.Player;
 import model.Plot;
 
@@ -83,12 +84,12 @@ public class FarmScreen implements IScreen {
         inventoryPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCapacity(); i++) {
-            Crop crop = null;
+            Item crop = null;
             Label cropLabel = new Label("");
             try {
                 crop = inventory.getInventoryList().get(i);
-                if (crop != null) {
-                    cropLabel = new Label(crop.toString("sell"));
+                if (crop != null && crop instanceof Crop) {
+                    cropLabel = new Label(((Crop) crop).toString("sell"));
                 }
             } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
@@ -96,20 +97,22 @@ public class FarmScreen implements IScreen {
                 j++;
             }
             final int finalCropIndex = i;
-            final Crop finalCrop = crop;
+            final Item finalCrop = crop;
             final Label finalCropLabel = cropLabel;
             cropLabel.setOnMouseClicked((e) -> {
-                if (finalCrop != null && finalCrop.getStage().equals(CropStage.SEED)) {
-                    if (targetPlantCrop == -1) {
-                        targetCropLabel = finalCropLabel;
-                        targetCropLabel.setScaleX(1.5);
-                        targetCropLabel.setScaleY(1.5);
-                        targetPlantCrop = finalCropIndex;
-                    } else {
-                        targetCropLabel = finalCropLabel;
-                        targetCropLabel.setScaleX(1);
-                        targetCropLabel.setScaleY(1);
-                        targetPlantCrop = -1;
+                if (finalCrop instanceof Crop) {
+                    if (finalCrop != null && ((Crop) finalCrop).getStage().equals(CropStage.SEED)) {
+                        if (targetPlantCrop == -1) {
+                            targetCropLabel = finalCropLabel;
+                            targetCropLabel.setScaleX(1.5);
+                            targetCropLabel.setScaleY(1.5);
+                            targetPlantCrop = finalCropIndex;
+                        } else {
+                            targetCropLabel = finalCropLabel;
+                            targetCropLabel.setScaleX(1);
+                            targetCropLabel.setScaleY(1);
+                            targetPlantCrop = -1;
+                        }
                     }
                 }
             });
@@ -309,7 +312,7 @@ public class FarmScreen implements IScreen {
     }
 
     private void plant(Plot temp, int waterLevel) {
-        temp.setCrop(player.getInventory().getInventoryList().get(targetPlantCrop));
+        temp.setCrop((Crop) player.getInventory().getInventoryList().get(targetPlantCrop));
         player.getInventory().removeItem(targetPlantCrop);
         temp.getCrop().setWaterLevel(waterLevel);
     }

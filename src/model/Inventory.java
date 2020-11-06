@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class Inventory {
-    private ObservableList<Crop> inventoryList;
+    private ObservableList<Item> inventoryList;
 
     private int size;
 
@@ -27,12 +27,12 @@ public class Inventory {
 
     private void addStartSeed(String startSeed, String difficulty) {
         for (int i = 0; i < 3; i++) {
-            Crop starterCrop = new Crop(startSeed, difficulty, CropStage.SEED);
+            Item starterCrop = new Crop(startSeed, difficulty, CropStage.SEED);
             addItem(starterCrop);
         }
     }
 
-    public boolean addItem(Crop item) {
+    public boolean addItem(Item item) {
         if (size == CAPACITY) {
             return false;
         }
@@ -54,7 +54,7 @@ public class Inventory {
         return false;
     }
 
-    public void addToPane(Crop item) {
+    public void addToPane(Item item) {
         for (int i = 0; i < Inventory.getCapacity(); i++) {
             if (i >= inventoryPane.getChildren().size()) {
                 Label label = new Label(item.toString());
@@ -83,7 +83,7 @@ public class Inventory {
         return inventoryPane;
     }
 
-    public ObservableList<Crop> getInventoryList() {
+    public ObservableList<Item> getInventoryList() {
         return inventoryList;
     }
 
