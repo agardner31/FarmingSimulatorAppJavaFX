@@ -1,29 +1,56 @@
 package model;
 
 public class Fertilizer implements Item {
+    private String type = "Fertilizer";
+
     private int buyPrice;
 
     private int baseBuyPrice;
 
-    public Fertilizer() {};
+    public Fertilizer(String difficulty) {
+        setPrice(difficulty, type);
+    };
 
     @Override
     public void setPrice(String difficulty, String type) {
-
+        if (difficulty.equals("Apprentice")) {
+            setPriceHelper(type, 2);
+        } else if (difficulty.equals("Ordinary Joe")) {
+            setPriceHelper(type, 1.5);
+        } else {
+            setPriceHelper(type, 1);
+        }
     }
 
     @Override
     public void setPriceHelper(String type, double difficultyMultiplier) {
-
+        if (type.equals("Fertilizer")) {
+            baseBuyPrice = 5;
+            buyPrice = (int) (baseBuyPrice * difficultyMultiplier);
+        }
+        buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
     }
 
     @Override
     public int getBuyPrice() {
-        return 0;
+        return buyPrice;
     }
 
     @Override
     public int getBaseBuyPrice() {
-        return 0;
+        return baseBuyPrice;
+    }
+
+    @Override
+    public String toString() {
+        return toString("");
+    }
+
+    public String toString(String type) {
+        if (type.equals("buy")) {
+            return this.type + "\n\n" + "$" + buyPrice + ".00";
+        } else {
+            return this.type;
+        }
     }
 }

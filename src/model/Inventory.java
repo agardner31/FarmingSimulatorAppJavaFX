@@ -44,10 +44,10 @@ public class Inventory {
     }
 
 
-    public boolean removeItem(int targetCrop) {
-        if (targetCrop >= 0 && targetCrop < inventoryList.size()) {
-            inventoryList.remove(targetCrop);
-            removeFromPane(targetCrop);
+    public boolean removeItem(int targetItem) {
+        if (targetItem >= 0 && targetItem < inventoryList.size()) {
+            inventoryList.remove(targetItem);
+            removeFromPane(targetItem);
             size--;
             return true;
         }
