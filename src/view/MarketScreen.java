@@ -73,7 +73,8 @@ public class MarketScreen implements IScreen {
             final int targetCrop = i;
             final Item finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
-                if (finalCrop instanceof Crop && ((Crop) finalCrop).getStage().equals(CropStage.MATURE)) {
+                if (finalCrop instanceof Crop
+                        && ((Crop) finalCrop).getStage().equals(CropStage.MATURE)) {
                     if (playerInventory.removeItem(targetCrop)) {
                         market.sell(finalCrop);
                         Controller.enterMarket(player, player.getDifficulty());

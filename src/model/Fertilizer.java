@@ -53,4 +53,8 @@ public class Fertilizer implements Item {
             return this.type;
         }
     }
+
+    public String getType() {
+        return type;
+    }
 }

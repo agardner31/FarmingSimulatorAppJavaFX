@@ -213,7 +213,6 @@ public class FarmScreen implements IScreen {
         inventoryLabel.getStyleClass().add("inventoryLabel");
         moneyLabel.getStyleClass().add("moneyLabel");
         displayDateLabel.getStyleClass().add("displayDateLabel");
-//        plotBox.getStyleClass().add("plotBox");
         vbox.getStyleClass().add("vBox");
 
         HBox buttonRow = new HBox(inventoryButton, marketButton, incrementTimeButton);
@@ -245,7 +244,8 @@ public class FarmScreen implements IScreen {
                         + (temp.getWaterLevel())) + '%');
                 fertilizerLevel = new Label("Fertilizer: " + temp.getFertilizerLevel() + "%");
             }
-            VBox boxOfLabels = new VBox(plotNumber, plotType, growStage, waterLevel, fertilizerLevel);
+            VBox boxOfLabels = new VBox(plotNumber, plotType, growStage, waterLevel,
+                    fertilizerLevel);
             boxOfLabels.setOnMouseEntered((e) -> {
                 boxOfLabels.setBackground(new Background(
                         new BackgroundFill(Color.valueOf("#B9E1C1"), null,
@@ -270,16 +270,19 @@ public class FarmScreen implements IScreen {
                     if (temp.getCrop().getStage().toString().equals("Mature")) {
                         if (!inventory.isFull()) {
                             harvestCrop(temp);
-                            displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel, fertilizerLevel);
+                            displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                                    waterLevel, fertilizerLevel);
                         }
                     } else if (temp.getCrop().getStage().equals(CropStage.DEAD)) {
                         plotType.setText("Empty");
                         temp.setCrop(null);
-                        displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel, fertilizerLevel);
+                        displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                                waterLevel, fertilizerLevel);
                     }
                 } else {
                     Item fertString = new Fertilizer("Apprentice");
-                    if (targetPlantCrop != -1 && !targetCropLabel.getText().equals(fertString.toString())) {
+                    if (targetPlantCrop != -1
+                            && !targetCropLabel.getText().equals(fertString.toString())) {
                         String waterLevelText = "";
                         Pattern p = Pattern.compile("\\d+");
                         Matcher m = p.matcher(waterLevel.getText());
@@ -288,7 +291,8 @@ public class FarmScreen implements IScreen {
                         }
                         int waterLevelInt = (int) Integer.parseInt(waterLevelText);
                         plant(temp, waterLevelInt);
-                        displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel, fertilizerLevel);
+                        displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                                waterLevel, fertilizerLevel);
                         plotType.setText(temp.getCrop().getType());
                         targetCropLabel.setScaleX(1);
                         targetCropLabel.setScaleY(1);
@@ -309,20 +313,24 @@ public class FarmScreen implements IScreen {
                             temp.setWaterLevel(100);
                         }
                     }
-                    displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel, fertilizerLevel);
+                    displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                            waterLevel, fertilizerLevel);
                 }
             );
-            HBox plantAndHarvestPlusWaterButtons = new HBox(plantAndHarvestButton, waterButton);
+            HBox plantAndHarvestPlusWaterButtons = new HBox(plantAndHarvestButton,
+                    waterButton);
             plantAndHarvestPlusWaterButtons.setSpacing(10);
             plantAndHarvestPlusWaterButtons.setAlignment(Pos.CENTER);
 
             Button fertilizeButton = new Button("Fertilize");
             fertilizeButton.setOnAction((e) -> {
                 Item fertString = new Fertilizer("Apprentice");
-                if (targetPlantCrop != -1 && targetCropLabel.getText().equals(fertString.toString())) {
+                if (targetPlantCrop != -1
+                        && targetCropLabel.getText().equals(fertString.toString())) {
                     temp.setFertilizerLevel(100);
                     player.getInventory().removeItem(targetPlantCrop);
-                    displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel, fertilizerLevel);
+                    displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                            waterLevel, fertilizerLevel);
                     targetCropLabel.setScaleX(1);
                     targetCropLabel.setScaleY(1);
                     targetPlantCrop = -1;
@@ -332,7 +340,8 @@ public class FarmScreen implements IScreen {
             HBox fertilizerBox = new HBox(fertilizeButton);
             fertilizerBox.setSpacing(10);
             fertilizerBox.setAlignment(Pos.CENTER);
-            VBox onePlot = new VBox(boxOfLabels, img, plantAndHarvestPlusWaterButtons, fertilizerBox);
+            VBox onePlot = new VBox(boxOfLabels, img, plantAndHarvestPlusWaterButtons,
+                    fertilizerBox);
             plotBox.getChildren().add(onePlot);
         }
         plotBox.getStyleClass().add("plotBox");
