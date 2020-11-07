@@ -22,7 +22,6 @@ public class Fertilizer implements Item {
         }
     }
 
-    @Override
     public void setPriceHelper(String type, double difficultyMultiplier) {
         if (type.equals("Fertilizer")) {
             baseBuyPrice = 3;

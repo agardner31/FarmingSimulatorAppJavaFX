@@ -37,7 +37,6 @@ public class Crop implements Item {
         }
     }
 
-    @Override
     public void setPriceHelper(String type, double difficultyMultiplier) {
         if (type.equals("Pumpkin")) {
             buyPrice = 8;
