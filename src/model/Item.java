@@ -6,4 +6,6 @@ public interface Item {
     int getBuyPrice();
 
     int getBaseBuyPrice();
+
+    String toString(String type);
 }

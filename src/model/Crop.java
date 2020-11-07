@@ -15,6 +15,8 @@ public class Crop implements Item {
 
     private int waterLevel;
 
+    private boolean hasPesticides;
+
     public Crop(String type, String difficulty) {
         this(type, difficulty, CropStage.SEED);
     }
@@ -24,6 +26,7 @@ public class Crop implements Item {
         this.stage = stage;
         setPrice(difficulty, type);
         waterLevel = 50;
+        hasPesticides = false;
     }
 
     @Override
@@ -160,5 +163,14 @@ public class Crop implements Item {
             stage = CropStage.DEAD;
             waterLevel = 100;
         }
+    }
+
+    public void spray() {
+        hasPesticides = true;
+        sellPrice *= .8;
+    }
+
+    public boolean hasPesticides() {
+        return hasPesticides;
     }
 }

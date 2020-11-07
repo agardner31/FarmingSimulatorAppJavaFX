@@ -18,6 +18,7 @@ public class Market {
         marketInventory.addItem(new Crop("Corn", difficulty, CropStage.SEED));
         marketInventory.addItem(new Crop("Tomato", difficulty, CropStage.SEED));
         marketInventory.addItem(new Fertilizer(difficulty));
+        marketInventory.addItem(new Pesticide(difficulty));
     }
 
     public Inventory getMarketInventory() {
