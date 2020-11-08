@@ -17,6 +17,8 @@ public class Market {
         marketInventory.addItem(new Crop("Pumpkin", difficulty, CropStage.SEED));
         marketInventory.addItem(new Crop("Corn", difficulty, CropStage.SEED));
         marketInventory.addItem(new Crop("Tomato", difficulty, CropStage.SEED));
+        marketInventory.addItem(new Fertilizer(difficulty));
+        marketInventory.addItem(new Pesticide(difficulty));
     }
 
     public Inventory getMarketInventory() {
@@ -27,15 +29,15 @@ public class Market {
         return playerInventory;
     }
 
-    public void buy(Crop crop, int price) {
+    public void buy(Item crop, int price) {
         if (crop != null) {
             player.setMoney(player.getMoney() - price);
         }
     }
 
-    public void sell(Crop crop) {
-        if (crop != null) {
-            player.setMoney(player.getMoney() + crop.getSellPrice());
+    public void sell(Item crop) {
+        if (crop != null && crop instanceof Crop) {
+            player.setMoney(player.getMoney() + ((Crop) crop).getSellPrice());
         }
     }
 }

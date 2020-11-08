@@ -1,6 +1,6 @@
 package model;
 
-public class Crop {
+public class Crop implements Item {
     private String type;
 
     private CropStage stage;
@@ -15,6 +15,8 @@ public class Crop {
 
     private int waterLevel;
 
+    private boolean hasPesticides;
+
     public Crop(String type, String difficulty) {
         this(type, difficulty, CropStage.SEED);
     }
@@ -24,9 +26,11 @@ public class Crop {
         this.stage = stage;
         setPrice(difficulty, type);
         waterLevel = 50;
+        hasPesticides = false;
     }
 
-    private void setPrice(String difficulty, String type) {
+    @Override
+    public void setPrice(String difficulty, String type) {
         if (difficulty.equals("Apprentice")) {
             setPriceHelper(type, 2);
         } else if (difficulty.equals("Ordinary Joe")) {
@@ -36,14 +40,14 @@ public class Crop {
         }
     }
 
-    private void setPriceHelper(String type, double difficultyMultiplier) {
+    public void setPriceHelper(String type, double difficultyMultiplier) {
         if (type.equals("Pumpkin")) {
-            buyPrice = 20;
+            buyPrice = 8;
             baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
             baseSellPrice = sellPrice;
         } else if (type.equals("Corn")) {
-            buyPrice = 10;
+            buyPrice = 6;
             baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
             baseSellPrice = sellPrice;
@@ -57,6 +61,7 @@ public class Crop {
         buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
     }
 
+    @Override
     public int getBuyPrice() {
         return buyPrice;
     }
@@ -65,6 +70,7 @@ public class Crop {
         return sellPrice;
     }
 
+    @Override
     public int getBaseBuyPrice() {
         return baseBuyPrice;
     }
@@ -157,5 +163,14 @@ public class Crop {
             stage = CropStage.DEAD;
             waterLevel = 100;
         }
+    }
+
+    public void spray() {
+        hasPesticides = true;
+        sellPrice *= .8;
+    }
+
+    public boolean hasPesticides() {
+        return hasPesticides;
     }
 }
