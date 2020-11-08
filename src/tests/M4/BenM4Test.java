@@ -33,28 +33,28 @@ public class BenM4Test {
     }
 
     @Test
-    public void dayIncrementTestWater() {
-        assertEquals(player.getDay(), 1);
-        assertEquals(testCrop.getStage(), CropStage.SEED);
-
-        testCrop.water();
-        hitNextDayButton();
-
-        assertEquals(player.getDay(), 2);
-        assertEquals(testCrop.getStage(), CropStage.IMMATURE);
-
-        testCrop.water();
-        hitNextDayButton();
-
-        assertEquals(player.getDay(), 3);
-        assertEquals(testCrop.getStage(), CropStage.MATURE);
-
-        testCrop.water();
-        hitNextDayButton();
-
-        assertEquals(player.getDay(), 4);
-        assertEquals(testCrop.getStage(), CropStage.DEAD);
-    }
+//    public void dayIncrementTestWater() {
+//        assertEquals(player.getDay(), 1);
+//        assertEquals(testCrop.getStage(), CropStage.SEED);
+//
+//        testCrop.water();
+//        hitNextDayButton();
+//
+//        assertEquals(player.getDay(), 2);
+//        assertEquals(testCrop.getStage(), CropStage.IMMATURE);
+//
+//        testCrop.water();
+//        hitNextDayButton();
+//
+//        assertEquals(player.getDay(), 3);
+//        assertEquals(testCrop.getStage(), CropStage.MATURE);
+//
+//        testCrop.water();
+//        hitNextDayButton();
+//
+//        assertEquals(player.getDay(), 4);
+//        assertEquals(testCrop.getStage(), CropStage.DEAD);
+//    }
 
     private void hitNextDayButton() {
         player.incrementDay();

@@ -42,6 +42,7 @@ public class Plot {
     public void setImage(Image img) {
         this.img = img;
     }
+
     public Image getImg() {
         try {
             if (crop == null) {
@@ -120,12 +121,23 @@ public class Plot {
         this.fertilizerLevel = fertilizerLevel;
     }
 
-    public void dry() {
-        if (waterLevel > 30) {
-            waterLevel -= 30;
-        } else {
+    public void water(int input) {
+        waterLevel += input;
+        if (waterLevel > 100) {
+            if (this.crop != null) {
+                this.crop.setStage(CropStage.DEAD);
+            }
+            waterLevel = 100;
+        }
+    }
+
+    public void dry(int input) {
+        waterLevel -= input;
+        if (waterLevel <= 0) {
             waterLevel = 0;
-            //crop.setStage(CropStage.DEAD);
+            if (this.crop != null) {
+                this.crop.setStage(CropStage.DEAD);
+            }
         }
 
         if (fertilizerLevel > 20) {

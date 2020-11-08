@@ -3,6 +3,8 @@ package model;
 public class Player {
     private String difficulty;
 
+    private String season;
+
     private Farm farm;
 
     private int money;
@@ -12,18 +14,19 @@ public class Player {
     private int day;
 
     public Player() {
-        this("Apprentice", new Farm("Apprentice"), "Corn");
+        this("Apprentice", new Farm("Apprentice"), "Corn", "Spring");
     }
 
     public Player(String difficulty, String startSeed) {
 
-        this(difficulty, new Farm(difficulty), startSeed);
+        this(difficulty, new Farm(difficulty), startSeed, "Spring");
 
     }
 
-    public Player(String difficulty, Farm farm, String startSeed) {
+    public Player(String difficulty, Farm farm, String startSeed, String season) {
         this.difficulty = difficulty;
         this.farm = farm;
+        this.season = season;
         if (difficulty.equals("Apprentice")) {
             this.money = 300;
         } else if (difficulty.equals("Ordinary Joe")) {
@@ -46,6 +49,8 @@ public class Player {
     public String getDifficulty() {
         return difficulty;
     }
+
+    public String getSeason() { return this.season; }
 
     public Farm getFarm() {
         return farm;
