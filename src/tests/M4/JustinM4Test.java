@@ -53,51 +53,51 @@ public class JustinM4Test {
         assertEquals(testCrop3.getStage(), CropStage.DEAD);
     }
 
-    @Test
-    public void cropsIncrementTestWater() {
-        //test corn
-        assertEquals(testCrop.getStage(), CropStage.SEED);
-
-        testCrop.water();
-        testCrop.grow();
-        assertEquals(testCrop.getStage(), CropStage.IMMATURE);
-
-        testCrop.water();
-        testCrop.grow();
-        assertEquals(testCrop.getStage(), CropStage.MATURE);
-
-        testCrop.water();
-        testCrop.grow();
-        assertEquals(testCrop.getStage(), CropStage.DEAD);
-
-        //test tomato
-        assertEquals(testCrop2.getStage(), CropStage.SEED);
-
-        testCrop2.water();
-        testCrop2.grow();
-        assertEquals(testCrop2.getStage(), CropStage.IMMATURE);
-
-        testCrop2.water();
-        testCrop2.grow();
-        assertEquals(testCrop2.getStage(), CropStage.MATURE);
-
-        testCrop2.water();
-        testCrop2.grow();
-        assertEquals(testCrop2.getStage(), CropStage.DEAD);
-
-        //test pumpkin
-        assertEquals(testCrop3.getStage(), CropStage.SEED);
-
-        testCrop3.water();
-        testCrop3.grow();
-        assertEquals(testCrop3.getStage(), CropStage.IMMATURE);
-
-        testCrop3.water();
-        testCrop3.grow();
-        assertEquals(testCrop3.getStage(), CropStage.MATURE);
-
-        testCrop3.water();
-        testCrop3.grow();
-        assertEquals(testCrop3.getStage(), CropStage.DEAD);
-    }
+  //  @Test
+//    public void cropsIncrementTestWater() {
+//        //test corn
+//        assertEquals(testCrop.getStage(), CropStage.SEED);
+//
+//        testCrop.water();
+//        testCrop.grow();
+//        assertEquals(testCrop.getStage(), CropStage.IMMATURE);
+//
+//        testCrop.water();
+//        testCrop.grow();
+//        assertEquals(testCrop.getStage(), CropStage.MATURE);
+//
+//        testCrop.water();
+//        testCrop.grow();
+//        assertEquals(testCrop.getStage(), CropStage.DEAD);
+//
+//        //test tomato
+//        assertEquals(testCrop2.getStage(), CropStage.SEED);
+//
+//        testCrop2.water();
+//        testCrop2.grow();
+//        assertEquals(testCrop2.getStage(), CropStage.IMMATURE);
+//
+//        testCrop2.water();
+//        testCrop2.grow();
+//        assertEquals(testCrop2.getStage(), CropStage.MATURE);
+//
+//        testCrop2.water();
+//        testCrop2.grow();
+//        assertEquals(testCrop2.getStage(), CropStage.DEAD);
+//
+//        //test pumpkin
+//        assertEquals(testCrop3.getStage(), CropStage.SEED);
+//
+//        testCrop3.water();
+//        testCrop3.grow();
+//        assertEquals(testCrop3.getStage(), CropStage.IMMATURE);
+//
+//        testCrop3.water();
+//        testCrop3.grow();
+//        assertEquals(testCrop3.getStage(), CropStage.MATURE);
+//
+//        testCrop3.water();
+//        testCrop3.grow();
+//        assertEquals(testCrop3.getStage(), CropStage.DEAD);
+//    }
 }

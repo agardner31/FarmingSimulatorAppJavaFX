@@ -60,7 +60,7 @@ public class Controller extends Application {
                 warning.setText("Choose a seed.");
             } else {
                 Player player = new Player(levels.getValue(), new Farm(levels.getValue()),
-                        seedList.getValue());
+                        seedList.getValue(), seasonsList.getValue());
                 enterFarm(player, levels.getValue(), false);
             }
         });

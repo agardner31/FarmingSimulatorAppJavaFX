@@ -28,7 +28,7 @@ public class SebastianTests {
         assertEquals(10, player.getFarm().getPlots().length);
 
         farm = new Farm(20, "Apprentice");
-        player = new Player("Some different difficulty", farm, "Corn");
+        player = new Player("Some different difficulty", farm, "Corn", "Winter");
         assertEquals("Some different difficulty", player.getDifficulty());
         assertEquals(100, player.getMoney());
         assertEquals(20, player.getFarm().getPlots().length);
