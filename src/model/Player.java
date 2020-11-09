@@ -50,7 +50,7 @@ public class Player {
         return difficulty;
     }
 
-    public String getSeason() { return this.season; }
+    public String getSeason() { return season; }
 
     public Farm getFarm() {
         return farm;

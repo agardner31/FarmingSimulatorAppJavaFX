@@ -14,13 +14,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import model.*;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class FarmScreen implements IScreen {
     private int width;
@@ -90,7 +90,8 @@ public class FarmScreen implements IScreen {
                     } else {
                         cropLabel = new Label(((Crop) crop).toString("neither"));
                     }
-                } else if (crop != null && (crop instanceof Fertilizer || crop instanceof Pesticide)) {
+                } else if (crop != null && (crop instanceof Fertilizer
+                        || crop instanceof Pesticide)) {
                     cropLabel = new Label(crop.toString());
                 }
             } catch (IndexOutOfBoundsException e) { }
@@ -158,10 +159,24 @@ public class FarmScreen implements IScreen {
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
         inventoryWithLabel.setVisible(inventoryVisible);
 
+        Text randomEventText = new Text("");
+        randomEventText.setFont(Font.font("Verdana", 28));
+        randomEventText.setFill(Color.RED);
+
         incrementTimeButton.setOnAction((e) -> {
             player.getFarm().recalculateRainOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateDroughtOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateLocustsOdds(player.getDifficulty(), player.getSeason());
+            player.getFarm().randomLocustKills(-1);
+            if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
+                randomEventText.setText("It rained today!");
+            } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
+                randomEventText.setText("There was a drought!");
+            }
+            if (player.getFarm().getLocusts()) {
+                randomEventText.setText("Locusts ate" + player.getFarm().getLocustKills()
+                        + "of your crops");
+            }
             for (int i = 0; i < plots.length; i++) {
                 if (plots[i].getCrop() != null) {
                     if (plots[i].getFertilizerLevel() > 0) {
@@ -171,12 +186,14 @@ public class FarmScreen implements IScreen {
                         }
                     }
                     if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
-                        //plots[i].water(player.getFarm().randomRainOrDrought());
+                        plots[i].water(player.getFarm().randomRainOrDrought());
                     } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
-                        //plots[i].water(player.getFarm().randomRainOrDrought());
+                        plots[i].dry(player.getFarm().randomRainOrDrought());
                     }
                     if (player.getFarm().getLocusts()) {
-
+                        if (player.getFarm().randomLocustKills(1) > 0) {
+                            plots[i].getCrop().setStage(CropStage.DEAD);
+                        }
                     }
                     plots[i].getCrop().grow();
                 }
@@ -220,9 +237,12 @@ public class FarmScreen implements IScreen {
         displayDateLabel.getStyleClass().add("displayDateLabel");
         vbox.getStyleClass().add("vBox");
 
-        HBox buttonRow = new HBox(inventoryButton, marketButton, incrementTimeButton);
+        HBox buttonRow = new HBox(inventoryButton, marketButton,
+                incrementTimeButton, randomEventText);
         buttonRow.setSpacing(10);
         VBox finalScene = new VBox(buttonRow, vbox);
+
+
         finalScene.setStyle("-fx-background-color: #658E6E; -fx-padding: 15");
 
         return new Scene(finalScene, width, height);
@@ -373,7 +393,8 @@ public class FarmScreen implements IScreen {
 
 
     private void displayGrowth(Plot temp, Button plantAndHarvestButton, Label growStage,
-                               ImageView img, Label waterLevel, Label fertilizerLabel, Button pesticideButton) {
+                               ImageView img, Label waterLevel, Label fertilizerLabel,
+                               Button pesticideButton) {
         plantAndHarvestButton.setText(getPlantAndHarvestButtonString(temp));
         if (getPlantAndHarvestButtonString(temp).equals("Wait")) {
             plantAndHarvestButton.setVisible(false);

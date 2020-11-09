@@ -62,7 +62,8 @@ public class MarketScreen implements IScreen {
                     } else {
                         cropLabel = new Label(((Crop) crop).toString("neither"));
                     }
-                } else if (crop != null && (crop instanceof Fertilizer || crop instanceof Pesticide)) {
+                } else if (crop != null && (crop instanceof Fertilizer
+                        || crop instanceof Pesticide)) {
                     cropLabel = new Label(crop.toString());
                 }
             } catch (IndexOutOfBoundsException e) { }
@@ -113,7 +114,8 @@ public class MarketScreen implements IScreen {
                 crop = marketInventory.getInventoryList().get(i);
                 if (crop != null && crop instanceof Crop) {
                     cropLabel = new Label(((Crop) crop).toString("buy"));
-                } else if (crop != null && (crop instanceof Fertilizer || crop instanceof Pesticide)) {
+                } else if (crop != null && (crop instanceof Fertilizer
+                        || crop instanceof Pesticide)) {
                     cropLabel = new Label(((Item) crop).toString("buy"));
                 }
             } catch (IndexOutOfBoundsException e) { }
