@@ -41,6 +41,16 @@ public class Player {
         day = 1;
     }
 
+    public int getFarmWorkerEfficiency() {
+        int efficiency = 0;
+        for (int i = 0; i < farmWorkers.length; i++) {
+            if (farmWorkers[i] != null) {
+                efficiency += farmWorkers[i].getSkill();
+            }
+        }
+        return efficiency;
+    }
+
     public FarmWorker[] getFarmWorkers() { return farmWorkers; }
 
     public void setFarmWorkers(FarmWorker[] farmWorkers) { this.farmWorkers = farmWorkers; }
@@ -59,6 +69,7 @@ public class Player {
         }
         return false;
     }
+
 
     public Inventory getInventory() {
         return inventory;

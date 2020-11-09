@@ -172,10 +172,17 @@ public class FarmScreen implements IScreen {
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
         inventoryWithLabel.setVisible(inventoryVisible);
 
+
         incrementTimeButton.setOnAction((e) -> {
+            int workerEfficiency = this.player.getFarmWorkerEfficiency();
             for (int i = 0; i < plots.length; i++) {
                 if (plots[i].getCrop() != null) {
                     plots[i].getCrop().grow();
+                    if (plots[i].getCrop().getStage().equals(CropStage.MATURE) && (workerEfficiency > 0)) {
+                        this.player.addMoney(plots[i].getCrop().getSellPrice());
+                        plots[i].setCrop(null);
+                        workerEfficiency--;
+                    }
                 }
                 plots[i].dry();
             }

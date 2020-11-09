@@ -34,7 +34,6 @@ public class MarketScreen implements IScreen {
     private Market market;
     private Inventory playerInventory;
     private Inventory marketInventory;
-    private Label hireMessage;
 
     public MarketScreen(int width, int height, String difficulty, Player player) {
         this.width = width;
@@ -49,7 +48,6 @@ public class MarketScreen implements IScreen {
         inventoryPane = getInventoryPane();
         marketPane = getMarketPane();
         forHirePane = getForHirePane();
-        hireMessage = new Label("Hire a worker to assist you with your farming.");
     }
 
     private GridPane getInventoryPane() {
@@ -227,10 +225,11 @@ public class MarketScreen implements IScreen {
 
         Text buySell = new Text("Click on item in your inventory to sell it or"
                 + " click on item in the market inventory to buy");
-        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, forHireLabel, forHirePane, hireMessage, inventoryWithLabel,
+        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, forHireLabel, forHirePane, inventoryWithLabel,
                 buySell);
         buySell.getStyleClass().add("moneyLabel");
         inventoryLabel.getStyleClass().add("inventoryLabel");
+        forHireLabel.getStyleClass().add("inventoryLabel");
         moneyLabel.getStyleClass().add("moneyLabel");
         displayMarketLabel.getStyleClass().add("displayDateLabel");
         marketPane.getStyleClass().add("plotBox"); //change to marketPane css later

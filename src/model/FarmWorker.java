@@ -19,11 +19,11 @@ public class FarmWorker {
 
     private void setWage(int skill) {
         if (skill == 1) {
-            this.wage = 10;
+            this.wage = 5;
         } else if (skill == 2) {
-            this.wage = 20;
+            this.wage = 10;
         } else {
-            this.wage = 30;
+            this.wage = 15;
         }
     }
 
@@ -48,6 +48,8 @@ public class FarmWorker {
     public int getWage() {
         return wage;
     }
+
+    public int getSkill() { return skill; }
 
     public String toString() {
         String level = "";
