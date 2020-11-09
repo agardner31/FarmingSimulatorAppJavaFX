@@ -30,9 +30,11 @@ public class MarketScreen implements IScreen {
     private Button farmButton;
     private HBox plotBox;
     private GridPane marketPane;
+    private GridPane forHirePane;
     private Market market;
     private Inventory playerInventory;
     private Inventory marketInventory;
+    private Label hireMessage;
 
     public MarketScreen(int width, int height, String difficulty, Player player) {
         this.width = width;
@@ -46,6 +48,8 @@ public class MarketScreen implements IScreen {
         inventoryButton = new Button("Inventory");
         inventoryPane = getInventoryPane();
         marketPane = getMarketPane();
+        forHirePane = getForHirePane();
+        hireMessage = new Label("Hire a worker to assist you with your farming.");
     }
 
     private GridPane getInventoryPane() {
@@ -102,11 +106,43 @@ public class MarketScreen implements IScreen {
         return inventoryPane;
     }
 
+    private GridPane getForHirePane() {
+        forHirePane = new GridPane();
+        int[] skillLevels = {1, 2, 3};
+        Label workerLabel = null;
+        FarmWorker helper = null;
+
+        for (int i = 0; i < 3; i++) {
+            helper = new FarmWorker(i+1);
+            workerLabel = new Label(helper.toString());
+            forHirePane.add(workerLabel, i, 0);
+            FarmWorker finalHelper = helper;
+            workerLabel.setOnMouseClicked((e) -> {
+                if(this.player.hireWorker(finalHelper)) {
+                    Controller.enterMarket(player, player.getDifficulty());
+                }
+            });
+
+            Label finalWorkerLabel = workerLabel;
+            workerLabel.setOnMouseEntered(e -> {
+                finalWorkerLabel.setBackground(new Background(
+                        new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                                null)));
+            });
+            workerLabel.setOnMouseExited(e -> {
+                finalWorkerLabel.setBackground(null);
+            });
+            workerLabel.getStyleClass().add("cropBox");
+        }
+
+        forHirePane.getStyleClass().add("inventoryPane");
+        return forHirePane;
+    }
 
     private GridPane getMarketPane() {
         marketPane = new GridPane();
         int j = -1;
-        for (int i = 0; i < Inventory.getCapacity(); i++) {
+        for (int i = 0; i < 20; i++) {
             Item crop = null;
             Label cropLabel = new Label("");
             try {
@@ -171,6 +207,8 @@ public class MarketScreen implements IScreen {
 
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
 
+        Label forHireLabel = new Label("Farm Workers for Hire");
+
         //moves to market scene
         farmButton = new Button();
         ImageView farmIcon = null;
@@ -189,7 +227,7 @@ public class MarketScreen implements IScreen {
 
         Text buySell = new Text("Click on item in your inventory to sell it or"
                 + " click on item in the market inventory to buy");
-        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, inventoryWithLabel,
+        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, forHireLabel, forHirePane, hireMessage, inventoryWithLabel,
                 buySell);
         buySell.getStyleClass().add("moneyLabel");
         inventoryLabel.getStyleClass().add("inventoryLabel");

@@ -13,7 +13,7 @@ public class Crop implements Item {
 
     private int baseSellPrice;
 
-    private boolean hasPesticides;
+    private int waterLevel;
 
     public Crop(String type, String difficulty) {
         this(type, difficulty, CropStage.SEED);
@@ -23,10 +23,9 @@ public class Crop implements Item {
         this.type = type;
         this.stage = stage;
         setPrice(difficulty, type);
-        hasPesticides = false;
+        waterLevel = 50;
     }
 
-    @Override
     public void setPrice(String difficulty, String type) {
         if (difficulty.equals("Apprentice")) {
             setPriceHelper(type, 2);
@@ -37,14 +36,14 @@ public class Crop implements Item {
         }
     }
 
-    public void setPriceHelper(String type, double difficultyMultiplier) {
+    private void setPriceHelper(String type, double difficultyMultiplier) {
         if (type.equals("Pumpkin")) {
-            buyPrice = 8;
+            buyPrice = 20;
             baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
             baseSellPrice = sellPrice;
         } else if (type.equals("Corn")) {
-            buyPrice = 6;
+            buyPrice = 10;
             baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
             baseSellPrice = sellPrice;
@@ -58,7 +57,6 @@ public class Crop implements Item {
         buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
     }
 
-    @Override
     public int getBuyPrice() {
         return buyPrice;
     }
@@ -67,7 +65,6 @@ public class Crop implements Item {
         return sellPrice;
     }
 
-    @Override
     public int getBaseBuyPrice() {
         return baseBuyPrice;
     }
@@ -88,6 +85,14 @@ public class Crop implements Item {
         this.stage = stage;
     }
 
+    public int getWaterLevel() {
+        return this.waterLevel;
+    }
+
+    public void setWaterLevel(int waterLevel) {
+        this.waterLevel = waterLevel;
+    }
+
     public void grow() { //make sure to change label price by calling to String again
         if (stage.equals(CropStage.SEED)) {
             stage = CropStage.IMMATURE;
@@ -96,6 +101,27 @@ public class Crop implements Item {
         } else if (stage.equals(CropStage.MATURE)) {
             stage = CropStage.DEAD;
         }
+        if (waterLevel > 30) {
+            waterLevel -= 30;
+        } else {
+            waterLevel = 0;
+            stage = CropStage.DEAD;
+        }
+    }
+
+    //NO LONGER VALID METHOD
+    public boolean harvest() {
+        if (stage.equals(CropStage.MATURE)) {
+            stage = CropStage.DIRT;
+            return true;
+            //inventory.addItem()
+            //
+            //
+            ///
+            //
+            //
+        }
+        return false;
     }
 
     @Override
@@ -125,12 +151,11 @@ public class Crop implements Item {
         }
     }
 
-    public void spray() {
-        hasPesticides = true;
-        sellPrice *= .8;
-    }
-
-    public boolean hasPesticides() {
-        return hasPesticides;
+    public void water() {
+        waterLevel += 20;
+        if (waterLevel > 100) {
+            stage = CropStage.DEAD;
+            waterLevel = 100;
+        }
     }
 }
