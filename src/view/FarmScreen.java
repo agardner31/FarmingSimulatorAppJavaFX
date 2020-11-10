@@ -159,24 +159,14 @@ public class FarmScreen implements IScreen {
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
         inventoryWithLabel.setVisible(inventoryVisible);
 
-        Text randomEventText = new Text("");
-        randomEventText.setFont(Font.font("Verdana", 28));
-        randomEventText.setFill(Color.RED);
+
 
         incrementTimeButton.setOnAction((e) -> {
             player.getFarm().recalculateRainOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateDroughtOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateLocustsOdds(player.getDifficulty(), player.getSeason());
+            player.getFarm().recalculateRandomRainOrDrought();
             player.getFarm().randomLocustKills(-1);
-            if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
-                randomEventText.setText("It rained today!");
-            } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
-                randomEventText.setText("There was a drought!");
-            }
-            if (player.getFarm().getLocusts()) {
-                randomEventText.setText("Locusts ate" + player.getFarm().getLocustKills()
-                        + "of your crops");
-            }
             for (int i = 0; i < plots.length; i++) {
                 if (plots[i].getCrop() != null) {
                     if (plots[i].getFertilizerLevel() > 0) {
@@ -186,9 +176,9 @@ public class FarmScreen implements IScreen {
                         }
                     }
                     if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
-                        plots[i].water(player.getFarm().randomRainOrDrought());
+                        plots[i].water(player.getFarm().getRandomRainOrDrought());
                     } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
-                        plots[i].dry(player.getFarm().randomRainOrDrought());
+                        plots[i].dry(player.getFarm().getRandomRainOrDrought());
                     }
                     if (player.getFarm().getLocusts()) {
                         if (player.getFarm().randomLocustKills(1) > 0) {
@@ -196,12 +186,39 @@ public class FarmScreen implements IScreen {
                         }
                     }
                     plots[i].getCrop().grow();
+                } else {
+                    if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
+                        plots[i].water(player.getFarm().getRandomRainOrDrought());
+                    } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
+                        plots[i].dry(player.getFarm().getRandomRainOrDrought());
+                    }
                 }
-                plots[i].dry(30);
+                if (!player.getFarm().getRain()) {
+                    plots[i].dry(10);
+                }
             }
             player.incrementDay();
             Controller.enterFarm(player, player.getDifficulty(), inventoryVisible);
         });
+
+
+        Text randomEventText = new Text("");
+        randomEventText.setFont(Font.font("Verdana", 28));
+        randomEventText.setFill(Color.RED);
+        if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
+            randomEventText.setText("It rained today!");
+        } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
+            randomEventText.setText("There was a drought!");
+        } else if (player.getFarm().getLocusts()) {
+            randomEventText.setText("Locusts ate " + player.getFarm().getLocustKills()
+                    + " of your crops");
+        } else {
+            randomEventText.setText("");
+        }
+
+
+
+
 
         inventoryButton.setOnAction((e) -> {
             if (!inventoryWithLabel.isVisible()) {
@@ -299,6 +316,19 @@ public class FarmScreen implements IScreen {
                 plantAndHarvestButton.setVisible(true);
                 pesticideButton.setVisible(false);
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
             plantAndHarvestButton.setOnAction((e) -> {
                 if (temp.getCrop() != null) {
                     if (temp.getCrop().getStage().toString().equals("Mature")) {

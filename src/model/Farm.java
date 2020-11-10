@@ -12,6 +12,7 @@ public class Farm {
     private boolean locusts = false;
     private int locustKillsLeft = 0;
     private int locustKills;
+    private int randomRainOrDrought;
 
 
     public Farm(String difficulty) {
@@ -30,7 +31,7 @@ public class Farm {
 
     public void recalculateRainOdds(String difficulty, String season) {
         Random rand = new Random();
-        int randBound = 3;
+        int randBound = 6;
         if (difficulty.equals("Ordinary Joe")) {
             randBound++;
         } else if (difficulty.equals("Master Farmer")) {
@@ -49,7 +50,7 @@ public class Farm {
         }
     }
 
-    public int randomRainOrDrought() {
+    public void recalculateRandomRainOrDrought() {
         int returnVal;
         Random rand = new Random();
         int randBound = 3;
@@ -61,12 +62,16 @@ public class Farm {
         } else {
             returnVal = 30;
         }
-        return returnVal;
+        this.randomRainOrDrought = returnVal;
+    }
+
+    public int getRandomRainOrDrought() {
+        return this.randomRainOrDrought;
     }
 
     public void recalculateDroughtOdds(String difficulty, String season) {
         Random rand = new Random();
-        int randBound = 3;
+        int randBound = 6;
         if (difficulty.equals("Ordinary Joe")) {
             randBound++;
         } else if (difficulty.equals("Apprentice")) {
@@ -108,15 +113,22 @@ public class Farm {
 
     public int randomLocustKills(int input) {
         if (input == -1) {
+            int numFullPlots = 0;
+            for (int i = 0; i < plots.length; i++) {
+                if (plots[i] != null && plots[i].getCrop() != null
+                        && !plots[i].getCrop().getStage().equals(CropStage.DEAD)) {
+                    numFullPlots++;
+                }
+            }
             Random rand = new Random();
             int randBound = 3;
             int randNum = rand.nextInt(randBound);
             if (randNum == 1) {
-                locustKills = plots.length;
+                locustKills = numFullPlots;
             } else if (randNum == 2) {
-                locustKills = plots.length / 3;
+                locustKills = numFullPlots / 3;
             } else {
-                locustKills = plots.length / 2;
+                locustKills = numFullPlots / 2;
             }
             if (locustKills < 0) {
                 locustKills = 0;
