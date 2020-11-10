@@ -71,7 +71,7 @@ public class Farm {
 
     public void recalculateDroughtOdds(String difficulty, String season) {
         Random rand = new Random();
-        int randBound = 6;
+        int randBound = 7;
         if (difficulty.equals("Ordinary Joe")) {
             randBound++;
         } else if (difficulty.equals("Apprentice")) {
@@ -92,7 +92,7 @@ public class Farm {
 
     public void recalculateLocustsOdds(String difficulty, String season) {
         Random rand = new Random();
-        int randBound = 3;
+        int randBound = 5;
         if (difficulty.equals("Ordinary Joe")) {
             randBound++;
         } else if (difficulty.equals("Apprentice")) {
