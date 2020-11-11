@@ -5,42 +5,43 @@ import model.Player;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class EmilyM5Test {
     private Player player;
-    private FarmWorker farmWorker;
 
     @Before
-    public void setup() {
+    public void setUp() {
         player = new Player();
-        farmWorker = new FarmWorker(1);
     }
 
     @Test
-    public void testFarmWorkerInstantiation() {
-        //test toString method
-        assertEquals(farmWorker.toString(), farmWorker.getName() + "\n" + farmWorker.getSkill() + "\nDaily Wage:" + farmWorker.getWage());
-        //test getSkill
+    public void testPlayerInitialization() {
+        FarmWorker[] farmWorkers = player.getFarmWorkers();
+        assertEquals(3, farmWorkers.length);
+        assertNull(farmWorkers[0]);
+        assertNull(farmWorkers[1]);
+        assertNull(farmWorkers[2]);
+    }
+
+    @Test
+    public void testHireWorkers() {
+        FarmWorker[] playerWorkers;
+        //= player.getFarmWorkers();
+        //assertNull(playerWorkers);
+
+        FarmWorker farmWorker = new FarmWorker(1);
+        player.hireWorker(farmWorker);
+        playerWorkers = player.getFarmWorkers();
+
+        assertNotNull(playerWorkers);
+        assertEquals(farmWorker.getName(), playerWorkers[0].getName());
+    }
+
+    @Test
+    public void testFarmWorkerInitialization() {
+        FarmWorker farmWorker = new FarmWorker(1);
+        assertEquals(3, farmWorker.getWage());
         assertEquals(1, farmWorker.getSkill());
-        //test getWage
-        assertEquals(5, farmWorker.getWage());
-    }
-
-    @Test
-    public void testNewPlayerMethods() {
-        FarmWorker farmWorker1 = new FarmWorker(1);
-        FarmWorker farmWorker2 = new FarmWorker(2);
-        FarmWorker farmWorker3 = new FarmWorker(3);
-        FarmWorker[] farmWorkers = {farmWorker1, farmWorker2, farmWorker3};
-        player.hireWorker(farmWorker1);
-        player.hireWorker(farmWorker2);
-        player.hireWorker(farmWorker3);
-
-        //test hireFarmWorker and getFarmWorker
-        assertEquals(farmWorkers, player.getFarmWorkers());
-
-        //test getFarmWorkerEfficiency
-        assertEquals(6, player.getFarmWorkerEfficiency());
     }
 }

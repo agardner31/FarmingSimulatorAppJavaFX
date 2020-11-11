@@ -5,7 +5,6 @@ import java.util.Random;
 public class FarmWorker {
 
     private int wage;
-    private boolean paid;
     private String name;
     private int skill;
 
@@ -13,26 +12,17 @@ public class FarmWorker {
     public FarmWorker(int skill) {
         setWage(skill);
         selectName();
-        this.paid = true;
         this.skill = skill;
     }
 
     private void setWage(int skill) {
         if (skill == 1) {
-            this.wage = 5;
+            this.wage = 3;
         } else if (skill == 2) {
-            this.wage = 10;
+            this.wage = 6;
         } else {
-            this.wage = 15;
+            this.wage = 10;
         }
-    }
-
-    private void setPaid(boolean paid) {
-        this.paid = paid;
-    }
-
-    private boolean getPaid() {
-        return this.paid;
     }
 
     private void selectName() {
@@ -49,7 +39,9 @@ public class FarmWorker {
         return wage;
     }
 
-    public int getSkill() { return skill; }
+    public int getSkill() {
+        return skill;
+    }
 
     public String toString() {
         String level = "";

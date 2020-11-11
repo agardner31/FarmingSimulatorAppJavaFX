@@ -51,9 +51,13 @@ public class Player {
         return efficiency;
     }
 
-    public FarmWorker[] getFarmWorkers() { return farmWorkers; }
+    public FarmWorker[] getFarmWorkers() {
+        return farmWorkers;
+    }
 
-    public void setFarmWorkers(FarmWorker[] farmWorkers) { this.farmWorkers = farmWorkers; }
+    public void setFarmWorkers(FarmWorker[] farmWorkers) {
+        this.farmWorkers = farmWorkers;
+    }
 
     public boolean hireWorker(FarmWorker newWorker) {
         int count = 0;
@@ -70,7 +74,6 @@ public class Player {
         return false;
     }
 
-
     public Inventory getInventory() {
         return inventory;
     }
@@ -83,7 +86,9 @@ public class Player {
         return difficulty;
     }
 
-    public String getSeason() { return this.season; }
+    public String getSeason() {
+        return season;
+    }
 
     public Farm getFarm() {
         return farm;

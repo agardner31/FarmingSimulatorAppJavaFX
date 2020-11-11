@@ -16,11 +16,11 @@ public class Pesticide implements Item {
     public void setPrice(String difficulty, String type) {
         double difficultyMultiplier;
         if (difficulty.equals("Apprentice")) {
-            difficultyMultiplier = 2;
+            difficultyMultiplier = 1;
         } else if (difficulty.equals("Ordinary Joe")) {
             difficultyMultiplier = 1.5;
         } else {
-            difficultyMultiplier = 1;
+            difficultyMultiplier = 2;
         }
         baseBuyPrice = 2;
         buyPrice = (int) (baseBuyPrice * difficultyMultiplier);

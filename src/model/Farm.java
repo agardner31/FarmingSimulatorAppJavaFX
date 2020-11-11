@@ -10,6 +10,9 @@ public class Farm {
     private boolean rain = false;
     private boolean drought = false;
     private boolean locusts = false;
+    private int locustKillsLeft = 0;
+    private int locustKills;
+    private int randomRainOrDrought;
 
 
     public Farm(String difficulty) {
@@ -28,10 +31,10 @@ public class Farm {
 
     public void recalculateRainOdds(String difficulty, String season) {
         Random rand = new Random();
-        int randBound = 3;
+        int randBound = 6;
         if (difficulty.equals("Ordinary Joe")) {
             randBound++;
-        } else if (difficulty.equals("Master Farmer")){
+        } else if (difficulty.equals("Master Farmer")) {
             randBound += 2;
         }
         if (season.equals("Winter")) {
@@ -47,16 +50,31 @@ public class Farm {
         }
     }
 
-//    public int randomRainOrDrought() {
-//
-//    }
+    public void recalculateRandomRainOrDrought() {
+        int returnVal;
+        Random rand = new Random();
+        int randBound = 3;
+        int randNum = rand.nextInt(randBound);
+        if (randNum == 1) {
+            returnVal = 10;
+        } else if (randNum == 2) {
+            returnVal = 20;
+        } else {
+            returnVal = 30;
+        }
+        this.randomRainOrDrought = returnVal;
+    }
+
+    public int getRandomRainOrDrought() {
+        return this.randomRainOrDrought;
+    }
 
     public void recalculateDroughtOdds(String difficulty, String season) {
         Random rand = new Random();
-        int randBound = 3;
+        int randBound = 7;
         if (difficulty.equals("Ordinary Joe")) {
             randBound++;
-        } else if (difficulty.equals("Apprentice")){
+        } else if (difficulty.equals("Apprentice")) {
             randBound += 2;
         }
         if (season.equals("Fall")) {
@@ -74,10 +92,10 @@ public class Farm {
 
     public void recalculateLocustsOdds(String difficulty, String season) {
         Random rand = new Random();
-        int randBound = 3;
+        int randBound = 5;
         if (difficulty.equals("Ordinary Joe")) {
             randBound++;
-        } else if (difficulty.equals("Apprentice")){
+        } else if (difficulty.equals("Apprentice")) {
             randBound += 2;
         }
         if (season.equals("Spring")) {
@@ -93,15 +111,34 @@ public class Farm {
         }
     }
 
-//    public int randomLocustKills() {
-//        this.getPlots().
-//        Random rand = new Random();
-//        int randBound = 3;
-//        int randNum = rand.nextInt(randBound);
-//        if (randNum == 1) {
-//
-//        }
-//    }
+    public int randomLocustKills(int input) {
+        if (input == -1) {
+            int numFullPlots = 0;
+            for (int i = 0; i < plots.length; i++) {
+                if (plots[i] != null && plots[i].getCrop() != null
+                        && !plots[i].getCrop().getStage().equals(CropStage.DEAD)) {
+                    numFullPlots++;
+                }
+            }
+            Random rand = new Random();
+            int randBound = 3;
+            int randNum = rand.nextInt(randBound);
+            if (randNum == 1) {
+                locustKills = numFullPlots;
+            } else if (randNum == 2) {
+                locustKills = numFullPlots / 3;
+            } else {
+                locustKills = numFullPlots / 2;
+            }
+            if (locustKills < 0) {
+                locustKills = 0;
+            }
+            locustKillsLeft = locustKills;
+        } else {
+            locustKillsLeft--;
+        }
+        return locustKillsLeft;
+    }
 
     public boolean getRain() {
         return this.rain;
@@ -117,5 +154,9 @@ public class Farm {
 
     public Plot[] getPlots() {
         return plots;
+    }
+
+    public int getLocustKills() {
+        return this.locustKills;
     }
 }
