@@ -13,6 +13,8 @@ public class Player {
 
     private int day;
 
+    private FarmWorker[] farmWorkers;
+
     public Player() {
         this("Apprentice", new Farm("Apprentice"), "Corn", "Spring");
     }
@@ -27,6 +29,7 @@ public class Player {
         this.difficulty = difficulty;
         this.farm = farm;
         this.season = season;
+        farmWorkers = new FarmWorker[3];
         if (difficulty.equals("Apprentice")) {
             this.money = 300;
         } else if (difficulty.equals("Ordinary Joe")) {
@@ -36,6 +39,35 @@ public class Player {
         }
         this.inventory = new Inventory(startSeed, this.difficulty);
         day = 1;
+    }
+
+    public int getFarmWorkerEfficiency() {
+        int efficiency = 0;
+        for (int i = 0; i < farmWorkers.length; i++) {
+            if (farmWorkers[i] != null) {
+                efficiency += farmWorkers[i].getSkill();
+            }
+        }
+        return efficiency;
+    }
+
+    public FarmWorker[] getFarmWorkers() { return farmWorkers; }
+
+    public void setFarmWorkers(FarmWorker[] farmWorkers) { this.farmWorkers = farmWorkers; }
+
+    public boolean hireWorker(FarmWorker newWorker) {
+        int count = 0;
+        if (this.money >= newWorker.getWage()) {
+            while (count < farmWorkers.length) {
+                if (farmWorkers[count] == null) {
+                    farmWorkers[count] = newWorker;
+                    this.money -= newWorker.getWage();
+                    return true;
+                }
+                count++;
+            }
+        }
+        return false;
     }
 
     public Inventory getInventory() {

@@ -38,6 +38,7 @@ public class FarmScreen implements IScreen {
     private boolean inventoryVisible;
     private int targetPlantCrop;
     private Label targetCropLabel;
+    private GridPane farmWorkerPane;
 
     public FarmScreen(int width, int height, Player player, boolean inventoryVisible) {
         this.inventoryVisible = inventoryVisible;
@@ -50,6 +51,7 @@ public class FarmScreen implements IScreen {
         inventory = player.getInventory();
         inventoryPane = getInventoryPane();
         inventoryButton = new Button();
+        farmWorkerPane = fillWorkerPane();
         ImageView inventoryIcon = null;
         try {
             inventoryIcon = new ImageView(new Image(
@@ -60,7 +62,6 @@ public class FarmScreen implements IScreen {
         inventoryIcon.setPreserveRatio(true);
         inventoryIcon.setFitHeight(50);
         inventoryButton.setGraphic(inventoryIcon);
-
 
         incrementTimeButton = new Button();
         ImageView nextDayIcon = null;
@@ -74,6 +75,61 @@ public class FarmScreen implements IScreen {
         incrementTimeButton.setGraphic(nextDayIcon);
         plotBox = fillPlotPane();
         targetPlantCrop = -1;
+    }
+
+    private GridPane fillWorkerPane() {
+        farmWorkerPane = new GridPane();
+        Label workerLabel;
+        FarmWorker[] farmWorkers = this.player.getFarmWorkers();
+        for (int i = 0; i < farmWorkers.length; i++) {
+            if (farmWorkers[i] != null) {
+                workerLabel = new Label(farmWorkers[i].toString());
+            } else {
+                workerLabel = new Label("Farm Worker\nPosition Vacant");
+            }
+            workerLabel.getStyleClass().add("cropBox");
+            farmWorkerPane.add(workerLabel, i, 0);
+
+            int firedWorker = i;
+            Label finalWorkerLabel = workerLabel;
+
+            workerLabel.setOnMouseClicked((e) -> {
+                farmWorkers[firedWorker] = null;
+                finalWorkerLabel.setText("Farm Worker\nPosition Vacant");
+                player.setFarmWorkers(farmWorkers);
+
+            });
+            workerLabel.setOnMouseEntered((f) -> {
+                finalWorkerLabel.setBackground(new Background(
+                        new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                                null)));
+            });
+            workerLabel.setOnMouseExited((f) -> {
+                finalWorkerLabel.setBackground(null);
+            });
+        }
+        farmWorkerPane.getStyleClass().add("inventoryPane");
+
+        player.setFarmWorkers(farmWorkers);
+        return farmWorkerPane;
+    }
+
+    public void payWorkers() {
+        FarmWorker[] farmWorkers = this.player.getFarmWorkers();
+        int wage;
+        int money = this.player.getMoney();
+        for (int i = 0; i < farmWorkers.length; i++) {
+            if (farmWorkers[i] != null) {
+                wage = farmWorkers[i].getWage();
+                if (wage <= money) {
+                    money -= wage;
+                } else {
+                    farmWorkers[i] = null;
+                }
+            }
+        }
+        this.player.setMoney(money);
+        this.player.setFarmWorkers(farmWorkers);
     }
 
     private GridPane getInventoryPane() {
@@ -162,6 +218,7 @@ public class FarmScreen implements IScreen {
 
 
         incrementTimeButton.setOnAction((e) -> {
+            int workerEfficiency = this.player.getFarmWorkerEfficiency();
             player.getFarm().recalculateRainOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateDroughtOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateLocustsOdds(player.getDifficulty(), player.getSeason());
@@ -186,6 +243,11 @@ public class FarmScreen implements IScreen {
                         }
                     }
                     plots[i].getCrop().grow();
+                    if (plots[i].getCrop().getStage().equals(CropStage.MATURE) && (workerEfficiency > 0)) {
+                        this.player.addMoney(plots[i].getCrop().getSellPrice());
+                        plots[i].setCrop(null);
+                        workerEfficiency--;
+                    }
                 } else {
                     if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
                         plots[i].water(player.getFarm().getRandomRainOrDrought());
@@ -197,6 +259,7 @@ public class FarmScreen implements IScreen {
                     plots[i].dry(10);
                 }
             }
+            payWorkers();
             player.incrementDay();
             Controller.enterFarm(player, player.getDifficulty(), inventoryVisible);
         });
@@ -246,7 +309,7 @@ public class FarmScreen implements IScreen {
             Controller.enterMarket(player, player.getDifficulty());
         });
 
-        VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox, inventoryWithLabel);
+        VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox, farmWorkerPane, inventoryWithLabel);
 
         inventoryButton.getStyleClass().add("inventoryButton");
         inventoryLabel.getStyleClass().add("inventoryLabel");
