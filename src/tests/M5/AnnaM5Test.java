@@ -1,7 +1,6 @@
 package tests.M5;
 
 import model.Farm;
-import model.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,7 +55,7 @@ public class AnnaM5Test {
                 && farmRand7 <= max);
 
         assertTrue(farmRand1 != farmRand2 || farmRand1 != farmRand3
-        || farmRand1 != farmRand4 || farmRand1 != farmRand5
-        || farmRand1 != farmRand6 || farmRand1 != farmRand6);
+            || farmRand1 != farmRand4 || farmRand1 != farmRand5
+            || farmRand1 != farmRand6 || farmRand1 != farmRand6);
     }
 }
