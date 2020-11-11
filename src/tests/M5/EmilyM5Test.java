@@ -26,8 +26,9 @@ public class EmilyM5Test {
 
     @Test
     public void testHireWorkers() {
-        FarmWorker[] playerWorkers = player.getFarmWorkers();
-        assertNull(playerWorkers);
+        FarmWorker[] playerWorkers;
+        //= player.getFarmWorkers();
+        //assertNull(playerWorkers);
 
         FarmWorker farmWorker = new FarmWorker(1);
         player.hireWorker(farmWorker);
