@@ -238,8 +238,8 @@ public class FarmScreen implements IScreen {
                         plots[i].dry(player.getFarm().getRandomRainOrDrought());
                     }
                     if (player.getFarm().getLocusts()) {
-                        if (player.getFarm().randomLocustKills(1) > 0
-                                && !plots[i].getCrop().hasPesticides()) {
+                        if (!plots[i].getCrop().hasPesticides()
+                                && player.getFarm().randomLocustKills(1) > 0) {
                             plots[i].getCrop().setStage(CropStage.DEAD);
                         }
                     }
@@ -277,7 +277,7 @@ public class FarmScreen implements IScreen {
             randomEventText.setText("There was a drought! -"
                     + player.getFarm().getRandomRainOrDrought() + "% moisture");
         } else if (player.getFarm().getLocusts()) {
-            randomEventText.setText("Locusts ate " + player.getFarm().getLocustKills()
+            randomEventText.setText("Locusts ate " + (player.getFarm().getLocustKills() - 1)
                     + " of your crops");
         } else {
             randomEventText.setText("");
