@@ -26,6 +26,7 @@ public class MarketScreen implements IScreen {
     private Label moneyLabel;
     private Plot[] plots;
     private GridPane inventoryPane;
+    private GridPane forHirePane;
     private Button inventoryButton;
     private Button farmButton;
     private HBox plotBox;
@@ -46,18 +47,26 @@ public class MarketScreen implements IScreen {
         inventoryButton = new Button("Inventory");
         inventoryPane = getInventoryPane();
         marketPane = getMarketPane();
+        forHirePane = getForHirePane();
     }
 
     private GridPane getInventoryPane() {
         inventoryPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCapacity(); i++) {
-            Crop crop = null;
+            Item crop = null;
             Label cropLabel = new Label("");
             try {
                 crop = playerInventory.getInventoryList().get(i);
-                if (crop != null) {
-                    cropLabel = new Label(crop.toString("sell"));
+                if (crop != null && crop instanceof Crop) {
+                    if (((Crop) crop).getStage().equals(CropStage.MATURE)) {
+                        cropLabel = new Label(((Crop) crop).toString("sell"));
+                    } else {
+                        cropLabel = new Label(((Crop) crop).toString("neither"));
+                    }
+                } else if (crop != null && (crop instanceof Fertilizer
+                        || crop instanceof Pesticide)) {
+                    cropLabel = new Label(crop.toString());
                 }
             } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
@@ -65,11 +74,14 @@ public class MarketScreen implements IScreen {
                 j++;
             }
             final int targetCrop = i;
-            final Crop finalCrop = crop;
+            final Item finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
-                if (playerInventory.removeItem(targetCrop)) {
-                    market.sell(finalCrop);
-                    Controller.enterMarket(player, player.getDifficulty());
+                if (finalCrop instanceof Crop
+                        && ((Crop) finalCrop).getStage().equals(CropStage.MATURE)) {
+                    if (playerInventory.removeItem(targetCrop)) {
+                        market.sell(finalCrop);
+                        Controller.enterMarket(player, player.getDifficulty());
+                    }
                 }
             });
             Label finalCropLabel = cropLabel;
@@ -94,23 +106,57 @@ public class MarketScreen implements IScreen {
     }
 
 
+    private GridPane getForHirePane() {
+        forHirePane = new GridPane();
+        int[] skillLevels = {1, 2, 3};
+        Label workerLabel = null;
+        FarmWorker helper = null;
+        for (int i = 0; i < 3; i++) {
+            helper = new FarmWorker(i + 1);
+            workerLabel = new Label(helper.toString());
+            forHirePane.add(workerLabel, i, 0);
+            FarmWorker finalHelper = helper;
+            workerLabel.setOnMouseClicked((e) -> {
+                if (this.player.hireWorker(finalHelper)) {
+                    Controller.enterMarket(player, player.getDifficulty());
+                }
+            });
+            Label finalWorkerLabel = workerLabel;
+            workerLabel.setOnMouseEntered(e -> {
+                finalWorkerLabel.setBackground(new Background(
+                        new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                                null)));
+            });
+            workerLabel.setOnMouseExited(e -> {
+                finalWorkerLabel.setBackground(null);
+            });
+            workerLabel.getStyleClass().add("cropBox");
+        }
+        forHirePane.getStyleClass().add("inventoryPane");
+        return forHirePane;
+    }
+
+
     private GridPane getMarketPane() {
         marketPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCapacity(); i++) {
-            Crop crop = null;
+            Item crop = null;
             Label cropLabel = new Label("");
             try {
                 crop = marketInventory.getInventoryList().get(i);
-                if (crop != null) {
-                    cropLabel = new Label(crop.toString("buy"));
+                if (crop != null && crop instanceof Crop) {
+                    cropLabel = new Label(((Crop) crop).toString("buy"));
+                } else if (crop != null && (crop instanceof Fertilizer
+                        || crop instanceof Pesticide)) {
+                    cropLabel = new Label(((Item) crop).toString("buy"));
                 }
             } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
             if (i % 10 == 0) {
                 j++;
             }
-            final Crop finalCrop = crop;
+            final Item finalCrop = crop;
             cropLabel.setOnMouseClicked((e) -> {
                 if (finalCrop != null) {
                     int price = finalCrop.getBuyPrice();
@@ -157,6 +203,7 @@ public class MarketScreen implements IScreen {
         // farm scene
 
         Label inventoryLabel = new Label("Items");
+        Label forHireLabel = new Label("Farm Workers for Hire");
 
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
 
@@ -173,15 +220,16 @@ public class MarketScreen implements IScreen {
         farmButton.setGraphic(farmIcon);
         farmButton.setVisible(true);
         farmButton.setOnAction((e) -> {
-            Controller.enterFarm(player, player.getDifficulty(), false);
+            Controller.enterFarm(player, player.getDifficulty(), true);
         });
 
         Text buySell = new Text("Click on item in your inventory to sell it or"
                 + " click on item in the market inventory to buy");
-        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, inventoryWithLabel,
-                buySell);
+        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane,
+                forHireLabel, forHirePane, inventoryWithLabel, buySell);
         buySell.getStyleClass().add("moneyLabel");
         inventoryLabel.getStyleClass().add("inventoryLabel");
+        forHireLabel.getStyleClass().add("inventoryLabel");
         moneyLabel.getStyleClass().add("moneyLabel");
         displayMarketLabel.getStyleClass().add("displayDateLabel");
         marketPane.getStyleClass().add("plotBox"); //change to marketPane css later

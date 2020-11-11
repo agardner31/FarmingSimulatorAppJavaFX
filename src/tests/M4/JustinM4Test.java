@@ -53,7 +53,7 @@ public class JustinM4Test {
         assertEquals(testCrop3.getStage(), CropStage.DEAD);
     }
 
-    @Test
+    /*@Test
     public void cropsIncrementTestWater() {
         //test corn
         assertEquals(testCrop.getStage(), CropStage.SEED);
@@ -100,4 +100,5 @@ public class JustinM4Test {
         testCrop3.grow();
         assertEquals(testCrop3.getStage(), CropStage.DEAD);
     }
+     */
 }

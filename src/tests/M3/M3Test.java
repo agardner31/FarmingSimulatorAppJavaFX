@@ -53,11 +53,11 @@ public class M3Test {
 
     @Test
     public void benTestCropArrayCreation() {
-        ObservableList<Crop> testArray1 =
+        ObservableList<Item> testArray1 =
                 testPlayerApprenticeCorn.getInventory().getInventoryList();
-        ObservableList<Crop> testArray2 =
+        ObservableList<Item> testArray2 =
                 testPlayerOrdinaryPumpkin.getInventory().getInventoryList();
-        ObservableList<Crop> testArray3 =
+        ObservableList<Item> testArray3 =
                 testPlayerMasterTomato.getInventory().getInventoryList();
 
         ObservableList<Crop> expected1 = FXCollections.observableArrayList();

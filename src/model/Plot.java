@@ -17,6 +17,8 @@ public class Plot {
 
     private int waterLevel;
 
+    private int fertilizerLevel;
+
     public Plot() {
         this(new Crop("Pumpkin", "Apprentice"), 0);
         type = "Pumpkin";
@@ -25,7 +27,7 @@ public class Plot {
     public Plot(Crop crop, int title) {
         this.crop = crop;
         if (crop != null) {
-            this.type = crop.getType();
+            this.type = ((Crop) crop).getType();
         }
         this.title = "Plot " + title;
         try {
@@ -34,11 +36,13 @@ public class Plot {
             e.printStackTrace();
         }
         waterLevel = 50;
+        fertilizerLevel = 0;
     }
 
     public void setImage(Image img) {
         this.img = img;
     }
+
     public Image getImg() {
         try {
             if (crop == null) {
@@ -109,12 +113,37 @@ public class Plot {
         this.title = title;
     }
 
-    public void dry() {
-        if (waterLevel > 30) {
-            waterLevel -= 30;
-        } else {
+    public int getFertilizerLevel() {
+        return fertilizerLevel;
+    }
+
+    public void setFertilizerLevel(int fertilizerLevel) {
+        this.fertilizerLevel = fertilizerLevel;
+    }
+
+    public void water(int input) {
+        waterLevel += input;
+        if (waterLevel > 100) {
+            if (this.crop != null) {
+                this.crop.setStage(CropStage.DEAD);
+            }
+            waterLevel = 100;
+        }
+    }
+
+    public void dry(int input) {
+        waterLevel -= input;
+        if (waterLevel <= 0) {
             waterLevel = 0;
-            //crop.setStage(CropStage.DEAD);
+            if (this.crop != null) {
+                this.crop.setStage(CropStage.DEAD);
+            }
+        }
+
+        if (fertilizerLevel > 20) {
+            fertilizerLevel -= 20;
+        } else {
+            fertilizerLevel = 0;
         }
     }
 }

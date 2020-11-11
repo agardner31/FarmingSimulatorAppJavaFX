@@ -1,6 +1,6 @@
 package model;
 
-public class Crop {
+public class Crop implements Item {
     private String type;
 
     private CropStage stage;
@@ -13,7 +13,7 @@ public class Crop {
 
     private int baseSellPrice;
 
-    private int waterLevel;
+    private boolean hasPesticides;
 
     public Crop(String type, String difficulty) {
         this(type, difficulty, CropStage.SEED);
@@ -23,27 +23,28 @@ public class Crop {
         this.type = type;
         this.stage = stage;
         setPrice(difficulty, type);
-        waterLevel = 50;
+        hasPesticides = false;
     }
 
-    private void setPrice(String difficulty, String type) {
+    @Override
+    public void setPrice(String difficulty, String type) {
         if (difficulty.equals("Apprentice")) {
             setPriceHelper(type, 2);
         } else if (difficulty.equals("Ordinary Joe")) {
-            setPriceHelper(type, 1);
+            setPriceHelper(type, 1.5);
         } else {
-            setPriceHelper(type, .5);
+            setPriceHelper(type, 1);
         }
     }
 
-    private void setPriceHelper(String type, double difficultyMultiplier) {
+    public void setPriceHelper(String type, double difficultyMultiplier) {
         if (type.equals("Pumpkin")) {
-            buyPrice = 20;
+            buyPrice = 8;
             baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
             baseSellPrice = sellPrice;
         } else if (type.equals("Corn")) {
-            buyPrice = 10;
+            buyPrice = 6;
             baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
             baseSellPrice = sellPrice;
@@ -57,6 +58,7 @@ public class Crop {
         buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
     }
 
+    @Override
     public int getBuyPrice() {
         return buyPrice;
     }
@@ -65,6 +67,7 @@ public class Crop {
         return sellPrice;
     }
 
+    @Override
     public int getBaseBuyPrice() {
         return baseBuyPrice;
     }
@@ -85,14 +88,6 @@ public class Crop {
         this.stage = stage;
     }
 
-    public int getWaterLevel() {
-        return this.waterLevel;
-    }
-
-    public void setWaterLevel(int waterLevel) {
-        this.waterLevel = waterLevel;
-    }
-
     public void grow() { //make sure to change label price by calling to String again
         if (stage.equals(CropStage.SEED)) {
             stage = CropStage.IMMATURE;
@@ -101,27 +96,6 @@ public class Crop {
         } else if (stage.equals(CropStage.MATURE)) {
             stage = CropStage.DEAD;
         }
-        if (waterLevel > 30) {
-            waterLevel -= 30;
-        } else {
-            waterLevel = 0;
-            stage = CropStage.DEAD;
-        }
-    }
-
-    //NO LONGER VALID METHOD
-    public boolean harvest() {
-        if (stage.equals(CropStage.MATURE)) {
-            stage = CropStage.DIRT;
-            return true;
-            //inventory.addItem()
-            //
-            //
-            ///
-            //
-            //
-        }
-        return false;
     }
 
     @Override
@@ -151,11 +125,12 @@ public class Crop {
         }
     }
 
-    public void water() {
-        waterLevel += 20;
-        if (waterLevel > 100) {
-            stage = CropStage.DEAD;
-            waterLevel = 100;
-        }
+    public void spray() {
+        hasPesticides = true;
+        sellPrice *= .8;
+    }
+
+    public boolean hasPesticides() {
+        return hasPesticides;
     }
 }

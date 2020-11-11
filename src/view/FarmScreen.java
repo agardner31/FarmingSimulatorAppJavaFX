@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -13,16 +14,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import model.Crop;
-import model.CropStage;
-import model.Inventory;
-import model.Player;
-import model.Plot;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import model.*;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Random;
 
 public class FarmScreen implements IScreen {
     private int width;
@@ -35,11 +33,12 @@ public class FarmScreen implements IScreen {
     private GridPane inventoryPane;
     private Button inventoryButton;
     private Button marketButton;
-    private HBox plotBox;
+    private ScrollPane plotBox;
     private Button incrementTimeButton;
     private boolean inventoryVisible;
     private int targetPlantCrop;
     private Label targetCropLabel;
+    private GridPane farmWorkerPane;
 
     public FarmScreen(int width, int height, Player player, boolean inventoryVisible) {
         this.inventoryVisible = inventoryVisible;
@@ -52,6 +51,7 @@ public class FarmScreen implements IScreen {
         inventory = player.getInventory();
         inventoryPane = getInventoryPane();
         inventoryButton = new Button();
+        farmWorkerPane = fillWorkerPane();
         ImageView inventoryIcon = null;
         try {
             inventoryIcon = new ImageView(new Image(
@@ -62,7 +62,6 @@ public class FarmScreen implements IScreen {
         inventoryIcon.setPreserveRatio(true);
         inventoryIcon.setFitHeight(50);
         inventoryButton.setGraphic(inventoryIcon);
-
 
         incrementTimeButton = new Button();
         ImageView nextDayIcon = null;
@@ -78,16 +77,78 @@ public class FarmScreen implements IScreen {
         targetPlantCrop = -1;
     }
 
+    private GridPane fillWorkerPane() {
+        farmWorkerPane = new GridPane();
+        Label workerLabel;
+        FarmWorker[] farmWorkers = this.player.getFarmWorkers();
+        for (int i = 0; i < farmWorkers.length; i++) {
+            if (farmWorkers[i] != null) {
+                workerLabel = new Label(farmWorkers[i].toString());
+            } else {
+                workerLabel = new Label("Farm Worker\nPosition Vacant");
+            }
+            workerLabel.getStyleClass().add("cropBox");
+            farmWorkerPane.add(workerLabel, i, 0);
+
+            int firedWorker = i;
+            Label finalWorkerLabel = workerLabel;
+
+            workerLabel.setOnMouseClicked((e) -> {
+                farmWorkers[firedWorker] = null;
+                finalWorkerLabel.setText("Farm Worker\nPosition Vacant");
+                player.setFarmWorkers(farmWorkers);
+
+            });
+            workerLabel.setOnMouseEntered((f) -> {
+                finalWorkerLabel.setBackground(new Background(
+                        new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                                null)));
+            });
+            workerLabel.setOnMouseExited((f) -> {
+                finalWorkerLabel.setBackground(null);
+            });
+        }
+        farmWorkerPane.getStyleClass().add("inventoryPane");
+
+        player.setFarmWorkers(farmWorkers);
+        return farmWorkerPane;
+    }
+
+    public void payWorkers() {
+        FarmWorker[] farmWorkers = this.player.getFarmWorkers();
+        int wage;
+        int money = this.player.getMoney();
+        for (int i = 0; i < farmWorkers.length; i++) {
+            if (farmWorkers[i] != null) {
+                wage = farmWorkers[i].getWage();
+                if (wage <= money) {
+                    money -= wage;
+                } else {
+                    farmWorkers[i] = null;
+                }
+            }
+        }
+        this.player.setMoney(money);
+        this.player.setFarmWorkers(farmWorkers);
+    }
+
     private GridPane getInventoryPane() {
         inventoryPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCapacity(); i++) {
-            Crop crop = null;
+            Item crop = null;
             Label cropLabel = new Label("");
             try {
                 crop = inventory.getInventoryList().get(i);
-                if (crop != null) {
-                    cropLabel = new Label(crop.toString("sell"));
+                if (crop != null && crop instanceof Crop) {
+                    if (((Crop) crop).getStage().equals(CropStage.MATURE)) {
+                        cropLabel = new Label(((Crop) crop).toString("sell"));
+                    } else {
+                        cropLabel = new Label(((Crop) crop).toString("neither"));
+                    }
+                } else if (crop != null && (crop instanceof Fertilizer
+                        || crop instanceof Pesticide)) {
+                    cropLabel = new Label(crop.toString());
                 }
             } catch (IndexOutOfBoundsException e) { }
             cropLabel.getStyleClass().add("cropBox");
@@ -95,20 +156,36 @@ public class FarmScreen implements IScreen {
                 j++;
             }
             final int finalCropIndex = i;
-            final Crop finalCrop = crop;
+            final Item finalCrop = crop;
             final Label finalCropLabel = cropLabel;
             cropLabel.setOnMouseClicked((e) -> {
-                if (finalCrop != null && finalCrop.getStage().equals(CropStage.SEED)) {
-                    if (targetPlantCrop == -1) {
-                        targetCropLabel = finalCropLabel;
-                        targetCropLabel.setScaleX(1.5);
-                        targetCropLabel.setScaleY(1.5);
-                        targetPlantCrop = finalCropIndex;
-                    } else {
-                        targetCropLabel = finalCropLabel;
-                        targetCropLabel.setScaleX(1);
-                        targetCropLabel.setScaleY(1);
-                        targetPlantCrop = -1;
+                if (finalCrop instanceof Crop) {
+                    if (finalCrop != null && ((Crop) finalCrop).getStage().equals(CropStage.SEED)) {
+                        if (targetPlantCrop == -1) {
+                            targetCropLabel = finalCropLabel;
+                            targetCropLabel.setScaleX(1.5);
+                            targetCropLabel.setScaleY(1.5);
+                            targetPlantCrop = finalCropIndex;
+                        } else {
+                            targetCropLabel = finalCropLabel;
+                            targetCropLabel.setScaleX(1);
+                            targetCropLabel.setScaleY(1);
+                            targetPlantCrop = -1;
+                        }
+                    }
+                } else if (finalCrop instanceof Fertilizer || finalCrop instanceof Pesticide) {
+                    if (finalCrop != null) {
+                        if (targetPlantCrop == -1) {
+                            targetCropLabel = finalCropLabel;
+                            targetCropLabel.setScaleX(1.5);
+                            targetCropLabel.setScaleY(1.5);
+                            targetPlantCrop = finalCropIndex;
+                        } else {
+                            targetCropLabel = finalCropLabel;
+                            targetCropLabel.setScaleX(1);
+                            targetCropLabel.setScaleY(1);
+                            targetPlantCrop = -1;
+                        }
                     }
                 }
             });
@@ -138,16 +215,76 @@ public class FarmScreen implements IScreen {
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
         inventoryWithLabel.setVisible(inventoryVisible);
 
+
+
         incrementTimeButton.setOnAction((e) -> {
+            int workerEfficiency = this.player.getFarmWorkerEfficiency();
+            player.getFarm().recalculateRainOdds(player.getDifficulty(), player.getSeason());
+            player.getFarm().recalculateDroughtOdds(player.getDifficulty(), player.getSeason());
+            player.getFarm().recalculateLocustsOdds(player.getDifficulty(), player.getSeason());
+            player.getFarm().recalculateRandomRainOrDrought();
+            player.getFarm().randomLocustKills(-1);
             for (int i = 0; i < plots.length; i++) {
                 if (plots[i].getCrop() != null) {
+                    if (plots[i].getFertilizerLevel() > 0) {
+                        CropStage tempStage = plots[i].getCrop().getStage();
+                        if (tempStage.equals(CropStage.SEED)) {
+                            plots[i].getCrop().setStage(CropStage.IMMATURE);
+                        }
+                    }
+                    if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
+                        plots[i].water(player.getFarm().getRandomRainOrDrought());
+                    } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
+                        plots[i].dry(player.getFarm().getRandomRainOrDrought());
+                    }
+                    if (player.getFarm().getLocusts()) {
+                        if (player.getFarm().randomLocustKills(1) > 0) {
+                            plots[i].getCrop().setStage(CropStage.DEAD);
+                        }
+                    }
                     plots[i].getCrop().grow();
+                    if (plots[i].getCrop().getStage().equals(CropStage.MATURE)
+                            && (workerEfficiency > 0)) {
+                        this.player.addMoney(plots[i].getCrop().getSellPrice());
+                        plots[i].setCrop(null);
+                        workerEfficiency--;
+                    }
+                } else {
+                    if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
+                        plots[i].water(player.getFarm().getRandomRainOrDrought());
+                    } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
+                        plots[i].dry(player.getFarm().getRandomRainOrDrought());
+                    }
                 }
-                plots[i].dry();
+                if (!player.getFarm().getRain()) {
+                    plots[i].dry(10);
+                }
             }
+            payWorkers();
             player.incrementDay();
             Controller.enterFarm(player, player.getDifficulty(), inventoryVisible);
         });
+
+
+        Text randomEventText = new Text("");
+        randomEventText.setFont(Font.font("Verdana", 28));
+        randomEventText.setFill(Color.RED);
+        if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
+            randomEventText.setText("It rained today! +"
+                    + player.getFarm().getRandomRainOrDrought() + "% moisture");
+        } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
+            randomEventText.setText("There was a drought! -"
+                    + player.getFarm().getRandomRainOrDrought() + "% moisture");
+        } else if (player.getFarm().getLocusts()) {
+            randomEventText.setText("Locusts ate " + player.getFarm().getLocustKills()
+                    + " of your crops");
+        } else {
+            randomEventText.setText("");
+        }
+
+
+
+
 
         inventoryButton.setOnAction((e) -> {
             if (!inventoryWithLabel.isVisible()) {
@@ -175,24 +312,27 @@ public class FarmScreen implements IScreen {
             Controller.enterMarket(player, player.getDifficulty());
         });
 
-        VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox, inventoryWithLabel);
+        VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox,
+                farmWorkerPane, inventoryWithLabel);
 
         inventoryButton.getStyleClass().add("inventoryButton");
         inventoryLabel.getStyleClass().add("inventoryLabel");
         moneyLabel.getStyleClass().add("moneyLabel");
         displayDateLabel.getStyleClass().add("displayDateLabel");
-        plotBox.getStyleClass().add("plotBox");
         vbox.getStyleClass().add("vBox");
 
-        HBox buttonRow = new HBox(inventoryButton, marketButton, incrementTimeButton);
+        HBox buttonRow = new HBox(inventoryButton, marketButton,
+                incrementTimeButton, randomEventText);
         buttonRow.setSpacing(10);
         VBox finalScene = new VBox(buttonRow, vbox);
+
+
         finalScene.setStyle("-fx-background-color: #658E6E; -fx-padding: 15");
 
         return new Scene(finalScene, width, height);
     }
 
-    private HBox fillPlotPane() {
+    private ScrollPane fillPlotPane() {
         HBox plotBox = new HBox(20);
         for (int i = 0; i < plots.length; i++) {
             Plot temp = plots[i];
@@ -200,17 +340,29 @@ public class FarmScreen implements IScreen {
             Label plotType;
             Label growStage;
             Label waterLevel;
+            Label fertilizerLevel;
+            Button pesticideButton = new Button("Spray");
+            Label hasPesticidesLabel = new Label("");
             if (temp.getCrop() == null) {
                 plotType = new Label("Empty");
                 growStage = new Label("Dirt");
                 waterLevel = new Label("Moisture: " + temp.getWaterLevel() + "%");
+                fertilizerLevel = new Label("Fertilizer: " + temp.getFertilizerLevel() + "%");
+                hasPesticidesLabel = new Label("");
             } else {
                 plotType = new Label(temp.getCrop().getType());
                 growStage = new Label((temp.getCrop()).getStage().toString());
                 waterLevel = new Label(String.valueOf("Moisture: "
                         + (temp.getWaterLevel())) + '%');
+                fertilizerLevel = new Label("Fertilizer: " + temp.getFertilizerLevel() + "%");
+                if (temp.getCrop().hasPesticides()) {
+                    hasPesticidesLabel = new Label("Crop is sprayed");
+                } else {
+                    hasPesticidesLabel = new Label("Crop not sprayed");
+                }
             }
-            VBox boxOfLabels = new VBox(plotNumber, plotType, growStage, waterLevel);
+            VBox boxOfLabels = new VBox(plotNumber, plotType, growStage, waterLevel,
+                    fertilizerLevel, hasPesticidesLabel);
             boxOfLabels.setOnMouseEntered((e) -> {
                 boxOfLabels.setBackground(new Background(
                         new BackgroundFill(Color.valueOf("#B9E1C1"), null,
@@ -227,32 +379,34 @@ public class FarmScreen implements IScreen {
             Button plantAndHarvestButton = new Button(getPlantAndHarvestButtonString(temp));
             if (getPlantAndHarvestButtonString(temp).equals("Wait")) {
                 plantAndHarvestButton.setVisible(false);
+                pesticideButton.setVisible(true);
             } else {
                 plantAndHarvestButton.setVisible(true);
+                pesticideButton.setVisible(false);
             }
+
+
             plantAndHarvestButton.setOnAction((e) -> {
                 if (temp.getCrop() != null) {
                     if (temp.getCrop().getStage().toString().equals("Mature")) {
                         if (!inventory.isFull()) {
                             harvestCrop(temp);
-                            displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
+                            displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                                    waterLevel, fertilizerLevel, pesticideButton);
                         }
                     } else if (temp.getCrop().getStage().equals(CropStage.DEAD)) {
                         plotType.setText("Empty");
                         temp.setCrop(null);
-                        displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
+                        displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                                waterLevel, fertilizerLevel, pesticideButton);
                     }
                 } else {
-                    if (targetPlantCrop != -1) {
-                        String waterLevelText = "";
-                        Pattern p = Pattern.compile("\\d+");
-                        Matcher m = p.matcher(waterLevel.getText());
-                        while (m.find()) {
-                            waterLevelText = m.group();
-                        }
-                        int waterLevelInt = (int) Integer.parseInt(waterLevelText);
-                        plant(temp, waterLevelInt);
-                        displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
+                    Item fertString = new Fertilizer("Apprentice");
+                    if (targetPlantCrop != -1
+                            && !targetCropLabel.getText().equals(fertString.toString())) {
+                        plant(temp);
+                        displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                                waterLevel, fertilizerLevel, pesticideButton);
                         plotType.setText(temp.getCrop().getType());
                         targetCropLabel.setScaleX(1);
                         targetCropLabel.setScaleY(1);
@@ -264,34 +418,77 @@ public class FarmScreen implements IScreen {
 
             Button waterButton = new Button("Water");
             waterButton.setOnAction((e) -> {
-                    if (temp.getCrop() != null) {
-                        temp.getCrop().water();
-                        temp.setWaterLevel((int) temp.getCrop().getWaterLevel());
-                    } else {
-                        temp.setWaterLevel(temp.getWaterLevel() + 20);
-                        if (temp.getWaterLevel() > 100) {
-                            temp.setWaterLevel(100);
-                        }
-                    }
-                    displayGrowth(temp, plantAndHarvestButton, growStage, img, waterLevel);
+                    temp.water(20);
+                    displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                            waterLevel, fertilizerLevel, pesticideButton);
                 }
             );
-            HBox plantAndHarvestPlusWaterButtons = new HBox(plantAndHarvestButton, waterButton);
+            HBox plantAndHarvestPlusWaterButtons = new HBox(plantAndHarvestButton,
+                    waterButton);
             plantAndHarvestPlusWaterButtons.setSpacing(10);
             plantAndHarvestPlusWaterButtons.setAlignment(Pos.CENTER);
-            VBox onePlot = new VBox(boxOfLabels, img, plantAndHarvestPlusWaterButtons);
+
+            Button fertilizeButton = new Button("Fertilize");
+            fertilizeButton.setOnAction((e) -> {
+                Item fertString = new Fertilizer("Apprentice");
+                if (targetPlantCrop != -1
+                        && targetCropLabel.getText().equals(fertString.toString())) {
+                    temp.setFertilizerLevel(100);
+                    player.getInventory().removeItem(targetPlantCrop);
+                    displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                            waterLevel, fertilizerLevel, pesticideButton);
+                    targetCropLabel.setScaleX(1);
+                    targetCropLabel.setScaleY(1);
+                    targetPlantCrop = -1;
+                    Controller.enterFarm(player, player.getDifficulty(), true);
+                }
+            });
+
+
+            pesticideButton.setOnAction((e) -> {
+                Item pesticideString = new Pesticide("Apprentice");
+                if (targetPlantCrop != -1
+                        && targetCropLabel.getText().equals(pesticideString.toString())) {
+                    if (temp.getCrop() != null) {
+                        temp.getCrop().spray();
+                    }
+                    player.getInventory().removeItem(targetPlantCrop);
+                    displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                            waterLevel, fertilizerLevel, pesticideButton);
+                    targetCropLabel.setScaleX(1);
+                    targetCropLabel.setScaleY(1);
+                    targetPlantCrop = -1;
+                    Controller.enterFarm(player, player.getDifficulty(), true);
+                }
+            });
+            HBox fertilizerPesticideBox = new HBox(fertilizeButton, pesticideButton);
+            fertilizerPesticideBox.setSpacing(10);
+            fertilizerPesticideBox.setAlignment(Pos.CENTER);
+
+            VBox onePlot = new VBox(boxOfLabels, img, plantAndHarvestPlusWaterButtons,
+                    fertilizerPesticideBox);
             plotBox.getChildren().add(onePlot);
         }
-        return plotBox;
+
+        plotBox.getStyleClass().add("plotBox");
+        ScrollPane plotScrollPane = new ScrollPane();
+        plotScrollPane.setContent(plotBox);
+        plotScrollPane.getStyleClass().add("plotScrollPane");
+        plotScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        return plotScrollPane;
     }
 
+
     private void displayGrowth(Plot temp, Button plantAndHarvestButton, Label growStage,
-                               ImageView img, Label waterLevel) {
+                               ImageView img, Label waterLevel, Label fertilizerLabel,
+                               Button pesticideButton) {
         plantAndHarvestButton.setText(getPlantAndHarvestButtonString(temp));
         if (getPlantAndHarvestButtonString(temp).equals("Wait")) {
             plantAndHarvestButton.setVisible(false);
+            pesticideButton.setVisible(true);
         } else {
             plantAndHarvestButton.setVisible(true);
+            pesticideButton.setVisible(false);
         }
         img.setImage(temp.getImg());
         if (temp.getCrop() == null) {
@@ -300,12 +497,12 @@ public class FarmScreen implements IScreen {
             growStage.setText(temp.getCrop().getStage().toString());
         }
         waterLevel.setText("Moisture: " + temp.getWaterLevel() + "%");
+        fertilizerLabel.setText("Fertilizer: " + temp.getFertilizerLevel() + "%");
     }
 
-    private void plant(Plot temp, int waterLevel) {
-        temp.setCrop(player.getInventory().getInventoryList().get(targetPlantCrop));
+    private void plant(Plot temp) {
+        temp.setCrop((Crop) player.getInventory().getInventoryList().get(targetPlantCrop));
         player.getInventory().removeItem(targetPlantCrop);
-        temp.getCrop().setWaterLevel(waterLevel);
     }
 
     private String getPlantAndHarvestButtonString(Plot plot) {
@@ -328,6 +525,14 @@ public class FarmScreen implements IScreen {
 
 
     public void harvestCrop(Plot plot) {
+        if (plot.getFertilizerLevel() > 0) {
+            Random rand = new Random();
+            int randNum = rand.nextInt(3); //33% chance to get double yield
+            if (randNum == 1) {
+                inventory.addToPane(plot.getCrop());
+                inventory.addItem(plot.getCrop());
+            }
+        }
         inventory.addToPane(plot.getCrop());
         inventory.addItem(plot.getCrop());
         plot.setCrop(null);

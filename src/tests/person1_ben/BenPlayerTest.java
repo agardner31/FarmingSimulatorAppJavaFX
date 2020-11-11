@@ -38,9 +38,9 @@ public class BenPlayerTest {
 
     @Test
     public void testMoneyMultiParam() {
-        Player appPlayer = new Player("Apprentice", new Farm("Apprentice"), "Corn");
-        Player ojPlayer = new Player("Ordinary Joe", new Farm("Ordinary Joe"), "Corn");
-        Player mfPlayer = new Player("Master Farmer", new Farm("Master Farmer"), "Corn");
+        Player appPlayer = new Player("Apprentice", new Farm("Apprentice"), "Corn", "Spring");
+        Player ojPlayer = new Player("Ordinary Joe", new Farm("Ordinary Joe"), "Corn", "Spring");
+        Player mfPlayer = new Player("Master Farmer", new Farm("Master Farmer"), "Corn", "Spring");
         int expectedMoneyApp = 300;
         int expectedMoneyOJ = 200;
         int expectedMoneyMF = 100;

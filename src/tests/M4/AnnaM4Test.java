@@ -1,12 +1,12 @@
 package tests.M4;
 
 import model.Crop;
-import model.CropStage;
+//import model.CropStage;
 import model.Player;
 import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+//import org.junit.Test;
+//
+//import static org.junit.Assert.assertEquals;
 
 public class AnnaM4Test {
     private Player player;
@@ -21,7 +21,7 @@ public class AnnaM4Test {
         testCrop2 = new Crop("Tomato", player.getDifficulty());
     }
 
-    @Test
+    /*@Test
     public void cropWaterInitAndIncrementTest() {
 
         assertEquals(50, testCrop.getWaterLevel());
@@ -47,4 +47,5 @@ public class AnnaM4Test {
 
         assertEquals(CropStage.DEAD, testCrop2.getStage());
     }
+     */
 }

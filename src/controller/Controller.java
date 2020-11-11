@@ -18,7 +18,7 @@ import view.WelcomeScreen;
 public class Controller extends Application {
     private static Stage mainWindow;
     private static final int WIDTH = 800;
-    private static final int HEIGHT = 750;
+    private static final int HEIGHT = 850;
     private static String currentView; //"Welcome", "Config", "Farm", "Market"
 
     @Override
@@ -60,7 +60,7 @@ public class Controller extends Application {
                 warning.setText("Choose a seed.");
             } else {
                 Player player = new Player(levels.getValue(), new Farm(levels.getValue()),
-                        seedList.getValue());
+                        seedList.getValue(), seasonsList.getValue());
                 enterFarm(player, levels.getValue(), false);
             }
         });
