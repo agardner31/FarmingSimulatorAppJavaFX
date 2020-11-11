@@ -219,7 +219,6 @@ public class FarmScreen implements IScreen {
 
         incrementTimeButton.setOnAction((e) -> {
             int workerEfficiency = this.player.getFarmWorkerEfficiency();
-            System.out.println(workerEfficiency);
             player.getFarm().recalculateRainOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateDroughtOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateLocustsOdds(player.getDifficulty(), player.getSeason());
