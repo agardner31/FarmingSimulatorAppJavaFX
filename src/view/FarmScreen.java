@@ -219,6 +219,7 @@ public class FarmScreen implements IScreen {
 
         incrementTimeButton.setOnAction((e) -> {
             int workerEfficiency = this.player.getFarmWorkerEfficiency();
+            System.out.println(workerEfficiency);
             player.getFarm().recalculateRainOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateDroughtOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateLocustsOdds(player.getDifficulty(), player.getSeason());
@@ -238,7 +239,8 @@ public class FarmScreen implements IScreen {
                         plots[i].dry(player.getFarm().getRandomRainOrDrought());
                     }
                     if (player.getFarm().getLocusts()) {
-                        if (player.getFarm().randomLocustKills(1) > 0) {
+                        if (player.getFarm().randomLocustKills(1) > 0
+                                && !plots[i].getCrop().hasPesticides()) {
                             plots[i].getCrop().setStage(CropStage.DEAD);
                         }
                     }

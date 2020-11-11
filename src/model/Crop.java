@@ -13,7 +13,7 @@ public class Crop implements Item {
 
     private int baseSellPrice;
 
-    private int waterLevel;
+    private boolean hasPesticides;
 
     public Crop(String type, String difficulty) {
         this(type, difficulty, CropStage.SEED);
@@ -23,7 +23,7 @@ public class Crop implements Item {
         this.type = type;
         this.stage = stage;
         setPrice(difficulty, type);
-        waterLevel = 50;
+        hasPesticides = false;
     }
 
     public void setPrice(String difficulty, String type) {
@@ -85,14 +85,6 @@ public class Crop implements Item {
         this.stage = stage;
     }
 
-    public int getWaterLevel() {
-        return this.waterLevel;
-    }
-
-    public void setWaterLevel(int waterLevel) {
-        this.waterLevel = waterLevel;
-    }
-
     public void grow() { //make sure to change label price by calling to String again
         if (stage.equals(CropStage.SEED)) {
             stage = CropStage.IMMATURE;
@@ -101,27 +93,6 @@ public class Crop implements Item {
         } else if (stage.equals(CropStage.MATURE)) {
             stage = CropStage.DEAD;
         }
-        if (waterLevel > 30) {
-            waterLevel -= 30;
-        } else {
-            waterLevel = 0;
-            stage = CropStage.DEAD;
-        }
-    }
-
-    //NO LONGER VALID METHOD
-    public boolean harvest() {
-        if (stage.equals(CropStage.MATURE)) {
-            stage = CropStage.DIRT;
-            return true;
-            //inventory.addItem()
-            //
-            //
-            ///
-            //
-            //
-        }
-        return false;
     }
 
     @Override
@@ -151,11 +122,12 @@ public class Crop implements Item {
         }
     }
 
-    public void water() {
-        waterLevel += 20;
-        if (waterLevel > 100) {
-            stage = CropStage.DEAD;
-            waterLevel = 100;
-        }
+    public void spray() {
+        hasPesticides = true;
+        sellPrice *= .8;
+    }
+
+    public boolean hasPesticides() {
+        return hasPesticides;
     }
 }
