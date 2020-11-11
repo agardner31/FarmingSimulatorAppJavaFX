@@ -243,7 +243,8 @@ public class FarmScreen implements IScreen {
                         }
                     }
                     plots[i].getCrop().grow();
-                    if (plots[i].getCrop().getStage().equals(CropStage.MATURE) && (workerEfficiency > 0)) {
+                    if (plots[i].getCrop().getStage().equals(CropStage.MATURE)
+                            && (workerEfficiency > 0)) {
                         this.player.addMoney(plots[i].getCrop().getSellPrice());
                         plots[i].setCrop(null);
                         workerEfficiency--;
@@ -269,9 +270,11 @@ public class FarmScreen implements IScreen {
         randomEventText.setFont(Font.font("Verdana", 28));
         randomEventText.setFill(Color.RED);
         if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
-            randomEventText.setText("It rained today!");
+            randomEventText.setText("It rained today! +"
+                    + player.getFarm().getRandomRainOrDrought() + "% moisture");
         } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
-            randomEventText.setText("There was a drought!");
+            randomEventText.setText("There was a drought! -"
+                    + player.getFarm().getRandomRainOrDrought() + "% moisture");
         } else if (player.getFarm().getLocusts()) {
             randomEventText.setText("Locusts ate " + player.getFarm().getLocustKills()
                     + " of your crops");
@@ -309,7 +312,8 @@ public class FarmScreen implements IScreen {
             Controller.enterMarket(player, player.getDifficulty());
         });
 
-        VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox, farmWorkerPane, inventoryWithLabel);
+        VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox,
+                farmWorkerPane, inventoryWithLabel);
 
         inventoryButton.getStyleClass().add("inventoryButton");
         inventoryLabel.getStyleClass().add("inventoryLabel");
@@ -344,6 +348,7 @@ public class FarmScreen implements IScreen {
                 growStage = new Label("Dirt");
                 waterLevel = new Label("Moisture: " + temp.getWaterLevel() + "%");
                 fertilizerLevel = new Label("Fertilizer: " + temp.getFertilizerLevel() + "%");
+                hasPesticidesLabel = new Label("");
             } else {
                 plotType = new Label(temp.getCrop().getType());
                 growStage = new Label((temp.getCrop()).getStage().toString());
@@ -379,17 +384,6 @@ public class FarmScreen implements IScreen {
                 plantAndHarvestButton.setVisible(true);
                 pesticideButton.setVisible(false);
             }
-
-
-
-
-
-
-
-
-
-
-
 
 
             plantAndHarvestButton.setOnAction((e) -> {

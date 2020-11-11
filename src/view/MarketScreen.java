@@ -112,12 +112,12 @@ public class MarketScreen implements IScreen {
         Label workerLabel = null;
         FarmWorker helper = null;
         for (int i = 0; i < 3; i++) {
-            helper = new FarmWorker(i+1);
+            helper = new FarmWorker(i + 1);
             workerLabel = new Label(helper.toString());
             forHirePane.add(workerLabel, i, 0);
             FarmWorker finalHelper = helper;
             workerLabel.setOnMouseClicked((e) -> {
-                if(this.player.hireWorker(finalHelper)) {
+                if (this.player.hireWorker(finalHelper)) {
                     Controller.enterMarket(player, player.getDifficulty());
                 }
             });
@@ -225,8 +225,8 @@ public class MarketScreen implements IScreen {
 
         Text buySell = new Text("Click on item in your inventory to sell it or"
                 + " click on item in the market inventory to buy");
-        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane, forHireLabel, forHirePane, inventoryWithLabel,
-                buySell);
+        VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane,
+                forHireLabel, forHirePane, inventoryWithLabel, buySell);
         buySell.getStyleClass().add("moneyLabel");
         inventoryLabel.getStyleClass().add("inventoryLabel");
         forHireLabel.getStyleClass().add("inventoryLabel");

@@ -39,7 +39,9 @@ public class FarmWorker {
         return wage;
     }
 
-    public int getSkill() { return skill; }
+    public int getSkill() {
+        return skill;
+    }
 
     public String toString() {
         String level = "";

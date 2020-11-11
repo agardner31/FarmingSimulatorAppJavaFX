@@ -21,30 +21,31 @@ public class AnnaM4Test {
         testCrop2 = new Crop("Tomato", player.getDifficulty());
     }
 
-//    @Test
-//    public void cropWaterInitAndIncrementTest() {
-//
-//        assertEquals(50, testCrop.getWaterLevel());
-//
-//        testCrop.grow();
-//        assertEquals(20, testCrop.getWaterLevel());
-//
-//        testCrop.grow();
-//        assertEquals(0, testCrop.getWaterLevel());
-//
-//        assertEquals(CropStage.DEAD, testCrop.getStage());
-//
-//        assertEquals(50, testCrop2.getWaterLevel());
-//
-//        testCrop2.water();
-//        assertEquals(70, testCrop2.getWaterLevel());
-//
-//        testCrop2.water();
-//        assertEquals(90, testCrop2.getWaterLevel());
-//
-//        testCrop2.water();
-//        assertEquals(100, testCrop2.getWaterLevel());
-//
-//        assertEquals(CropStage.DEAD, testCrop2.getStage());
-//    }
+    /*@Test
+    public void cropWaterInitAndIncrementTest() {
+
+        assertEquals(50, testCrop.getWaterLevel());
+
+        testCrop.grow();
+        assertEquals(20, testCrop.getWaterLevel());
+
+        testCrop.grow();
+        assertEquals(0, testCrop.getWaterLevel());
+
+        assertEquals(CropStage.DEAD, testCrop.getStage());
+
+        assertEquals(50, testCrop2.getWaterLevel());
+
+        testCrop2.water();
+        assertEquals(70, testCrop2.getWaterLevel());
+
+        testCrop2.water();
+        assertEquals(90, testCrop2.getWaterLevel());
+
+        testCrop2.water();
+        assertEquals(100, testCrop2.getWaterLevel());
+
+        assertEquals(CropStage.DEAD, testCrop2.getStage());
+    }
+     */
 }
