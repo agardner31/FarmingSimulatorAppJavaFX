@@ -92,7 +92,7 @@ public class Farm {
 
     public void recalculateLocustsOdds(String difficulty, String season) {
         Random rand = new Random();
-        int randBound = 5;
+        int randBound = 3;
         if (difficulty.equals("Ordinary Joe")) {
             randBound++;
         } else if (difficulty.equals("Apprentice")) {
@@ -116,7 +116,8 @@ public class Farm {
             int numFullPlots = 0;
             for (int i = 0; i < plots.length; i++) {
                 if (plots[i] != null && plots[i].getCrop() != null
-                        && !plots[i].getCrop().getStage().equals(CropStage.DEAD)) {
+                        && !plots[i].getCrop().getStage().equals(CropStage.DEAD)
+                        && !plots[i].getCrop().hasPesticides()) {
                     numFullPlots++;
                 }
             }
@@ -124,11 +125,11 @@ public class Farm {
             int randBound = 3;
             int randNum = rand.nextInt(randBound);
             if (randNum == 1) {
-                locustKills = numFullPlots;
+                locustKills = numFullPlots + 1;
             } else if (randNum == 2) {
-                locustKills = numFullPlots / 3;
+                locustKills = numFullPlots / 3 + 1;
             } else {
-                locustKills = numFullPlots / 2;
+                locustKills = numFullPlots / 2 + 1;
             }
             if (locustKills < 0) {
                 locustKills = 0;

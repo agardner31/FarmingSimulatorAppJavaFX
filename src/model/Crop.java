@@ -26,7 +26,6 @@ public class Crop implements Item {
         hasPesticides = false;
     }
 
-    @Override
     public void setPrice(String difficulty, String type) {
         if (difficulty.equals("Apprentice")) {
             setPriceHelper(type, 2);
@@ -37,7 +36,7 @@ public class Crop implements Item {
         }
     }
 
-    public void setPriceHelper(String type, double difficultyMultiplier) {
+    private void setPriceHelper(String type, double difficultyMultiplier) {
         if (type.equals("Pumpkin")) {
             buyPrice = 8;
             baseBuyPrice = buyPrice;
@@ -58,7 +57,6 @@ public class Crop implements Item {
         buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
     }
 
-    @Override
     public int getBuyPrice() {
         return buyPrice;
     }
@@ -67,7 +65,6 @@ public class Crop implements Item {
         return sellPrice;
     }
 
-    @Override
     public int getBaseBuyPrice() {
         return baseBuyPrice;
     }
