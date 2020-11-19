@@ -6,6 +6,7 @@ public class Farm {
     private Plot[] plots;
 
     private final int initialCapacity = 10;
+    private int numPlots = initialCapacity;
 
     private boolean rain = false;
     private boolean drought = false;
@@ -13,6 +14,13 @@ public class Farm {
     private int locustKillsLeft = 0;
     private int locustKills;
     private int randomRainOrDrought;
+
+    private boolean hasIrrigation = false;
+    private boolean hasTractor = false;
+    private int dailyWaterLimit;
+    private int dailyWaterCount = 0;
+    private int dailyHarvestLimit;
+    private int dailyHarvestCount = 0;
 
 
     public Farm(String difficulty) {
@@ -159,5 +167,37 @@ public class Farm {
 
     public int getLocustKills() {
         return this.locustKills;
+    }
+
+    public int getDailyWaterLimit() {
+        return dailyWaterLimit;
+    }
+
+    public void setDailyWaterLimit(int multiplier) {
+        this.dailyWaterLimit *= multiplier;
+    }
+
+    public int getDailyWaterCount() {
+        return dailyWaterCount;
+    }
+
+    public void incrementDailyWaterCount() {
+        this.dailyWaterCount++;
+    }
+
+    public int getDailyHarvestLimit() {
+        return dailyHarvestLimit;
+    }
+
+    public void setDailyHarvestLimit(int multiplier) {
+        this.dailyHarvestLimit += multiplier;
+    }
+
+    public int getDailyHarvestCount() {
+        return dailyHarvestCount;
+    }
+
+    public void incrementDailyHarvestCount() {
+        this.dailyHarvestCount++;
     }
 }

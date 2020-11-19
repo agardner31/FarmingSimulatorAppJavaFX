@@ -14,11 +14,11 @@ public class Fertilizer implements Item {
     @Override
     public void setPrice(String difficulty, String type) {
         if (difficulty.equals("Apprentice")) {
-            setPriceHelper(type, 2);
+            setPriceHelper(type, 1);
         } else if (difficulty.equals("Ordinary Joe")) {
             setPriceHelper(type, 1.5);
         } else {
-            setPriceHelper(type, 1);
+            setPriceHelper(type, 2);
         }
     }
 
