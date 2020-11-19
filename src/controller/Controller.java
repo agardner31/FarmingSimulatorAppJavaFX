@@ -11,6 +11,7 @@ import model.Farm;
 import model.Player;
 import view.ConfigScreen;
 import view.FarmScreen;
+import view.GameOverScreen;
 import view.MarketScreen;
 import view.WelcomeScreen;
 
@@ -18,7 +19,7 @@ import view.WelcomeScreen;
 public class Controller extends Application {
     private static Stage mainWindow;
     private static final int WIDTH = 800;
-    private static final int HEIGHT = 850;
+    private static final int HEIGHT = 880;
     private static String currentView; //"Welcome", "Config", "Farm", "Market"
 
     @Override
@@ -84,6 +85,15 @@ public class Controller extends Application {
         MarketScreen marketScreen = new MarketScreen(WIDTH, HEIGHT, difficulty, player);
         Scene scene = marketScreen.getScene();
         scene.getStylesheets().add("file:resources/css/FarmScreen.css");
+        mainWindow.setScene(scene);
+        mainWindow.show();
+    }
+
+    public static void gameOver(Player player) {
+        currentView = "GameOver";
+        GameOverScreen gameOverScreen = new GameOverScreen(WIDTH, HEIGHT, player);
+        Scene scene = gameOverScreen.getScene();
+        scene.getStylesheets().add("file:resources/css/GameOverScreen.css");
         mainWindow.setScene(scene);
         mainWindow.show();
     }

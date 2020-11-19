@@ -12,6 +12,8 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -39,6 +41,8 @@ public class FarmScreen implements IScreen {
     private int targetPlantCrop;
     private Label targetCropLabel;
     private GridPane farmWorkerPane;
+    private GridPane machinePane;
+    private Label machineErrorMessage;
 
     public FarmScreen(int width, int height, Player player, boolean inventoryVisible) {
         this.inventoryVisible = inventoryVisible;
@@ -52,6 +56,7 @@ public class FarmScreen implements IScreen {
         inventoryPane = getInventoryPane();
         inventoryButton = new Button();
         farmWorkerPane = fillWorkerPane();
+        machinePane = getMachinePane();
         ImageView inventoryIcon = null;
         try {
             inventoryIcon = new ImageView(new Image(
@@ -75,6 +80,32 @@ public class FarmScreen implements IScreen {
         incrementTimeButton.setGraphic(nextDayIcon);
         plotBox = fillPlotPane();
         targetPlantCrop = -1;
+        machineErrorMessage = new Label("");
+    }
+
+    private GridPane getMachinePane() {
+        machinePane = new GridPane();
+
+        Label irrigationLabel = new Label();
+        if (player.getFarm().hasIrrigation()) {
+            irrigationLabel.setText("Farm is\nIrrigated");
+        } else {
+            irrigationLabel.setText("No\nIrrigation");
+        }
+        machinePane.add(irrigationLabel, 0, 0);
+        irrigationLabel.getStyleClass().add("cropBox");
+
+        Label tractorLabel = new Label();
+        if (player.getFarm().hasTractor()) {
+            tractorLabel.setText("Have\nTractor");
+        } else {
+            tractorLabel.setText("No\nTractor");
+        }
+        machinePane.add(tractorLabel, 1, 0);
+        tractorLabel.getStyleClass().add("cropBox");
+
+        machinePane.getStyleClass().add("inventoryPane");
+        return machinePane;
     }
 
     private GridPane fillWorkerPane() {
@@ -313,8 +344,19 @@ public class FarmScreen implements IScreen {
             Controller.enterMarket(player, player.getDifficulty());
         });
 
-        VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox,
-                farmWorkerPane, inventoryWithLabel);
+        machineErrorMessage.getStyleClass().add("errorMessage");
+
+        Region spacer1 = new Region();
+        Region spacer2 = new Region();
+        Region spacer3 = new Region();
+        HBox.setHgrow(spacer1, Priority.ALWAYS);
+        HBox.setHgrow(spacer2, Priority.ALWAYS);
+        HBox.setHgrow(spacer3, Priority.ALWAYS);
+        HBox toolsPane = new HBox(spacer1, farmWorkerPane, spacer2, machinePane, spacer3);
+        toolsPane.getStyleClass().add("inventoryPane");
+
+        VBox vbox = new VBox(moneyLabel, displayDateLabel, plotBox, machineErrorMessage,
+                toolsPane, inventoryWithLabel);
 
         inventoryButton.getStyleClass().add("inventoryButton");
         inventoryLabel.getStyleClass().add("inventoryLabel");
@@ -419,11 +461,15 @@ public class FarmScreen implements IScreen {
 
             Button waterButton = new Button("Water");
             waterButton.setOnAction((e) -> {
+                if (player.getFarm().waterCountCheck()) {
+                    player.getFarm().incrementDailyWaterCount();
                     temp.water(20);
                     displayGrowth(temp, plantAndHarvestButton, growStage, img,
                             waterLevel, fertilizerLevel, pesticideButton);
+                } else {
+                    updateLimitMessage();
                 }
-            );
+            });
             HBox plantAndHarvestPlusWaterButtons = new HBox(plantAndHarvestButton,
                     waterButton);
             plantAndHarvestPlusWaterButtons.setSpacing(10);
@@ -477,6 +523,16 @@ public class FarmScreen implements IScreen {
         plotScrollPane.getStyleClass().add("plotScrollPane");
         plotScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         return plotScrollPane;
+    }
+
+    private void updateLimitMessage() {
+        if (player.getFarm().bothCheck()) {
+            machineErrorMessage.setText("Water and harvesting limits have been reached for today");
+        } else if (!player.getFarm().waterCountCheck()) {
+            machineErrorMessage.setText("Water limit has been reached for today");
+        } else if (!player.getFarm().harvestCountCheck()) {
+            machineErrorMessage.setText("Harvest limit has been reached for today");
+        }
     }
 
 

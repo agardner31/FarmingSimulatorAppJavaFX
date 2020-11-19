@@ -17,7 +17,7 @@
     -fx-padding: 30;
     -fx-alignment: TOP_CENTER;
     -fx-background-color: #658E6E;
-    -fx-spacing: 10;
+    /*-fx-spacing: 10;*/
     -fx-max-height: 800;
     -fx-max-width: 800;
 }
@@ -62,4 +62,11 @@
     -fx-border-radius: 0;
     -fx-background-color: #658E6E;
     -fx-min-height: 320;
+}
+
+.errorMessage {
+    -fx-alignment: CENTER;
+    -fx-font: 16px "Segoe UI";
+    -fx-padding: 5;
+    -fx-text-fill: RED;
 }

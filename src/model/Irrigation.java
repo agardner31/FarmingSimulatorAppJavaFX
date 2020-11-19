@@ -43,4 +43,9 @@ public class Irrigation implements FarmMachine {
     public int getBaseBuyPrice() {
         return baseBuyPrice;
     }
+
+    @Override
+    public String toString() {
+        return "Irrigation\n\n$" + buyPrice + ".00";
+    }
 }

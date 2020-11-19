@@ -116,6 +116,21 @@ public class Player {
     }
 
     public void incrementDay() {
+        farm.resetCounts();
         day++;
+    }
+
+    public boolean buyMachine(FarmMachine machine) {
+        if (machine instanceof Irrigation) {
+            if (money >= machine.getBuyPrice() && !farm.hasIrrigation()) {
+                money -= machine.getBuyPrice();
+                farm.setIrrigation(true);
+                farm.setDailyWaterLimit(machine.getMultiplier());
+                return true;
+            }
+        } else {
+            //tractor here
+        }
+        return false;
     }
 }

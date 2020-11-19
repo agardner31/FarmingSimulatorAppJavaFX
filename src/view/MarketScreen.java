@@ -27,6 +27,7 @@ public class MarketScreen implements IScreen {
     private Plot[] plots;
     private GridPane inventoryPane;
     private GridPane forHirePane;
+    private GridPane machinePane;
     private Button inventoryButton;
     private Button farmButton;
     private HBox plotBox;
@@ -48,6 +49,7 @@ public class MarketScreen implements IScreen {
         inventoryPane = getInventoryPane();
         marketPane = getMarketPane();
         forHirePane = getForHirePane();
+        machinePane = getMachinePane();
     }
 
     private GridPane getInventoryPane() {
@@ -136,6 +138,40 @@ public class MarketScreen implements IScreen {
         return forHirePane;
     }
 
+    private GridPane getMachinePane() {
+        machinePane = new GridPane();
+
+        FarmMachine irrigation = new Irrigation(player.getDifficulty());
+        Label irrigationLabel = new Label(irrigation.toString());
+        if (player.getFarm().hasIrrigation()) {
+            irrigationLabel.setBackground(new Background(
+                    new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                            null)));
+        } else {
+            irrigationLabel.setOnMouseEntered(e -> {
+                irrigationLabel.setBackground(new Background(
+                        new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                                null)));
+            });
+
+            irrigationLabel.setOnMouseExited(e -> {
+                irrigationLabel.setBackground(null);
+            });
+        }
+        machinePane.add(irrigationLabel, 0, 0);
+        irrigationLabel.setOnMouseClicked((e) -> {
+            if (player.buyMachine(irrigation)) {
+                Controller.enterMarket(player, player.getDifficulty());
+            }
+        });
+        irrigationLabel.getStyleClass().add("cropBox");
+
+        /* tractor code here */
+
+        machinePane.getStyleClass().add("inventoryPane");
+        return machinePane;
+    }
+
 
     private GridPane getMarketPane() {
         marketPane = new GridPane();
@@ -198,12 +234,15 @@ public class MarketScreen implements IScreen {
         });
     }
 
+
+
     @Override
     public Scene getScene() {
         // farm scene
 
         Label inventoryLabel = new Label("Items");
         Label forHireLabel = new Label("Farm Workers for Hire");
+        Label machineLabel = new Label("Farm Machinery for Sale");
 
         VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
 
@@ -223,13 +262,18 @@ public class MarketScreen implements IScreen {
             Controller.enterFarm(player, player.getDifficulty(), true);
         });
 
+        VBox forHireSide = new VBox(forHireLabel, forHirePane);
+        VBox machineSide = new VBox(machineLabel, machinePane);
+        HBox toolsPane = new HBox(forHireSide, machineSide);
+
         Text buySell = new Text("Click on item in your inventory to sell it or"
                 + " click on item in the market inventory to buy");
         VBox vbox = new VBox(moneyLabel, displayMarketLabel, marketPane,
-                forHireLabel, forHirePane, inventoryWithLabel, buySell);
+                toolsPane, inventoryWithLabel, buySell);
         buySell.getStyleClass().add("moneyLabel");
         inventoryLabel.getStyleClass().add("inventoryLabel");
         forHireLabel.getStyleClass().add("inventoryLabel");
+        machineLabel.getStyleClass().add("inventoryLabel");
         moneyLabel.getStyleClass().add("moneyLabel");
         displayMarketLabel.getStyleClass().add("displayDateLabel");
         marketPane.getStyleClass().add("plotBox"); //change to marketPane css later

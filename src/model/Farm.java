@@ -28,6 +28,8 @@ public class Farm {
         for (int i = 0; i < plots.length; i++) {
             plots[i] = new Plot(null, i + 1);
         }
+        dailyWaterLimit = 15;
+        dailyHarvestLimit = 10;
     }
 
     public Farm(int size, String difficulty) {
@@ -35,6 +37,8 @@ public class Farm {
         for (int i = 0; i < plots.length; i++) {
             plots[i] = new Plot(null, i + 1);
         }
+        dailyWaterLimit = 15;
+        dailyHarvestLimit = 10;
     }
 
     public void recalculateRainOdds(String difficulty, String season) {
@@ -169,35 +173,60 @@ public class Farm {
         return this.locustKills;
     }
 
-    public int getDailyWaterLimit() {
-        return dailyWaterLimit;
-    }
-
     public void setDailyWaterLimit(int multiplier) {
         this.dailyWaterLimit *= multiplier;
     }
 
-    public int getDailyWaterCount() {
-        return dailyWaterCount;
+    public boolean waterCountCheck() {
+        return dailyWaterCount < dailyWaterLimit;
     }
 
     public void incrementDailyWaterCount() {
         this.dailyWaterCount++;
     }
 
-    public int getDailyHarvestLimit() {
-        return dailyHarvestLimit;
-    }
-
     public void setDailyHarvestLimit(int multiplier) {
         this.dailyHarvestLimit += multiplier;
     }
 
-    public int getDailyHarvestCount() {
-        return dailyHarvestCount;
+    public boolean harvestCountCheck() {
+        return dailyHarvestCount < dailyHarvestLimit;
     }
 
     public void incrementDailyHarvestCount() {
         this.dailyHarvestCount++;
+    }
+
+    public void resetCounts() {
+        dailyWaterCount = 0;
+        dailyHarvestCount = 0;
+    }
+
+    public boolean bothCheck() {
+        return !waterCountCheck() && !harvestCountCheck();
+    }
+
+    public boolean hasIrrigation() {
+        return hasIrrigation;
+    }
+
+    public void setIrrigation(boolean hasIrrigation) {
+        this.hasIrrigation = hasIrrigation;
+    }
+
+    public boolean hasTractor() {
+        return hasTractor;
+    }
+
+    public void setTractor(boolean hasTractor) {
+        this.hasTractor = hasTractor;
+    }
+
+    public String getLimitMessage(FarmMachine machine) {
+        if (machine instanceof Irrigation) {
+            return "You've reached your daily water limit!";
+        } else {
+            return "You've reached your daily harvesting limit!";
+        }
     }
 }
