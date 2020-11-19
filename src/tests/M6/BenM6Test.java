@@ -2,7 +2,6 @@ package tests.M6;
 
 import model.FarmMachine;
 import model.Irrigation;
-import model.Player;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
