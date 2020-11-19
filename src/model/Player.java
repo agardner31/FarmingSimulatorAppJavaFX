@@ -15,6 +15,8 @@ public class Player {
 
     private FarmWorker[] farmWorkers;
 
+    private int numCropsHarvested;
+
     public Player() {
         this("Apprentice", new Farm("Apprentice"), "Corn", "Spring");
     }
@@ -72,6 +74,14 @@ public class Player {
             }
         }
         return false;
+    }
+
+    public int getNumCropsHarvested() {
+        return numCropsHarvested;
+    }
+
+    public void incrementNumCropsHarvested() {
+        numCropsHarvested++;
     }
 
     public Inventory getInventory() {

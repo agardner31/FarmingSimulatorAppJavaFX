@@ -1,0 +1,20 @@
+.name {
+    -fx-font: 20px "Segoe UI";
+}
+
+.gameOver {
+    -fx-font: 40px "Segoe UI";
+}
+
+.count {
+    -fx-font: 20px "Segoe UI";
+}
+
+.finalScene {
+    -fx-padding: 30;
+    -fx-alignment: TOP_CENTER;
+    -fx-background-color: #658E6E;
+    -fx-spacing: 20;
+    -fx-max-height: 800;
+    -fx-max-width: 800;
+}

@@ -592,6 +592,7 @@ public class FarmScreen implements IScreen {
         }
         inventory.addToPane(plot.getCrop());
         inventory.addItem(plot.getCrop());
+        player.incrementNumCropsHarvested();
         plot.setCrop(null);
     }
 

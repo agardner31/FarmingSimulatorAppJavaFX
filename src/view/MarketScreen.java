@@ -10,6 +10,8 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -262,9 +264,15 @@ public class MarketScreen implements IScreen {
             Controller.enterFarm(player, player.getDifficulty(), true);
         });
 
+        Region spacer1 = new Region();
+        Region spacer2 = new Region();
+        Region spacer3 = new Region();
+        HBox.setHgrow(spacer1, Priority.ALWAYS);
+        HBox.setHgrow(spacer2, Priority.ALWAYS);
+        HBox.setHgrow(spacer3, Priority.ALWAYS);
         VBox forHireSide = new VBox(forHireLabel, forHirePane);
         VBox machineSide = new VBox(machineLabel, machinePane);
-        HBox toolsPane = new HBox(forHireSide, machineSide);
+        HBox toolsPane = new HBox(spacer1, forHireSide, spacer2, machineSide, spacer3);
 
         Text buySell = new Text("Click on item in your inventory to sell it or"
                 + " click on item in the market inventory to buy");

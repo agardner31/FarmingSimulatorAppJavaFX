@@ -21,6 +21,7 @@ public class Controller extends Application {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 880;
     private static String currentView; //"Welcome", "Config", "Farm", "Market"
+    private static String name;
 
     @Override
     public void start(Stage primaryStage) {
@@ -29,7 +30,7 @@ public class Controller extends Application {
         initWelcomeScreen();
     }
 
-    private static void initWelcomeScreen() {
+    public static void initWelcomeScreen() {
         currentView = "Welcome";
         WelcomeScreen welcomeScreen = new WelcomeScreen(WIDTH, HEIGHT);
         Button startButton = welcomeScreen.getStartButton();
@@ -60,6 +61,7 @@ public class Controller extends Application {
             } else if (seedList.getValue() == null) {
                 warning.setText("Choose a seed.");
             } else {
+                name = enterName.getText();
                 Player player = new Player(levels.getValue(), new Farm(levels.getValue()),
                         seedList.getValue(), seasonsList.getValue());
                 enterFarm(player, levels.getValue(), false);
@@ -72,12 +74,23 @@ public class Controller extends Application {
     }
 
     public static void enterFarm(Player player, String difficulty, boolean inventoryVisible) {
-        currentView = "Farm";
-        FarmScreen farmScreen = new FarmScreen(WIDTH, HEIGHT, player, inventoryVisible);
-        Scene scene = farmScreen.getScene();
-        scene.getStylesheets().add("file:resources/css/FarmScreen.css");
-        mainWindow.setScene(scene);
-        mainWindow.show();
+        boolean plotCheck = true;
+        for (int i = 0; i < player.getFarm().getPlots().length; i++) {
+            if (player.getFarm().getPlots()[i].getCrop() != null) {
+                plotCheck = false;
+            }
+        }
+
+        if (player.getMoney() == 0 && plotCheck) {
+            gameOver(player);
+        } else {
+            currentView = "Farm";
+            FarmScreen farmScreen = new FarmScreen(WIDTH, HEIGHT, player, inventoryVisible);
+            Scene scene = farmScreen.getScene();
+            scene.getStylesheets().add("file:resources/css/FarmScreen.css");
+            mainWindow.setScene(scene);
+            mainWindow.show();
+        }
     }
 
     public static void enterMarket(Player player, String difficulty) {
@@ -91,7 +104,7 @@ public class Controller extends Application {
 
     public static void gameOver(Player player) {
         currentView = "GameOver";
-        GameOverScreen gameOverScreen = new GameOverScreen(WIDTH, HEIGHT, player);
+        GameOverScreen gameOverScreen = new GameOverScreen(WIDTH, HEIGHT, player, name);
         Scene scene = gameOverScreen.getScene();
         scene.getStylesheets().add("file:resources/css/GameOverScreen.css");
         mainWindow.setScene(scene);
