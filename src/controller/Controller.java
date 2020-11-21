@@ -6,11 +6,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Farm;
 import model.Player;
 import view.*;
 import view.FarmScreen;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 public class Controller extends Application {
@@ -19,6 +26,8 @@ public class Controller extends Application {
     private static final int HEIGHT = 880;
     private static String currentView; //"Welcome", "Config", "Farm", "Market"
     private static String name;
+    private static MediaPlayer mediaPlayer;
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -31,17 +40,41 @@ public class Controller extends Application {
         currentView = "Welcome";
         WelcomeScreen welcomeScreen = new WelcomeScreen(WIDTH, HEIGHT);
         Button startButton = welcomeScreen.getStartButton();
-        startButton.setOnAction(e -> goToConfig());
 
+        //de-serialize previous player if it exists
+        Player previousGame = null;
+        try {
+            FileInputStream fi = new FileInputStream(new File("previous game/previousGame.txt"));
+            ObjectInputStream oi = new ObjectInputStream(fi);
+
+            //get previous game
+            previousGame = (Player) oi.readObject();
+
+            oi.close();
+            fi.close();
+
+        } catch (FileNotFoundException e) {
+            //previousGame = null;
+        } catch (IOException e) {
+            System.out.println("Error initializing stream");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        Player finalPreviousGame = previousGame;
+        startButton.setOnAction(e -> goToConfig(finalPreviousGame));
+        playMusic(); //plays background music on repeat
         Scene scene = welcomeScreen.getScene();
         scene.getStylesheets().add("file:resources/css/WelcomeScreen.css");
         mainWindow.setScene(scene);
         mainWindow.show();
     }
 
-    private static void goToConfig() {
+    private static void goToConfig(Player previousPlayer) {
         currentView = "Config";
-        ConfigScreen configScreen = new ConfigScreen(WIDTH, HEIGHT);
+        ConfigScreen configScreen = new ConfigScreen(previousPlayer, WIDTH, HEIGHT);
         Button startGame = configScreen.getStartGame();
         Label warning = configScreen.getWarning();
         TextField enterName = configScreen.getEnterName();
@@ -59,9 +92,13 @@ public class Controller extends Application {
                 warning.setText("Choose a seed.");
             } else {
                 name = enterName.getText();
-                Player player = new Player(levels.getValue(), new Farm(levels.getValue()),
-                        seedList.getValue(), seasonsList.getValue());
-                enterFarm(player, levels.getValue(), false);
+                //line below is probably where the exception comes from
+                String level = "Apprentice"; //levels.getValue();
+                String seed = "Tomato"; //seedList.getValue();
+                String season = "Winter"; //seasonsList.getValue();
+                Player player = new Player(level, new Farm(level),
+                        seed, season);
+                enterFarm(player, level, false);
             }
         });
         Scene scene = configScreen.getScene();
@@ -69,6 +106,7 @@ public class Controller extends Application {
         mainWindow.setScene(scene);
         mainWindow.show();
     }
+
 
     public static void enterFarm(Player player, String difficulty, boolean inventoryVisible) {
         boolean plotCheck = true;
@@ -78,7 +116,8 @@ public class Controller extends Application {
             }
         }
 
-        if (player.getMoney() == 0 && plotCheck) {
+        //if money is less than cheapest possible item
+        if (player.getMoney() < player.getCheapestPrice() && plotCheck) {
             gameOver(player);
         } else {
             currentView = "Farm";
@@ -108,13 +147,25 @@ public class Controller extends Application {
         mainWindow.show();
     }
 
-    public static void win() {
+    public static void win(Player player) {
         currentView = "Win";
-        WinScreen winScreen = new WinScreen(WIDTH, HEIGHT);
+        WinScreen winScreen = new WinScreen(WIDTH, HEIGHT, player);
         Scene scene = winScreen.getScene();
         scene.getStylesheets().add("file:resources/css/WinScreen.css");
         mainWindow.setScene(scene);
         mainWindow.show();
+    }
+
+    private static void playMusic() {
+        Media backgroundMusic = new Media(new File("audio/background.mp3").toURI().toString());
+        mediaPlayer = new MediaPlayer(backgroundMusic);
+
+        mediaPlayer.setOnEndOfMedia(new Runnable() {
+            public void run() {
+                mediaPlayer.seek(Duration.ZERO);
+            }
+        });
+        mediaPlayer.play();
     }
 
     public static String getCurrentView() {

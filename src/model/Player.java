@@ -1,6 +1,8 @@
 package model;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
     private String difficulty;
 
     private String season;
@@ -16,6 +18,8 @@ public class Player {
     private FarmWorker[] farmWorkers;
 
     private int numCropsHarvested;
+
+    private int cheapestPrice;
 
     public Player() {
         this("Apprentice", new Farm("Apprentice"), "Corn", "Spring");
@@ -42,6 +46,8 @@ public class Player {
         this.inventory = new Inventory(startSeed, this.difficulty);
         day = 1;
         numCropsHarvested = 0;
+        Pesticide cheapestPesticide = new Pesticide(difficulty);
+        cheapestPrice = cheapestPesticide.getCheapestPrice();
     }
 
     public int getFarmWorkerEfficiency() {
@@ -115,6 +121,10 @@ public class Player {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public int getCheapestPrice() {
+        return cheapestPrice;
     }
 
     public int addMoney(int money) {

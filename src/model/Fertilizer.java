@@ -1,6 +1,8 @@
 package model;
 
-public class Fertilizer implements Item {
+import java.io.Serializable;
+
+public class Fertilizer implements Item, Serializable {
     private String type = "Fertilizer";
 
     private int buyPrice;

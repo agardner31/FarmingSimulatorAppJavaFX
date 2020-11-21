@@ -22,9 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Random;
 
 public class FarmScreen implements IScreen {
@@ -52,6 +50,7 @@ public class FarmScreen implements IScreen {
     private MediaPlayer harvestNoise;
     private MediaPlayer nextDayNoise;
     private MediaPlayer fertilizeNoise;
+    private Button saveGameButton;
 
 
     public FarmScreen(int width, int height, Player player, boolean inventoryVisible) {
@@ -67,6 +66,7 @@ public class FarmScreen implements IScreen {
         inventoryButton = new Button();
         farmWorkerPane = fillWorkerPane();
         machinePane = getMachinePane();
+        saveGameButton = new Button("Save Game");
         ImageView inventoryIcon = null;
         setUpAudio();
         try {
@@ -260,7 +260,7 @@ public class FarmScreen implements IScreen {
 
             inventoryPane.add(cropLabel, i % 10, j);
         }
-        inventory.setInventoryPane(inventoryPane);
+        setInventoryPane(inventoryPane);
         inventoryPane.getStyleClass().add("inventoryPane");
         return inventoryPane;
     }
@@ -393,8 +393,25 @@ public class FarmScreen implements IScreen {
         displayDateLabel.getStyleClass().add("displayDateLabel");
         vbox.getStyleClass().add("vBox");
 
+        saveGameButton.setOnAction(e -> {
+            try {
+                FileOutputStream f = new FileOutputStream(new File("previous game/previousGame.txt"));
+                ObjectOutputStream o = new ObjectOutputStream(f);
+
+                // Write player to previousGame.txt
+                o.writeObject(player);
+
+
+                o.close();
+                f.close();
+            } catch (IOException ie) {
+                System.out.println("Error initializing stream");
+                ie.printStackTrace();
+            }
+        });
+
         HBox buttonRow = new HBox(inventoryButton, marketButton,
-                incrementTimeButton, randomEventText);
+                incrementTimeButton, randomEventText, saveGameButton);
         buttonRow.setSpacing(10);
         VBox finalScene = new VBox(buttonRow, vbox);
 
@@ -460,8 +477,6 @@ public class FarmScreen implements IScreen {
                 plantAndHarvestButton.setVisible(true);
                 pesticideButton.setVisible(false);
             }
-
-
             plantAndHarvestButton.setOnAction((e) -> {
                 if (temp.getCrop() != null) {
                     if (temp.getCrop().getStage().toString().equals("Mature")) {
@@ -554,12 +569,24 @@ public class FarmScreen implements IScreen {
                     Controller.enterFarm(player, player.getDifficulty(), true);
                 }
             });
+
+            Button climbButton = new Button("Climb");
+            climbButton.setVisible(false);
+            if (temp.getCrop() != null && temp.getCrop().getType().equals("Magic Beans")
+                    && ((temp.getCrop().getStage().equals(CropStage.IMMATURE))
+                    || temp.getCrop().getStage().equals(CropStage.MATURE))) {
+                climbButton.setVisible(true);
+            }
+            climbButton.setOnAction((e) -> {
+                Controller.win(player);
+            });
+
             HBox fertilizerPesticideBox = new HBox(fertilizeButton, pesticideButton);
             fertilizerPesticideBox.setSpacing(10);
             fertilizerPesticideBox.setAlignment(Pos.CENTER);
 
             VBox onePlot = new VBox(boxOfLabels, img, plantAndHarvestPlusWaterButtons,
-                    fertilizerPesticideBox);
+                    fertilizerPesticideBox, climbButton);
             plotBox.getChildren().add(onePlot);
         }
 
@@ -640,19 +667,39 @@ public class FarmScreen implements IScreen {
             Random rand = new Random();
             int randNum = rand.nextInt(3); //33% chance to get double yield
             if (randNum == 1) {
-                inventory.addToPane(plot.getCrop());
+                addToPane(plot.getCrop());
                 inventory.addItem(plot.getCrop());
             }
         }
-        inventory.addToPane(plot.getCrop());
+        addToPane(plot.getCrop());
         inventory.addItem(plot.getCrop());
         player.incrementNumCropsHarvested();
 
         // win the game
-        if (player.getNumCropsHarvested() >= 15) {
+        /*if (player.getNumCropsHarvested() >= 15) {
             Controller.win();
-        }
+        }*/
         plot.setCrop(null);
+    }
+
+    public void setInventoryPane(GridPane inventoryPane) {
+        this.inventoryPane = inventoryPane;
+    }
+
+    public void addToPane(Item item) {
+        for (int i = 0; i < Inventory.getCapacity(); i++) {
+            if (i >= inventoryPane.getChildren().size()) {
+                Label label = new Label(item.toString());
+                inventoryPane.getChildren().add(label);
+                return;
+            }
+            Label temp = (Label) inventoryPane.getChildren().get(i);
+            if (temp.getText().equals("")
+                    || inventoryPane.getChildren().get(i) == null) {
+                temp.setText(item.toString());
+                return;
+            }
+        }
     }
 
     public int getWidth() {

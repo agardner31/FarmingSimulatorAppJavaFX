@@ -4,16 +4,15 @@ import javafx.scene.image.Image;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 
-public class Plot {
+public class Plot implements Serializable {
 
     private Crop crop;
 
     private String type;
 
     private String title;
-
-    private Image img;
 
     private int waterLevel;
 
@@ -30,54 +29,12 @@ public class Plot {
             this.type = crop.getType();
         }
         this.title = "Plot " + title;
-        try {
-            img = new Image(new FileInputStream("images/empty.jpg"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         waterLevel = 50;
         fertilizerLevel = 0;
     }
 
-    public void setImage(Image img) {
-        this.img = img;
-    }
     public Image getImg() {
-        try {
-            if (crop == null) {
-                img = new Image(new FileInputStream("images/empty.jpg"));
-            } else {
-                String cropStage = crop.getStage().toString();
-                if (cropStage.equals("Dirt")) {
-                    img = new Image(new FileInputStream("images/empty.jpg"));
-                } else if (cropStage.equals("Seed")) {
-                    img = new Image(new FileInputStream("images/seeds.jpg"));
-                } else if (cropStage.equals("Immature")) {
-                    if (crop.getType().equals("Pumpkin")) {
-                        img = new Image(new FileInputStream("images/immaturePumpkin.jpg"));
-                    } else if (crop.getType().equals("Tomato")) {
-                        img = new Image(new FileInputStream("images/immatureTomato.jpg"));
-                    } else if (crop.getType().equals("Corn")) {
-                        img = new Image(new FileInputStream("images/immatureCorn.jpg"));
-                    }
-                } else if (cropStage.equals("Mature")) {
-                    if (crop.getType().equals("Pumpkin")) {
-                        img = new Image(new FileInputStream("images/maturePumpkin.jpg"));
-                    } else if (crop.getType().equals("Tomato")) {
-                        img = new Image(new FileInputStream("images/matureTomato.jpg"));
-                    } else if (crop.getType().equals("Corn")) {
-                        img = new Image(new FileInputStream("images/matureCorn.jpg"));
-                    }
-                } else if (cropStage.equals("Harvested")) {
-                    img = new Image(new FileInputStream("images/empty.jpg"));
-                } else if (cropStage.equals("Dead")) {
-                    img = new Image(new FileInputStream("images/empty.jpg"));
-                }
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return img;
+        return ImageSelector.getImg(crop);
     }
 
     public void setWaterLevel(int waterLevel) {

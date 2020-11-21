@@ -1,7 +1,7 @@
 package view;
 
+import controller.Controller;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.Player;
 
 public class ConfigScreen implements IScreen {
     private int width;
@@ -16,29 +17,25 @@ public class ConfigScreen implements IScreen {
     private Button startGame;
     private Label warning;
     private TextField enterName;
-    private ComboBox<String> levels;
-    private ObservableList<String> options;
-    private ObservableList<String> seasonsOptions;
-    private ComboBox<String> seasonsList;
-    private ObservableList<String> seedOptions;
-    private ComboBox<String> seedList;
+    private Player player;
 
-    public ConfigScreen(int width, int height) {
+    public ConfigScreen(Player player, int width, int height) {
         this.width = width;
         this.height = height;
         startGame = new Button("Start Game");
         warning = new Label("");
         enterName = new TextField();
-        options = FXCollections.observableArrayList("Apprentice", "Ordinary Joe", "Master Farmer");
-        levels = new ComboBox<>(options);
-        seasonsOptions = FXCollections.observableArrayList("Fall", "Winter", "Spring", "Summer");
-        seasonsList = new ComboBox<>(seasonsOptions);
-        seedOptions = FXCollections.observableArrayList("Tomato", "Pumpkin", "Corn");
-        seedList = new ComboBox<>(seedOptions);
+        this.player = player;
+        ComboBoxFactory factory = new ComboBoxFactory();
     }
 
     public Scene getScene() {
         // configuration scene
+
+        ComboBox<String> levels = ComboBoxFactory.getLevels();
+        ComboBox<String> seasonsList = ComboBoxFactory.getSeasons();
+        ComboBox<String> seedList = ComboBoxFactory.getSeeds();
+
         Label configTitle = new Label("Configuration");
         configTitle.getStyleClass().add("configTitle");
 
@@ -62,6 +59,19 @@ public class ConfigScreen implements IScreen {
                 seasonsBox, seedBox, startGame, warning);
         configVBox.getStyleClass().add("vBox");
 
+        Button loadGameButton = new Button("Load Previous Game");
+        loadGameButton.setVisible(false);
+        if (player != null) {
+            loadGameButton.setVisible(true);
+        }
+        loadGameButton.setOnMouseClicked((e) -> {
+            if (player != null) {
+                Controller.enterFarm(player, player.getDifficulty(), false);
+            }
+        });
+
+        configVBox.getChildren().add(loadGameButton);
+
         return new Scene(configVBox, width, height);
     }
 
@@ -78,14 +88,14 @@ public class ConfigScreen implements IScreen {
     }
 
     public ComboBox<String> getLevels() {
-        return levels;
+        return ComboBoxFactory.getLevels();
     }
 
     public ComboBox<String> getSeasonsList() {
-        return seasonsList;
+        return ComboBoxFactory.getSeasons();
     }
 
     public ComboBox<String> getSeedList() {
-        return seedList;
+        return ComboBoxFactory.getSeeds();
     }
 }

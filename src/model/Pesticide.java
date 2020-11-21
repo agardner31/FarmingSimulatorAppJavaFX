@@ -1,9 +1,13 @@
 package model;
 
-public class Pesticide implements Item {
+import java.io.Serializable;
+
+public class Pesticide implements Serializable, Item {
     private int buyPrice;
 
     private int baseBuyPrice;
+
+    private int cheapestPrice;
 
     public Pesticide(String difficulty) {
         setPrice(difficulty);
@@ -24,6 +28,7 @@ public class Pesticide implements Item {
         }
         baseBuyPrice = 2;
         buyPrice = (int) (baseBuyPrice * difficultyMultiplier);
+        cheapestPrice = (int) (.75 * buyPrice);
         buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
     }
 
@@ -36,6 +41,10 @@ public class Pesticide implements Item {
     @Override
     public int getBaseBuyPrice() {
         return baseBuyPrice;
+    }
+
+    public int getCheapestPrice() {
+        return cheapestPrice;
     }
 
     @Override

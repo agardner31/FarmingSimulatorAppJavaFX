@@ -1,6 +1,8 @@
 package model;
 
-public class Market {
+import java.io.Serializable;
+
+public class Market implements Serializable {
     private Inventory marketInventory;
     private Inventory playerInventory;
     private String difficulty;
@@ -19,6 +21,7 @@ public class Market {
         marketInventory.addItem(new Crop("Tomato", difficulty, CropStage.SEED));
         marketInventory.addItem(new Fertilizer(difficulty));
         marketInventory.addItem(new Pesticide(difficulty));
+        marketInventory.addItem(new Crop("Magic Beans", difficulty, CropStage.SEED));
     }
 
     public Inventory getMarketInventory() {

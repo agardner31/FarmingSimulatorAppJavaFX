@@ -1,6 +1,8 @@
 package model;
 
-public class Irrigation implements FarmMachine {
+import java.io.Serializable;
+
+public class Irrigation implements FarmMachine, Serializable {
     private int multiplier;
 
     private int buyPrice;

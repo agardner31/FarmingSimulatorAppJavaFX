@@ -1,6 +1,8 @@
 package model;
 
-public enum CropStage {
+import java.io.Serializable;
+
+public enum CropStage implements Serializable {
     SEED("Seed"), IMMATURE("Immature"), MATURE("Mature"),
     DIRT("Dirt"), DEAD("Dead");
 

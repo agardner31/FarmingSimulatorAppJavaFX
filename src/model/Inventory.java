@@ -5,14 +5,16 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-public class Inventory {
-    private ObservableList<Item> inventoryList;
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Inventory implements Serializable {
+    private ArrayList<Item> inventoryList;
 
     private int size;
 
     private static final int CAPACITY = 30;
 
-    private GridPane inventoryPane;
 
     public Inventory(String startSeed, String difficulty) {
         this(difficulty);
@@ -21,8 +23,7 @@ public class Inventory {
 
     public Inventory(String difficulty) {
         size = 0;
-        inventoryList = FXCollections.observableArrayList();
-        inventoryPane = new GridPane();
+        inventoryList = new ArrayList();
     }
 
     private void addStartSeed(String startSeed, String difficulty) {
@@ -47,14 +48,13 @@ public class Inventory {
     public boolean removeItem(int targetItem) {
         if (targetItem >= 0 && targetItem < inventoryList.size()) {
             inventoryList.remove(targetItem);
-            removeFromPane(targetItem);
             size--;
             return true;
         }
         return false;
     }
 
-    public void addToPane(Item item) {
+    /*public void addToPane(Item item) {
         for (int i = 0; i < Inventory.getCapacity(); i++) {
             if (i >= inventoryPane.getChildren().size()) {
                 Label label = new Label(item.toString());
@@ -68,22 +68,22 @@ public class Inventory {
                 return;
             }
         }
-    }
+    }*/
 
-    private void removeFromPane(int targetCrop) {
+    /*private void removeFromPane(int targetCrop) {
         Label temp = (Label) inventoryPane.getChildren().get(targetCrop);
         temp.setText("");
-    }
+    }*/
 
-    public void setInventoryPane(GridPane inventoryPane) {
+    /*public void setInventoryPane(GridPane inventoryPane) {
         this.inventoryPane = inventoryPane;
     }
 
     public GridPane getInventoryPane() {
         return inventoryPane;
-    }
+    }*/
 
-    public ObservableList<Item> getInventoryList() {
+    public ArrayList<Item> getInventoryList() {
         return inventoryList;
     }
 

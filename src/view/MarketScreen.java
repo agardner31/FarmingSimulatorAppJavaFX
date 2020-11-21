@@ -30,7 +30,7 @@ public class MarketScreen implements IScreen {
     private Label displayMarketLabel;
     private Label moneyLabel;
     private Plot[] plots;
-    private GridPane inventoryPane;
+    private GridPane playerInventoryPane;
     private GridPane forHirePane;
     private GridPane machinePane;
     private Button inventoryButton;
@@ -52,7 +52,7 @@ public class MarketScreen implements IScreen {
         marketInventory = market.getMarketInventory();
         playerInventory = market.getPlayerInventory();
         inventoryButton = new Button("Inventory");
-        inventoryPane = getInventoryPane();
+        playerInventoryPane = getInventoryPane();
         marketPane = getMarketPane();
         forHirePane = getForHirePane();
         machinePane = getMachinePane();
@@ -61,7 +61,7 @@ public class MarketScreen implements IScreen {
     }
 
     private GridPane getInventoryPane() {
-        inventoryPane = new GridPane();
+        GridPane inventoryPane = new GridPane();
         int j = -1;
         for (int i = 0; i < Inventory.getCapacity(); i++) {
             Item crop = null;
@@ -89,6 +89,7 @@ public class MarketScreen implements IScreen {
                 if (finalCrop instanceof Crop
                         && ((Crop) finalCrop).getStage().equals(CropStage.MATURE)) {
                     if (playerInventory.removeItem(targetCrop)) {
+                        //removeFromPane(targetCrop, playerInventoryPane);
                         buyOrSellNoise.stop();
                         buyOrSellNoise.play();
                         market.sell(finalCrop);
@@ -112,7 +113,8 @@ public class MarketScreen implements IScreen {
 
             inventoryPane.add(cropLabel, i % 10, j);
         }
-        playerInventory.setInventoryPane(inventoryPane);
+        //playerInventory.setInventoryPane(inventoryPane);
+        //setPlayerInventoryPane(inventoryPane);
         inventoryPane.getStyleClass().add("inventoryPane");
         return inventoryPane;
     }
@@ -239,7 +241,7 @@ public class MarketScreen implements IScreen {
                         if (playerInventory.addItem(finalCrop)) {
                             buyOrSellNoise.stop();
                             buyOrSellNoise.play();
-                            playerInventory.addToPane(finalCrop);
+                            addToPane(finalCrop, marketPane);
                             market.buy(finalCrop, price);
                             //moneyLabel.setText("Money: $" + player.getMoney() + ".00");
                             Controller.enterMarket(player, player.getDifficulty());
@@ -263,7 +265,10 @@ public class MarketScreen implements IScreen {
 
             marketPane.add(cropLabel, i % 10, j);
         }
-        marketInventory.setInventoryPane(marketPane);
+
+
+
+        //setPlayerInventoryPane(marketPane);
         marketPane.getStyleClass().add("inventoryPane");
         return marketPane;
     }
@@ -285,7 +290,7 @@ public class MarketScreen implements IScreen {
         Label forHireLabel = new Label("Farm Workers for Hire");
         Label machineLabel = new Label("Farm Machinery for Sale");
 
-        VBox inventoryWithLabel = new VBox(inventoryLabel, inventoryPane);
+        VBox inventoryWithLabel = new VBox(inventoryLabel, playerInventoryPane);
 
         //moves to market scene
         farmButton = new Button();
@@ -336,7 +341,30 @@ public class MarketScreen implements IScreen {
         return new Scene(finalScene, width, height);
     }
 
+    public void addToPane(Item item, GridPane inventoryPane) {
+        for (int i = 0; i < Inventory.getCapacity(); i++) {
+            if (i >= inventoryPane.getChildren().size()) {
+                Label label = new Label(item.toString());
+                inventoryPane.getChildren().add(label);
+                return;
+            }
+            Label temp = (Label) inventoryPane.getChildren().get(i);
+            if (temp.getText().equals("")
+                    || inventoryPane.getChildren().get(i) == null) {
+                temp.setText(item.toString());
+                return;
+            }
+        }
+    }
 
+    private void removeFromPane(int targetCrop, GridPane inventoryPane) {
+        Label temp = (Label) inventoryPane.getChildren().get(targetCrop);
+        temp.setText("");
+    }
+
+    public void setPlayerInventoryPane(GridPane inventoryPane) {
+        this.playerInventoryPane = inventoryPane;
+    }
 
     public void harvestCrop() {
         //harvest a crop

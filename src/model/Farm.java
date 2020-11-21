@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Farm {
+public class Farm implements Serializable {
     private Plot[] plots;
 
     private final int initialCapacity = 10;

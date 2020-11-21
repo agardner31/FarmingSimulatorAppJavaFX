@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class FarmWorker {
+public class FarmWorker implements Serializable {
 
     private int wage;
     private String name;

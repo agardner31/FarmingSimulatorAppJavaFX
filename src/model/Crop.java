@@ -1,6 +1,8 @@
 package model;
 
-public class Crop implements Item {
+import java.io.Serializable;
+
+public class Crop implements Item, Serializable {
     private String type;
 
     private CropStage stage;
@@ -52,6 +54,19 @@ public class Crop implements Item {
             baseBuyPrice = buyPrice;
             sellPrice = (int) (buyPrice * difficultyMultiplier);
             baseSellPrice = buyPrice;
+        } else if (type.equals("Magic Beans")) { //1 in 10 chance of being purchasable
+            if (Math.random() > .9) {
+                buyPrice = 10;
+                baseBuyPrice = buyPrice;
+                sellPrice = (int) (buyPrice * difficultyMultiplier);
+                baseSellPrice = sellPrice;
+            } else {
+                buyPrice = Integer.MAX_VALUE;
+                baseBuyPrice = Integer.MAX_VALUE;
+                sellPrice = 0;
+                baseSellPrice = 0;
+                return;
+            }
         }
         sellPrice = (int) (sellPrice + Math.random() * .5 * sellPrice - .25 * sellPrice);
         buyPrice = (int) (buyPrice + Math.random() * .5 * buyPrice - .25 * buyPrice);
@@ -114,6 +129,12 @@ public class Crop implements Item {
 
     public String toString(String type) {
         if (type.equals("buy")) {
+            if (buyPrice == Integer.MAX_VALUE) {
+                return this.type + "\n" + stage.toString() + "\n" + "$???";
+            }
+            if (this.type.equals("Magic Beans")) {
+                return this.type + "\n" + stage.toString() + "\n" + "$" + buyPrice + ".00 (SALE!)";
+            }
             return this.type + "\n" + stage.toString() + "\n" + "$" + buyPrice + ".00";
         } else if (type.equals("sell")) {
             return this.type + "\n" + stage.toString() + "\n" + "$" + sellPrice + ".00";
