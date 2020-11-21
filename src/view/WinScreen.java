@@ -9,8 +9,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import model.Player;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -32,6 +35,9 @@ public class WinScreen implements IScreen{
             Controller.initWelcomeScreen();
         });
 
+        Media cheering = new Media(new File("audio/cheering.mp3").toURI().toString());
+        MediaPlayer winNoise = new MediaPlayer(cheering);
+        winNoise.play();
         Image win = null;
         try {
             win = new Image(new FileInputStream("images/win.png"));
