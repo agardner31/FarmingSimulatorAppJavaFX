@@ -249,4 +249,12 @@ public class Farm implements Serializable {
             return "You've reached your daily harvesting limit!";
         }
     }
+
+    public int getDailyWaterLimit() {
+        return dailyWaterLimit;
+    }
+
+    public int getDailyHarvestLimit() {
+        return dailyHarvestLimit;
+    }
 }

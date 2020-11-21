@@ -1,15 +1,16 @@
 package tests.M6;
 
+import model.Farm;
 import model.Tractor;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class SebastianM6Tests {
-    Tractor tractorAP;
-    Tractor tractorOJ;
-    Tractor tractorMF;
+    private Tractor tractorAP;
+    private Tractor tractorOJ;
+    private Tractor tractorMF;
     @Before
     public void setup() {
         tractorAP = new Tractor("Apprentice");
@@ -39,8 +40,68 @@ public class SebastianM6Tests {
         assertEquals(tractorMF.toString(), mfString);
     }
 
-    /*@Test
+    @Test
     public void testTractorUsage() {
+        Farm farmAP = new Farm("Apprentice");
+        Farm farmOJ = new Farm("Ordinary Joe");
+        Farm farmMF = new Farm("Master Farmer");
+        int limitIncreaseAP = tractorAP.getMultiplier();
+        int limitIncreaseOJ = tractorOJ.getMultiplier();
+        int limitIncreaseMF = tractorMF.getMultiplier();
+        int i;
 
-    }*/
+        //apprentice
+        for (i = 0; i < farmAP.getDailyHarvestLimit(); i++) {
+            assertTrue(farmAP.harvestCountCheck());
+            farmAP.incrementDailyHarvestCount();
+        }
+
+        assertFalse(farmAP.harvestCountCheck());
+
+        int oldDailyHarvestLimit = farmAP.getDailyHarvestLimit();
+        farmAP.setDailyHarvestLimit(limitIncreaseAP);
+        for (; i < oldDailyHarvestLimit + limitIncreaseAP; i++) {
+            assertTrue(farmAP.harvestCountCheck());
+            farmAP.incrementDailyHarvestCount();
+        }
+
+        assertFalse(farmAP.harvestCountCheck());
+
+
+        //ordinary joe
+        for (i = 0; i < farmOJ.getDailyHarvestLimit(); i++) {
+            assertTrue(farmOJ.harvestCountCheck());
+            farmOJ.incrementDailyHarvestCount();
+        }
+
+        assertFalse(farmOJ.harvestCountCheck());
+
+        oldDailyHarvestLimit = farmOJ.getDailyHarvestLimit();
+
+        farmOJ.setDailyHarvestLimit(limitIncreaseOJ);
+        for (; i < oldDailyHarvestLimit + limitIncreaseOJ; i++) {
+            assertTrue(farmOJ.harvestCountCheck());
+            farmOJ.incrementDailyHarvestCount();
+        }
+
+        assertFalse(farmOJ.harvestCountCheck());
+
+
+        //master farmer
+        for (i = 0; i < farmMF.getDailyHarvestLimit(); i++) {
+            assertTrue(farmMF.harvestCountCheck());
+            farmMF.incrementDailyHarvestCount();
+        }
+
+        assertFalse(farmMF.harvestCountCheck());
+
+        oldDailyHarvestLimit = farmMF.getDailyHarvestLimit();
+        farmMF.setDailyHarvestLimit(limitIncreaseMF);
+        for (; i < oldDailyHarvestLimit + limitIncreaseMF; i++) {
+            assertTrue(farmMF.harvestCountCheck());
+            farmMF.incrementDailyHarvestCount();
+        }
+
+        assertFalse(farmMF.harvestCountCheck());
+    }
 }
