@@ -221,6 +221,14 @@ public class MarketScreen implements IScreen {
         });
         tractorLabel.getStyleClass().add("cropBox");
 
+        plotLabel.setOnMouseClicked((e) -> {
+            if (player.buyPlot()) {
+                buyOrSellNoise.stop();
+                buyOrSellNoise.play();
+                Controller.enterMarket(player, player.getDifficulty());
+            }
+        });
+
         machinePane.getStyleClass().add("inventoryPane");
         return machinePane;
     }
