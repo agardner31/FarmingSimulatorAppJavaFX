@@ -9,11 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Farm;
 import model.Player;
-import view.ConfigScreen;
+import view.*;
 import view.FarmScreen;
-import view.GameOverScreen;
-import view.MarketScreen;
-import view.WelcomeScreen;
 
 
 public class Controller extends Application {
@@ -107,6 +104,15 @@ public class Controller extends Application {
         GameOverScreen gameOverScreen = new GameOverScreen(WIDTH, HEIGHT, player, name);
         Scene scene = gameOverScreen.getScene();
         scene.getStylesheets().add("file:resources/css/GameOverScreen.css");
+        mainWindow.setScene(scene);
+        mainWindow.show();
+    }
+
+    public static void win() {
+        currentView = "Win";
+        WinScreen winScreen = new WinScreen(WIDTH, HEIGHT);
+        Scene scene = winScreen.getScene();
+        scene.getStylesheets().add("file:resources/css/WinScreen.css");
         mainWindow.setScene(scene);
         mainWindow.show();
     }

@@ -41,6 +41,7 @@ public class Player {
         }
         this.inventory = new Inventory(startSeed, this.difficulty);
         day = 1;
+        numCropsHarvested = 0;
     }
 
     public int getFarmWorkerEfficiency() {

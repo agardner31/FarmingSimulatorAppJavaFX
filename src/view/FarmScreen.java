@@ -632,6 +632,11 @@ public class FarmScreen implements IScreen {
         inventory.addToPane(plot.getCrop());
         inventory.addItem(plot.getCrop());
         player.incrementNumCropsHarvested();
+
+        // win the game
+        if (player.getNumCropsHarvested() >= 15) {
+            Controller.win();
+        }
         plot.setCrop(null);
     }
 

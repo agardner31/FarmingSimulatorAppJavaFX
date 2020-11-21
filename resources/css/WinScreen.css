@@ -1,0 +1,8 @@
+.vBox {
+    -fx-padding: 50;
+    -fx-alignment: BASELINE_CENTER;
+    -fx-background-color: #658E6E;
+}
+.welcome {
+    -fx-font: 20px "Segoe UI";
+}
