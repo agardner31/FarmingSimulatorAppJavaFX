@@ -154,7 +154,9 @@ public class MarketScreen implements IScreen {
         machinePane = new GridPane();
 
         FarmMachine irrigation = new Irrigation(player.getDifficulty());
+        FarmMachine tractor = new Tractor(player.getDifficulty());
         Label irrigationLabel = new Label(irrigation.toString());
+        Label tractorLabel = new Label(tractor.toString());
         if (player.getFarm().hasIrrigation()) {
             irrigationLabel.setBackground(new Background(
                     new BackgroundFill(Color.valueOf("#B9E1C1"), null,
@@ -170,7 +172,23 @@ public class MarketScreen implements IScreen {
                 irrigationLabel.setBackground(null);
             });
         }
+        if (player.getFarm().hasTractor()) {
+            tractorLabel.setBackground(new Background(
+                    new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                            null)));
+        } else {
+            tractorLabel.setOnMouseEntered(e -> {
+                tractorLabel.setBackground(new Background(
+                        new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                                null)));
+            });
+
+            tractorLabel.setOnMouseExited(e -> {
+                tractorLabel.setBackground(null);
+            });
+        }
         machinePane.add(irrigationLabel, 0, 0);
+        machinePane.add(tractorLabel, 1, 0);
         irrigationLabel.setOnMouseClicked((e) -> {
             if (player.buyMachine(irrigation)) {
                 buyOrSellNoise.stop();
@@ -180,7 +198,14 @@ public class MarketScreen implements IScreen {
         });
         irrigationLabel.getStyleClass().add("cropBox");
 
-        /* tractor code here */
+        tractorLabel.setOnMouseClicked((e) -> {
+            if (player.buyMachine(tractor)) {
+                buyOrSellNoise.stop();
+                buyOrSellNoise.play();
+                Controller.enterMarket(player, player.getDifficulty());
+            }
+        });
+        tractorLabel.getStyleClass().add("cropBox");
 
         machinePane.getStyleClass().add("inventoryPane");
         return machinePane;

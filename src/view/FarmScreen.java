@@ -451,7 +451,11 @@ public class FarmScreen implements IScreen {
             Button plantAndHarvestButton = new Button(getPlantAndHarvestButtonString(temp));
             if (getPlantAndHarvestButtonString(temp).equals("Wait")) {
                 plantAndHarvestButton.setVisible(false);
-                pesticideButton.setVisible(true);
+                if (temp.getCrop() != null && temp.getCrop().hasPesticides()) {
+                    pesticideButton.setVisible(false);
+                } else {
+                    pesticideButton.setVisible(true);
+                }
             } else {
                 plantAndHarvestButton.setVisible(true);
                 pesticideButton.setVisible(false);
@@ -462,9 +466,16 @@ public class FarmScreen implements IScreen {
                 if (temp.getCrop() != null) {
                     if (temp.getCrop().getStage().toString().equals("Mature")) {
                         if (!inventory.isFull()) {
-                            harvestCrop(temp);
-                            displayGrowth(temp, plantAndHarvestButton, growStage, img,
-                                    waterLevel, fertilizerLevel, pesticideButton);
+                            if (player.getFarm().harvestCountCheck()) {
+                                player.getFarm().incrementDailyHarvestCount();
+                                harvestNoise.stop();
+                                harvestNoise.play();
+                                harvestCrop(temp);
+                                displayGrowth(temp, plantAndHarvestButton, growStage, img,
+                                        waterLevel, fertilizerLevel, pesticideButton);
+                            } else {
+                                updateLimitMessage();
+                            }
                         }
                     } else if (temp.getCrop().getStage().equals(CropStage.DEAD)) {
                         plotType.setText("Empty");
@@ -577,7 +588,11 @@ public class FarmScreen implements IScreen {
         plantAndHarvestButton.setText(getPlantAndHarvestButtonString(temp));
         if (getPlantAndHarvestButtonString(temp).equals("Wait")) {
             plantAndHarvestButton.setVisible(false);
-            pesticideButton.setVisible(true);
+            if (temp.getCrop() != null && temp.getCrop().hasPesticides()) {
+                pesticideButton.setVisible(false);
+            } else {
+                pesticideButton.setVisible(true);
+            }
         } else {
             plantAndHarvestButton.setVisible(true);
             pesticideButton.setVisible(false);

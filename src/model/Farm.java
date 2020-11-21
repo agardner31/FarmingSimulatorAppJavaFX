@@ -29,7 +29,7 @@ public class Farm {
             plots[i] = new Plot(null, i + 1);
         }
         dailyWaterLimit = 15;
-        dailyHarvestLimit = 10;
+        dailyHarvestLimit = 5;
     }
 
     public Farm(int size, String difficulty) {
@@ -38,7 +38,7 @@ public class Farm {
             plots[i] = new Plot(null, i + 1);
         }
         dailyWaterLimit = 15;
-        dailyHarvestLimit = 10;
+        dailyHarvestLimit = 5;
     }
 
     public void recalculateRainOdds(String difficulty, String season) {
@@ -187,7 +187,7 @@ public class Farm {
 
     public void setDailyHarvestLimit(int multiplier) {
         this.dailyHarvestLimit += multiplier;
-    }
+    } //+=?
 
     public boolean harvestCountCheck() {
         return dailyHarvestCount < dailyHarvestLimit;

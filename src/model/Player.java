@@ -140,7 +140,12 @@ public class Player {
                 return true;
             }
         } else {
-            //tractor here
+            if (money >= machine.getBuyPrice() && !farm.hasTractor()) {
+                money -= machine.getBuyPrice();
+                farm.setTractor(true);
+                farm.setDailyHarvestLimit(machine.getMultiplier());
+                return true;
+            }
         }
         return false;
     }
