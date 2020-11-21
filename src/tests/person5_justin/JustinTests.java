@@ -38,12 +38,12 @@ public class JustinTests {
             plots[i] = new Plot();
         }
         for (int i = 0; i < size; i++) {
-            assertEquals(farm.getPlots()[i].getType(), "None");
-            assertEquals(farm.getPlots()[i].getTitle(), "Plot 1");
+            assertEquals(farm.getPlots().get(i).getType(), "None");
+            assertEquals(farm.getPlots().get(i).getTitle(), "Plot 1");
             assertEquals(plots[i].getType(), "None");
             assertEquals(plots[i].getTitle(), "");
-            assertEquals(farm.getPlots()[i].getType(), plots[i].getType());
-            assertEquals(farm.getPlots()[i].getTitle(), plots[i].getTitle());
+            assertEquals(farm.getPlots().get(i).getType(), plots[i].getType());
+            assertEquals(farm.getPlots().get(i).getTitle(), plots[i].getTitle());
         }
     }
 }

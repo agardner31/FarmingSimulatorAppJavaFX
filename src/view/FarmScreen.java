@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import model.*;
 
 import java.io.*;
+import java.util.List;
 import java.util.Random;
 
 public class FarmScreen implements IScreen {
@@ -31,7 +32,7 @@ public class FarmScreen implements IScreen {
     private Player player;
     private Label displayDateLabel;
     private Label moneyLabel;
-    private Plot[] plots;
+    private List<Plot> plots;
     private Inventory inventory;
     private GridPane inventoryPane;
     private Button inventoryButton;
@@ -284,41 +285,41 @@ public class FarmScreen implements IScreen {
             player.getFarm().recalculateLocustsOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateRandomRainOrDrought();
             player.getFarm().randomLocustKills(-1);
-            for (int i = 0; i < plots.length; i++) {
-                if (plots[i].getCrop() != null) {
-                    if (plots[i].getFertilizerLevel() > 0) {
-                        CropStage tempStage = plots[i].getCrop().getStage();
+            for (int i = 0; i < player.getFarm().getNumPlots(); i++) {
+                if (plots.get(i).getCrop() != null) {
+                    if (plots.get(i).getFertilizerLevel() > 0) {
+                        CropStage tempStage = plots.get(i).getCrop().getStage();
                         if (tempStage.equals(CropStage.SEED)) {
-                            plots[i].getCrop().setStage(CropStage.IMMATURE);
+                            plots.get(i).getCrop().setStage(CropStage.IMMATURE);
                         }
                     }
                     if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
-                        plots[i].water(player.getFarm().getRandomRainOrDrought());
+                        plots.get(i).water(player.getFarm().getRandomRainOrDrought());
                     } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
-                        plots[i].dry(player.getFarm().getRandomRainOrDrought());
+                        plots.get(i).dry(player.getFarm().getRandomRainOrDrought());
                     }
                     if (player.getFarm().getLocusts()) {
-                        if (!plots[i].getCrop().hasPesticides()
+                        if (!plots.get(i).getCrop().hasPesticides()
                                 && player.getFarm().randomLocustKills(1) > 0) {
-                            plots[i].getCrop().setStage(CropStage.DEAD);
+                            plots.get(i).getCrop().setStage(CropStage.DEAD);
                         }
                     }
-                    plots[i].getCrop().grow();
-                    if (plots[i].getCrop().getStage().equals(CropStage.MATURE)
+                    plots.get(i).getCrop().grow();
+                    if (plots.get(i).getCrop().getStage().equals(CropStage.MATURE)
                             && (workerEfficiency > 0)) {
-                        this.player.addMoney(plots[i].getCrop().getSellPrice());
-                        plots[i].setCrop(null);
+                        this.player.addMoney(plots.get(i).getCrop().getSellPrice());
+                        plots.get(i).setCrop(null);
                         workerEfficiency--;
                     }
                 } else {
                     if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
-                        plots[i].water(player.getFarm().getRandomRainOrDrought());
+                        plots.get(i).water(player.getFarm().getRandomRainOrDrought());
                     } else if (player.getFarm().getDrought() && !player.getFarm().getRain()) {
-                        plots[i].dry(player.getFarm().getRandomRainOrDrought());
+                        plots.get(i).dry(player.getFarm().getRandomRainOrDrought());
                     }
                 }
                 if (!player.getFarm().getRain()) {
-                    plots[i].dry(10);
+                    plots.get(i).dry(10);
                 }
             }
             payWorkers();
@@ -423,8 +424,8 @@ public class FarmScreen implements IScreen {
 
     private ScrollPane fillPlotPane() {
         HBox plotBox = new HBox(20);
-        for (int i = 0; i < plots.length; i++) {
-            Plot temp = plots[i];
+        for (int i = 0; i < player.getFarm().getNumPlots(); i++) {
+            Plot temp = plots.get(i);
             Label plotNumber = new Label("Plot #" + (i + 1));
             Label plotType;
             Label growStage;
@@ -730,7 +731,7 @@ public class FarmScreen implements IScreen {
         this.moneyLabel = new Label("Money: $" + player.getMoney() + ".00");
     }
 
-    public Plot[] getPlots() {
+    public List<Plot> getPlots() {
         return plots;
     }
 }

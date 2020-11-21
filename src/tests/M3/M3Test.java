@@ -104,7 +104,7 @@ public class M3Test {
         Farm temp = player.getFarm();
         String[] tempStrings = new String[5];
         for (int i = 0; i < 5; i++) {
-            tempStrings[i] = temp.getPlots()[i].getType();
+            tempStrings[i] = temp.getPlots().get(i).getType();
         }
         String[] expected = new String[5];
         expected[0] = "Pumpkin";

@@ -1,13 +1,16 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Farm implements Serializable {
-    private Plot[] plots;
+    private List<Plot> plots;
 
     private final int initialCapacity = 10;
     private int numPlots = initialCapacity;
+    private int plotPrice = 15;
 
     private boolean rain = false;
     private boolean drought = false;
@@ -25,21 +28,22 @@ public class Farm implements Serializable {
 
 
     public Farm(String difficulty) {
-        plots = new Plot[initialCapacity];
-        for (int i = 0; i < plots.length; i++) {
-            plots[i] = new Plot(null, i + 1);
+        plots = new ArrayList<Plot>();
+        for (int i = 0; i < numPlots; i++) {
+            plots.add(new Plot(null, i + 1));
         }
         dailyWaterLimit = 15;
         dailyHarvestLimit = 5;
     }
 
     public Farm(int size, String difficulty) {
-        plots = new Plot[size];
-        for (int i = 0; i < plots.length; i++) {
-            plots[i] = new Plot(null, i + 1);
+        plots = new ArrayList<Plot>();
+        for (int i = 0; i < size; i++) {
+            plots.add(new Plot(null, i + 1));
         }
         dailyWaterLimit = 15;
         dailyHarvestLimit = 5;
+        numPlots = size;
     }
 
     public void recalculateRainOdds(String difficulty, String season) {
@@ -127,10 +131,10 @@ public class Farm implements Serializable {
     public int randomLocustKills(int input) {
         if (input == -1) {
             int numFullPlots = 0;
-            for (int i = 0; i < plots.length; i++) {
-                if (plots[i] != null && plots[i].getCrop() != null
-                        && !plots[i].getCrop().getStage().equals(CropStage.DEAD)
-                        && !plots[i].getCrop().hasPesticides()) {
+            for (int i = 0; i < numPlots; i++) {
+                if (plots.get(i) != null && plots.get(i).getCrop() != null
+                        && !plots.get(i).getCrop().getStage().equals(CropStage.DEAD)
+                        && !plots.get(i).getCrop().hasPesticides()) {
                     numFullPlots++;
                 }
             }
@@ -166,7 +170,7 @@ public class Farm implements Serializable {
         return this.locusts;
     }
 
-    public Plot[] getPlots() {
+    public List<Plot> getPlots() {
         return plots;
     }
 
@@ -222,6 +226,14 @@ public class Farm implements Serializable {
     public void setTractor(boolean hasTractor) {
         this.hasTractor = hasTractor;
     }
+
+    public int getNumPlots() { return numPlots; }
+
+    public String plotPurchaseString() {
+        return "Plot\n\n$" + plotPrice + ".00";
+    }
+
+    public int getPlotPrice() { return plotPrice; }
 
     public String getLimitMessage(FarmMachine machine) {
         if (machine instanceof Irrigation) {
