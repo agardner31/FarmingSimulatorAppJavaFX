@@ -159,4 +159,14 @@ public class Player implements Serializable {
         }
         return false;
     }
+
+    public boolean buyPlot() {
+        if (money >= farm.getPlotPrice()) {
+            money -= farm.getPlotPrice();
+            farm.recalcPlotPrice();
+            farm.addPlot();
+            return true;
+        }
+        return false;
+    }
 }

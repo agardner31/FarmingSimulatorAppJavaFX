@@ -110,8 +110,8 @@ public class Controller extends Application {
 
     public static void enterFarm(Player player, String difficulty, boolean inventoryVisible) {
         boolean plotCheck = true;
-        for (int i = 0; i < player.getFarm().getPlots().length; i++) {
-            if (player.getFarm().getPlots()[i].getCrop() != null) {
+        for (int i = 0; i < player.getFarm().getNumPlots(); i++) {
+            if (player.getFarm().getPlots().get(i).getCrop() != null) {
                 plotCheck = false;
             }
         }

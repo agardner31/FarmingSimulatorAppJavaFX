@@ -159,6 +159,17 @@ public class MarketScreen implements IScreen {
         FarmMachine tractor = new Tractor(player.getDifficulty());
         Label irrigationLabel = new Label(irrigation.toString());
         Label tractorLabel = new Label(tractor.toString());
+        Label plotLabel = new Label(player.getFarm().plotPurchaseString());
+        plotLabel.setOnMouseEntered(e -> {
+            plotLabel.setBackground(new Background(
+                    new BackgroundFill(Color.valueOf("#B9E1C1"), null,
+                            null)));
+        });
+
+        plotLabel.setOnMouseExited(e -> {
+            plotLabel.setBackground(null);
+        });
+        plotLabel.getStyleClass().add("cropBox");
         if (player.getFarm().hasIrrigation()) {
             irrigationLabel.setBackground(new Background(
                     new BackgroundFill(Color.valueOf("#B9E1C1"), null,
@@ -191,6 +202,7 @@ public class MarketScreen implements IScreen {
         }
         machinePane.add(irrigationLabel, 0, 0);
         machinePane.add(tractorLabel, 1, 0);
+        machinePane.add(plotLabel, 2, 0);
         irrigationLabel.setOnMouseClicked((e) -> {
             if (player.buyMachine(irrigation)) {
                 buyOrSellNoise.stop();
@@ -208,6 +220,14 @@ public class MarketScreen implements IScreen {
             }
         });
         tractorLabel.getStyleClass().add("cropBox");
+
+        plotLabel.setOnMouseClicked((e) -> {
+            if (player.buyPlot()) {
+                buyOrSellNoise.stop();
+                buyOrSellNoise.play();
+                Controller.enterMarket(player, player.getDifficulty());
+            }
+        });
 
         machinePane.getStyleClass().add("inventoryPane");
         return machinePane;
@@ -288,7 +308,7 @@ public class MarketScreen implements IScreen {
 
         Label inventoryLabel = new Label("Items");
         Label forHireLabel = new Label("Farm Workers for Hire");
-        Label machineLabel = new Label("Farm Machinery for Sale");
+        Label machineLabel = new Label("Farm Machinery and Plots for Sale");
 
         VBox inventoryWithLabel = new VBox(inventoryLabel, playerInventoryPane);
 
