@@ -1,6 +1,7 @@
 package tests.M6;
 
 import model.Farm;
+import model.Irrigation;
 import model.Tractor;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,11 +12,21 @@ public class SebastianM6Tests {
     private Tractor tractorAP;
     private Tractor tractorOJ;
     private Tractor tractorMF;
+
+    private Irrigation irrigationAP;
+    private Irrigation irrigationOJ;
+    private Irrigation irrigationMF;
+
     @Before
     public void setup() {
         tractorAP = new Tractor("Apprentice");
         tractorOJ = new Tractor("Ordinary Joe");
         tractorMF = new Tractor("Master Farmer");
+
+        irrigationAP = new Irrigation("Apprentice");
+        irrigationOJ = new Irrigation("Ordinary Joe");
+        irrigationMF = new Irrigation("Master Farmer");
+
     }
 
     @Test
@@ -103,5 +114,71 @@ public class SebastianM6Tests {
         }
 
         assertFalse(farmMF.harvestCountCheck());
+    }
+
+
+    @Test
+    public void testIrrigationUsage() {
+        Farm farmAP = new Farm("Apprentice");
+        Farm farmOJ = new Farm("Ordinary Joe");
+        Farm farmMF = new Farm("Master Farmer");
+        int limitMultAP = irrigationAP.getMultiplier();
+        int limitMultOJ = irrigationOJ.getMultiplier();
+        int limitMultMF = irrigationMF.getMultiplier();
+        int i;
+
+        //apprentice
+        for (i = 0; i < farmAP.getDailyWaterLimit(); i++) {
+            assertTrue(farmAP.waterCountCheck());
+            farmAP.incrementDailyWaterCount();
+        }
+
+        assertFalse(farmAP.waterCountCheck());
+
+        int oldDailyWaterLimit = farmAP.getDailyWaterLimit();
+        farmAP.setDailyWaterLimit(limitMultAP);
+        for (; i < oldDailyWaterLimit * limitMultAP; i++) {
+            assertTrue(farmAP.waterCountCheck());
+            farmAP.incrementDailyWaterCount();
+        }
+
+        assertFalse(farmAP.waterCountCheck());
+
+
+        //ordinary joe
+        for (i = 0; i < farmOJ.getDailyWaterLimit(); i++) {
+            assertTrue(farmOJ.waterCountCheck());
+            farmOJ.incrementDailyWaterCount();
+        }
+
+        assertFalse(farmOJ.waterCountCheck());
+
+        oldDailyWaterLimit = farmOJ.getDailyWaterLimit();
+        farmOJ.setDailyWaterLimit(limitMultOJ);
+        for (; i < oldDailyWaterLimit * limitMultOJ; i++) {
+            assertTrue(farmOJ.waterCountCheck());
+            farmOJ.incrementDailyWaterCount();
+        }
+
+        assertFalse(farmOJ.waterCountCheck());
+
+
+        //master farmer
+        for (i = 0; i < farmMF.getDailyWaterLimit(); i++) {
+            assertTrue(farmMF.waterCountCheck());
+            farmMF.incrementDailyWaterCount();
+        }
+
+        assertFalse(farmMF.waterCountCheck());
+
+        oldDailyWaterLimit = farmMF.getDailyWaterLimit();
+        farmMF.setDailyWaterLimit(limitMultMF);
+        for (; i < oldDailyWaterLimit * limitMultMF; i++) {
+            assertTrue(farmMF.waterCountCheck());
+            farmMF.incrementDailyWaterCount();
+        }
+
+        assertFalse(farmMF.waterCountCheck());
+
     }
 }
