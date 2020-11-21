@@ -237,7 +237,10 @@ public class Farm implements Serializable {
 
     public void recalcPlotPrice() { plotPrice += 5; }
 
-    public void addPlot() { plots.add(new Plot()); }
+    public void addPlot() {
+        numPlots++;
+        plots.add(new Plot(null, numPlots));
+    }
 
     public String getLimitMessage(FarmMachine machine) {
         if (machine instanceof Irrigation) {
