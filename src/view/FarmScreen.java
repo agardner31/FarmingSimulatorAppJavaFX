@@ -15,11 +15,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.*;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Random;
@@ -43,6 +46,13 @@ public class FarmScreen implements IScreen {
     private GridPane farmWorkerPane;
     private GridPane machinePane;
     private Label machineErrorMessage;
+    private MediaPlayer sprayNoise;
+    private MediaPlayer waterNoise;
+    private MediaPlayer plantNoise;
+    private MediaPlayer harvestNoise;
+    private MediaPlayer nextDayNoise;
+    private MediaPlayer fertilizeNoise;
+
 
     public FarmScreen(int width, int height, Player player, boolean inventoryVisible) {
         this.inventoryVisible = inventoryVisible;
@@ -58,6 +68,7 @@ public class FarmScreen implements IScreen {
         farmWorkerPane = fillWorkerPane();
         machinePane = getMachinePane();
         ImageView inventoryIcon = null;
+        setUpAudio();
         try {
             inventoryIcon = new ImageView(new Image(
                     new FileInputStream("images/InventoryIcon.png")));
@@ -81,6 +92,22 @@ public class FarmScreen implements IScreen {
         plotBox = fillPlotPane();
         targetPlantCrop = -1;
         machineErrorMessage = new Label("");
+    }
+
+    private void setUpAudio() {
+        Media spray = new Media(new File("audio/spray.mp3").toURI().toString());
+        sprayNoise = new MediaPlayer(spray);
+        Media droplet = new Media(new File("audio/droplet.mp3").toURI().toString());
+        waterNoise = new MediaPlayer(droplet);
+        Media blop = new Media(new File("audio/blop.mp3").toURI().toString());
+        plantNoise = new MediaPlayer(blop);
+        Media woosh = new Media(new File("audio/woosh.mp3").toURI().toString());
+        harvestNoise = new MediaPlayer(woosh);
+        Media rooster = new Media(new File("audio/rooster.mp3").toURI().toString());
+        nextDayNoise = new MediaPlayer(rooster);
+        Media tick = new Media(new File("audio/tick.mp3").toURI().toString());
+        fertilizeNoise = new MediaPlayer(tick);
+
     }
 
     private GridPane getMachinePane() {
@@ -249,6 +276,8 @@ public class FarmScreen implements IScreen {
 
 
         incrementTimeButton.setOnAction((e) -> {
+            nextDayNoise.stop();
+            nextDayNoise.play();
             int workerEfficiency = this.player.getFarmWorkerEfficiency();
             player.getFarm().recalculateRainOdds(player.getDifficulty(), player.getSeason());
             player.getFarm().recalculateDroughtOdds(player.getDifficulty(), player.getSeason());
@@ -464,6 +493,8 @@ public class FarmScreen implements IScreen {
                 if (player.getFarm().waterCountCheck()) {
                     player.getFarm().incrementDailyWaterCount();
                     temp.water(20);
+                    waterNoise.stop();
+                    waterNoise.play();
                     displayGrowth(temp, plantAndHarvestButton, growStage, img,
                             waterLevel, fertilizerLevel, pesticideButton);
                 } else {
@@ -480,6 +511,8 @@ public class FarmScreen implements IScreen {
                 Item fertString = new Fertilizer("Apprentice");
                 if (targetPlantCrop != -1
                         && targetCropLabel.getText().equals(fertString.toString())) {
+                    fertilizeNoise.stop();
+                    fertilizeNoise.play();
                     temp.setFertilizerLevel(100);
                     player.getInventory().removeItem(targetPlantCrop);
                     displayGrowth(temp, plantAndHarvestButton, growStage, img,
@@ -497,6 +530,8 @@ public class FarmScreen implements IScreen {
                 if (targetPlantCrop != -1
                         && targetCropLabel.getText().equals(pesticideString.toString())) {
                     if (temp.getCrop() != null) {
+                        waterNoise.stop();
+                        sprayNoise.play();
                         temp.getCrop().spray();
                     }
                     player.getInventory().removeItem(targetPlantCrop);
@@ -560,6 +595,8 @@ public class FarmScreen implements IScreen {
     private void plant(Plot temp) {
         temp.setCrop((Crop) player.getInventory().getInventoryList().get(targetPlantCrop));
         player.getInventory().removeItem(targetPlantCrop);
+        plantNoise.stop();
+        plantNoise.play();
     }
 
     private String getPlantAndHarvestButtonString(Plot plot) {
@@ -582,6 +619,8 @@ public class FarmScreen implements IScreen {
 
 
     public void harvestCrop(Plot plot) {
+        harvestNoise.stop();
+        harvestNoise.play();
         if (plot.getFertilizerLevel() > 0) {
             Random rand = new Random();
             int randNum = rand.nextInt(3); //33% chance to get double yield

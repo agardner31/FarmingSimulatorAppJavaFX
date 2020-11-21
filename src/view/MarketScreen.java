@@ -13,10 +13,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.*;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -37,6 +40,7 @@ public class MarketScreen implements IScreen {
     private Market market;
     private Inventory playerInventory;
     private Inventory marketInventory;
+    private MediaPlayer buyOrSellNoise;
 
     public MarketScreen(int width, int height, String difficulty, Player player) {
         this.width = width;
@@ -52,6 +56,8 @@ public class MarketScreen implements IScreen {
         marketPane = getMarketPane();
         forHirePane = getForHirePane();
         machinePane = getMachinePane();
+        Media chaching = new Media(new File("audio/chaching.mp3").toURI().toString());
+        buyOrSellNoise = new MediaPlayer(chaching);
     }
 
     private GridPane getInventoryPane() {
@@ -83,6 +89,8 @@ public class MarketScreen implements IScreen {
                 if (finalCrop instanceof Crop
                         && ((Crop) finalCrop).getStage().equals(CropStage.MATURE)) {
                     if (playerInventory.removeItem(targetCrop)) {
+                        buyOrSellNoise.stop();
+                        buyOrSellNoise.play();
                         market.sell(finalCrop);
                         Controller.enterMarket(player, player.getDifficulty());
                     }
@@ -122,6 +130,8 @@ public class MarketScreen implements IScreen {
             FarmWorker finalHelper = helper;
             workerLabel.setOnMouseClicked((e) -> {
                 if (this.player.hireWorker(finalHelper)) {
+                    buyOrSellNoise.stop();
+                    buyOrSellNoise.play();
                     Controller.enterMarket(player, player.getDifficulty());
                 }
             });
@@ -163,6 +173,8 @@ public class MarketScreen implements IScreen {
         machinePane.add(irrigationLabel, 0, 0);
         irrigationLabel.setOnMouseClicked((e) -> {
             if (player.buyMachine(irrigation)) {
+                buyOrSellNoise.stop();
+                buyOrSellNoise.play();
                 Controller.enterMarket(player, player.getDifficulty());
             }
         });
@@ -200,6 +212,8 @@ public class MarketScreen implements IScreen {
                     int price = finalCrop.getBuyPrice();
                     if (player.getMoney() >= price) {
                         if (playerInventory.addItem(finalCrop)) {
+                            buyOrSellNoise.stop();
+                            buyOrSellNoise.play();
                             playerInventory.addToPane(finalCrop);
                             market.buy(finalCrop, price);
                             //moneyLabel.setText("Money: $" + player.getMoney() + ".00");
