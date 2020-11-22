@@ -329,7 +329,7 @@ public class FarmScreen implements IScreen {
 
 
         Text randomEventText = new Text("");
-        randomEventText.setFont(Font.font("Verdana", 28));
+        randomEventText.setFont(Font.font("Verdana", 20));
         randomEventText.setFill(Color.RED);
         if (player.getFarm().getRain() && !player.getFarm().getDrought()) {
             randomEventText.setText("It rained today! +"
@@ -412,7 +412,7 @@ public class FarmScreen implements IScreen {
         });
 
         HBox buttonRow = new HBox(inventoryButton, marketButton,
-                incrementTimeButton, randomEventText, saveGameButton);
+                incrementTimeButton, saveGameButton, randomEventText);
         buttonRow.setSpacing(10);
         VBox finalScene = new VBox(buttonRow, vbox);
 
