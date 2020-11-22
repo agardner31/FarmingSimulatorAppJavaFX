@@ -159,6 +159,7 @@ public class Controller extends Application {
     private static void playMusic() {
         Media backgroundMusic = new Media(new File("audio/background.mp3").toURI().toString());
         mediaPlayer = new MediaPlayer(backgroundMusic);
+        mediaPlayer.setVolume(.1);
 
         mediaPlayer.setOnEndOfMedia(new Runnable() {
             public void run() {
