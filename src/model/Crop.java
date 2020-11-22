@@ -130,7 +130,7 @@ public class Crop implements Item, Serializable {
     public String toString(String type) {
         if (type.equals("buy")) {
             if (buyPrice == Integer.MAX_VALUE) {
-                return this.type + "\n" + stage.toString() + "\n" + "$???";
+                return this.type + "\n" + stage.toString() + "\n" + "$∞";
             }
             if (this.type.equals("Magic Beans")) {
                 return this.type + "\n" + stage.toString() + "\n" + "$" + buyPrice + ".00 (SALE!)";
